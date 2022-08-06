@@ -1,0 +1,119 @@
+
+.home{
+    display: flex;
+    color: #fff;
+    &__left-container {
+      width: 50vw;
+      height: 100vh;
+      background: rgba(254, 254, 254, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
+      &-image {
+          width: 422px;
+          img {
+              width: 100%;
+          }
+      }
+    }
+  
+    &__right-container {
+      width: 50vw;
+      height: 100vh;
+      background-color: #0D1827;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      
+      &-image {
+          width: 208px;
+          height: 150px;
+          margin: auto;
+          margin-top: 100px;
+          img {
+              width: 100%;
+          }
+      }
+  
+      &-form {
+          display: flex;
+          flex-direction: column;
+          width: 354px;
+          height: 200px;
+          justify-content: space-between;
+          margin: auto;
+          input {
+              display: block;
+              width: 350px;
+              height: 46px;
+              filter: drop-shadow(2px 2px 5px #FFFFFF);
+              border-radius: 10px;
+              text-align: center;
+              font-weight: 500;
+              color: #000;
+              font-size: 20px;
+          }
+  
+          button {
+              display: block;
+              margin: auto;
+              width: 354px;
+              height: 46px;
+              border-radius: 10px;
+              font-size: 20px;
+              background-color:#FF8C00;
+              color: #fff;
+              
+              &:hover {
+                  cursor: pointer;
+              }
+          }
+  
+          p {
+              display: block;
+              width: 100%;
+              text-align: center;
+              height: 30px;
+              margin-top: -5px;
+              text-decoration: underline;
+              color: #5587A3;
+              font-size: 18px;
+              font-weight: 400;
+  
+              &:hover {
+                  cursor: pointer;
+              }
+          }
+      }
+  
+      &-formLogin {
+          background-color: #fff;
+          width: 317px;
+          height: 365px;
+          border-radius: 10px;
+          margin: auto;
+  
+          &-image {
+              width: 64px;
+              height: 67px;
+              img {
+                  width: 100%;
+              }
+          }
+      }
+  
+      &-banner {
+          width: 100%;
+          height: 250px;
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          div {
+              height: 60px;
+              width: auto;
+          }
+      }
+      
+    }
+  }

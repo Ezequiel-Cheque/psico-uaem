@@ -1,1 +1,1 @@
-# this is a electron practice with react integration
+# this is an electron practice with react integration

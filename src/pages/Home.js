@@ -40,6 +40,7 @@ export default function Home() {
               {
                 isLogin ? (
                   <div className="home__right-container-formLogin">
+                    <label className="home__right-container-formLogin-label">Login</label>
                     <div className="home__right-container-formLogin-image">
                       <img src={loginIcon} alt="logo"/>
                     </div>

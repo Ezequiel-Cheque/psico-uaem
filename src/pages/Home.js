@@ -7,6 +7,7 @@ import posgrado from "../assets/images/posgrado.png";
 import login from "../assets/images/login.png";
 import loginIcon from "../assets/images/loginIcon.png";
 
+import '../styles/pages/home.scss';
 
 export default function Home() {
 
@@ -19,7 +20,6 @@ export default function Home() {
     return(
         <>
           <div className="home">
-            
             <div className="home__left-container">
               <div className="home__left-container-image">
                 {

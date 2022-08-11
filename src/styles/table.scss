@@ -1,16 +1,17 @@
 
 
 .table {
-    width: 80%;
-    margin: auto;
-    margin-top: 20px;
+    width: 100%;
+    // margin: auto;
+    // margin-top: 20px;
 
     .rdt_TableHeader,
     header,
     &__container {
       border-top-right-radius: 10px;
       border-top-left-radius: 10px;
-      background-color: #55555555;
+      // background-color: #55555555;
+      background-color: #0D1827;
       padding: 0;
     }
 
@@ -39,13 +40,17 @@
       font-family:Arial, Helvetica, sans-serif;
     }
 
-    
+    .sc-dmRaPn {
+      border-radius: 20px;
+    }
     
     .rdt_Pagination {
         background-color: #55555555;
         color: #fff;
-        border-bottom-right-radius: 10px;
-        border-bottom-left-radius: 10px;
+        // border-bottom-right-radius: 10px;
+        // border-bottom-left-radius: 10px;
+        background-color: #0D1827;
+        font-size: 16px;
         // border: 0;
         // max-width: 95%;
         // margin: 20px auto 10px;

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import swal from 'sweetalert';
 
 import homeImage from "../assets/images/home.png";
 import uaemLogo from "../assets/images/uaem.png";
@@ -12,10 +14,28 @@ import '../styles/pages/home.scss';
 export default function Home() {
 
     const [isLogin, setIsLogin] = useState(false);
+    let navigate = useNavigate();
+    const password = "12345678";
 
     const handleLogin = () => {
       setIsLogin(!isLogin);
-    }; 
+    };
+
+    const handlePanel = (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const pass = formData.get("pass");
+      if (pass === password) {
+        navigate("/panel");
+      }  else {
+        swal({
+          title: "Datos incorrectos!",
+          text: "tus datos de acceso son incorrectos",
+          icon: "error",
+        });
+      }
+
+    };
 
     return(
         <>
@@ -40,12 +60,19 @@ export default function Home() {
               {
                 isLogin ? (
                   <div className="home__right-container-formLogin">
-                    <label className="home__right-container-formLogin-label">Login</label>
-                    <div className="home__right-container-formLogin-image">
-                      <img src={loginIcon} alt="logo"/>
-                    </div>
-                    <input type="text" placeholder="Ingresa tu clave"/>
-                    <button>Entrar</button>
+                    <form onSubmit={handlePanel}>
+                      <label className="home__right-container-formLogin-label">Login</label>
+                      <div className="home__right-container-formLogin-image">
+                        <img src={loginIcon} alt="logo"/>
+                      </div>
+                      <input
+                        type="password"
+                        name="pass"
+                        placeholder="Ingresa tu clave"
+                        required
+                      />
+                      <button type="submit">Entrar</button>
+                    </form>
                     <p onClick={handleLogin}>INGRESAR AL INICIO</p>
                   </div>
                 ) : (

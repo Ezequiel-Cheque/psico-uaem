@@ -144,6 +144,10 @@
             line-height: 27px;
             margin-top: 20px;
             padding: 2px;
+
+            &:hover {
+                cursor: pointer;
+            }
           }
 
           p {

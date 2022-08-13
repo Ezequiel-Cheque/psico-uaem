@@ -1,5 +1,6 @@
 import React from "react";
 import { Table } from "../components/Table";
+import { Link } from "react-router-dom";
 
 import homeIcon from "../assets/icons/home.svg";
 import groupIcon from "../assets/icons/group.svg";
@@ -108,9 +109,20 @@ const data = [
     return (
       <div className="panel">
         <div className="panel__menubar">
-            <div className="panel__menubar-icon"><embed src={homeIcon} /> <p> Inicio</p></div>
-            <div className="panel__menubar-icon"><embed src={groupIcon} /> <p> Administrador</p></div>
-            <div className="panel__menubar-icon"><embed src={account} /> <p> Pruebas realizadas 50</p></div>
+            <Link to="/" style={{ textDecoration: "none", color: "#fff" }}>
+              <div className="panel__menubar-icon">
+                <embed src={homeIcon} />
+                <p>Inicio</p>
+              </div>
+            </Link>
+            <div className="panel__menubar-icon">
+              <embed src={groupIcon} />
+              <p>Administrador</p>
+            </div>
+            <div className="panel__menubar-icon">
+              <embed src={account} />
+              <p>Pruebas realizadas 50</p>
+            </div>
         </div>
 
         <div className="panel__table-container">

@@ -5,7 +5,7 @@ import DataTable from 'react-data-table-component';
 
 import '../styles/table.scss';
 
-export const Table = ({ columns, data }) => {
+export const Table = ({ columns, data, title="", filter=false }) => {
 
   const [activeTransFilter, setactiveTransFilter] = useState("");
 
@@ -69,6 +69,7 @@ export const Table = ({ columns, data }) => {
   return (
     <div className='table'>
       <DataTable
+        title={title}
         columns={columns}
         data={generalData(data, activeTransFilter)}
         theme="dark"
@@ -78,7 +79,7 @@ export const Table = ({ columns, data }) => {
         fixedHeader
         fixedHeaderScrollHeight= "600px"
         subHeader
-        subHeaderComponent={activeTransComponent}
+        subHeaderComponent={filter && activeTransComponent}
       />
     </div>
   )

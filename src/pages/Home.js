@@ -37,6 +37,13 @@ export default function Home() {
 
     };
 
+    const handleUser = (event) => {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const idUser = formData.get("idUser");
+      navigate(`/user/${idUser}`);
+    };
+
     return(
         <>
           <div className="home">
@@ -77,8 +84,10 @@ export default function Home() {
                   </div>
                 ) : (
                   <div className="home__right-container-form">
-                    <input type="text" placeholder="Ingresa tu ID"/>
-                    <button>Iniciar</button>
+                    <form onSubmit={handleUser}>
+                      <input type="text" name="idUser" placeholder="Ingresa tu ID"/>
+                      <button type="submit">Iniciar</button>
+                    </form>
                     <p onClick={handleLogin}>INGRESAR AL PANEL</p>
                   </div>
                 )

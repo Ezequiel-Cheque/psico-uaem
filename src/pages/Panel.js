@@ -329,11 +329,11 @@ const columns = [
               </div>
             </Link>
             <div className="panel__menubar-icon">
-              <embed src={groupIcon} />
+              <embed src={account} />
               <p>Administrador</p>
             </div>
             <div className="panel__menubar-icon">
-              <embed src={account} />
+              <embed src={groupIcon} />
               <p>Pruebas realizadas 50</p>
             </div>
         </div>

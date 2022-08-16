@@ -1,0 +1,53 @@
+.user {
+    &__menubar {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        color: #fff;
+        margin-top: 35px;
+
+        div {
+            width: 220px;
+            margin: 10px;
+            height: 40px;
+            font-size: 18px;
+            line-height: 22px;
+            font-weight: 700;
+            display: flex;
+
+            &:hover {
+                cursor: pointer;
+            }
+
+            embed {
+                width: 20%;
+                height: 100%;
+            }
+
+            p {
+                width: 80%;
+                margin-left: 8px;
+            }
+        }
+    }
+
+    .table__button {
+        width: 96px;
+        height: 37px;
+        border-radius: 10px;
+        border: none;
+        color: #fff;
+        font-weight: 600;
+    
+        &--active {
+            @extend .table__button;
+            background-color: #28A745;
+        }
+    
+        &--inactive {
+            @extend .table__button;
+            background-color: #FD7E14;
+            cursor: pointer;
+        }
+    }
+}

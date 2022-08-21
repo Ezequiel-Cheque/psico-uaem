@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { Table } from "../components/Table";
 
 import homeIcon from "../assets/icons/home.svg";
@@ -10,18 +10,27 @@ import '../styles/pages/user.scss';
 
 export default function User () {
 
+    let navigate = useNavigate();
     const params = useParams();
     const { id } = params;
     
-    const clickHandler = (test, available) => {
-        console.log({id, test, available});
+    const clickHandler = (test, finished) => {
+        if (!finished) {
+            if (test === "SIMON") {
+                navigate(`/simon/${id}`);
+            } else if (test === "STOP") {
+                navigate(`/stop/${id}`);
+            } else if (test === "MMST") {
+                navigate(`/mmst/${id}`);
+            }
+        }
     };
 
     const data = [
         {
             test: "SIMON",
             progress: "20/20",
-            finished: true
+            finished: false
         },
         {
             test: "STOP",

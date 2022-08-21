@@ -1,0 +1,74 @@
+.simon {
+    &-container {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        .image-game {
+            display: block;
+            width: 200px;
+            height: 200px;
+            img {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.modal {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-container {
+        width: 70%;
+        height: 70%;
+        color: #000;
+        background-color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &-text {
+            width: 80%;
+            padding: 10px;
+
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            img {
+                display: block;
+                width: 200px;
+                margin: auto;
+            }
+
+            p {
+                width: 100%;
+                text-align: center;
+            }
+
+            button {
+                width: 96px;
+                height: 37px;
+                border-radius: 10px;
+                border: none;
+                color: #fff;
+                font-weight: 600;
+                background-color: #7CD1F9;
+                margin: 20px;
+                margin: auto;
+                display: block;
+
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}

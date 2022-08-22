@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import {
-    BrowserRouter,
+    HashRouter,
     Routes,
     Route,
 } from "react-router-dom";
@@ -20,13 +20,13 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <BrowserRouter>
+    <HashRouter>
         <Routes>
-            <Route path="*" element={<Home />} />
+            <Route path="/" element={<Home />} />
             <Route path="/panel" element={<Panel />} />
             <Route path="/user/:id" element={<User />} />
             <Route path="/simon/:id" element={<Simon />} />
             <Route path="/stop/:id" element={<Stop />} />
         </Routes>
-    </BrowserRouter>
+    </HashRouter>
 );

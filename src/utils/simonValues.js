@@ -3,6 +3,8 @@ import heart1 from "../assets/images/heart_example1.png";
 import heart2 from "../assets/images/heart_example.png";
 import heart3 from "../assets/images/heart_example2.png";
 import keys from "../assets/images/keys.png";
+import heart from "../assets/images/heart.png";
+import flower from "../assets/images/flower.png";
 
 const instructionsHearts = [
     {
@@ -71,23 +73,48 @@ const instructionsFlowers = [
 const positionsHearts = [
     {   
         index: 0,
-        position: "rigth"
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "test",
+        name: "heart"
     },
     {
         index: 1,
-        position: "rigth"
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "test",
+        name: "heart"
     },
     {   
         index: 2,
-        position: "left"
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "test",
+        name: "heart"
     },
     {
         index: 3,
         position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "test",
+        name: "heart"
     },
     {
         index: 4,
-        position: "rigth"
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "test",
+        name: "heart"
     }
 ];
 

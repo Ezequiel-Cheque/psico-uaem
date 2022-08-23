@@ -6,8 +6,6 @@ import { positionsHearts, positionsFlowers, instructionsFlowers, instructionsHea
 import '../styles/pages/simon.scss';
 
 import cross from "../assets/images/cross.png";
-import heart from "../assets/images/heart.png";
-import flower from "../assets/images/flower.png";
 
 const MODAL_DEFAULT_DATA = {
     activated: true,
@@ -15,11 +13,11 @@ const MODAL_DEFAULT_DATA = {
 };
 
 const DEFAULT_GAME_DATA = {
-    start: false,
-    positions: {},
-    type: "",
-    img: "",
-    class: ""
+    index: 1,
+    position: "",
+    img: '',
+    class: "",
+    key: ""
 };
 
 export default function Simon () {
@@ -31,8 +29,31 @@ export default function Simon () {
     const params = useParams();
     const { id } = params;
 
+    let keyPress = "";
+    let intVal;
+
     const heartsGame = () => {
-        // image-game--left
+        const container = document.getElementById("showImage");
+        let cont = 0;
+
+        intVal = setInterval(()=>{
+            if (cont < positionsHearts.length) {
+                const data = positionsHearts[cont];
+                
+                container.classList.add(data.class);
+                container.innerHTML=`<img src="${data.img}" />`;
+                console.log(data);
+                keyPress = data.key;
+                cont + 1;
+                setTimeout(()=>{
+                    container.classList.remove(data.class);
+                    container.innerHTML=``;
+                    keyPress = ""
+                }, 500);
+            } else {
+                clearInterval(intVal);
+            }
+        }, 3000);
     };
 
     const handleStartHeart = () => {
@@ -41,22 +62,11 @@ export default function Simon () {
             ...modal,
             activated: false
         });
-        setGameData({
-            start: true,
-            positions: positionsHearts[0],
-            type: "test",
-            img: heart,
-            class: `image-game--${positionsHearts[0].position}`
-        });
     };
 
     const handleKey = (event) => {
-        if (!modal) {
-            // const data = {
-
-            // };
-            console.log(event.keyCode);
-        }
+        console.log(String.fromCharCode(event.keyCode));
+        console.log('key', keyPress);
     };
 
     const startInstructionsHearts = () => {
@@ -66,6 +76,12 @@ export default function Simon () {
     const startInstructionsFlowers = () => {
         setModalBody({ step: 1, data: instructionsFlowers[0] });
     };
+
+    useEffect(() => {
+        if (!modal.activated && modal.instructions === "heart") {
+            heartsGame();
+        }
+    }, [modal]);
 
     useEffect(() => {
         if (modal.activated && modalBody) {
@@ -80,22 +96,14 @@ export default function Simon () {
             }
         }
     }, [modalBody, modal]);
-
-    useEffect(() => {
-      if (gameData.start && gameData.positions?.index < positionsHearts.length - 1) {
-        setTimeout(()=>{
-            const newValue = positionsHearts[gameData.positions.index + 1];
-            setGameData({
-                ...gameData,
-                positions: newValue,
-                index: gameData.positions.index + 1,
-                class: `image-game--${newValue.position}`
-            });
-        }, 2000);
-      }
-    }, [gameData]);
     
-    document.addEventListener('keydown', handleKey);
+    useEffect(()=>{
+        document.removeEventListener('keydown', handleKey);
+        document.addEventListener('keydown', handleKey);
+        return () => {
+            document.removeEventListener('keydown', handleKey);
+        }
+    }, [modal, gameData, modalBody]);
 
     useEffect(() => {
         startInstructionsHearts();
@@ -121,12 +129,7 @@ export default function Simon () {
                     </div>
                 ) : (
                     <div className="simon-container">
-                        { 
-                            gameData.start && (
-                                <div className={`image-game ${gameData.class}`}>
-                                    <img src={gameData.img} />
-                                </div>)
-                        }
+                        <div id="showImage" className="image-game"></div>
                         <div className="image-center">
                             <img src={cross} />
                         </div>

@@ -65,7 +65,7 @@ const instructionsFlowers = [
         title: "¿Estas listo para jugar?",
         body: `Recuerda:
         aprieta el boton del mismo lado que veas el corazon.
-        Intenta ser lo mas rapido posible al presionar el boton correcto`,
+        Intenta ser lo mas rapido posible al presionar el boton correcto, preciona en iniciar para hacer una prueba`,
         img: keys
     }
 ];
@@ -113,6 +113,15 @@ const positionsHearts = [
         img: heart,
         class: "image-game--rigth",
         key: "L",
+        type: "test",
+        name: "heart"
+    },
+    {
+        index: 5,
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
         type: "test",
         name: "heart"
     }

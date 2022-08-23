@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import swal from 'sweetalert';
 
 import { positionsHearts, positionsFlowers, instructionsFlowers, instructionsHearts } from "../utils/simonValues";
 
@@ -13,47 +14,54 @@ const MODAL_DEFAULT_DATA = {
 };
 
 const DEFAULT_GAME_DATA = {
-    index: 1,
     position: "",
     img: '',
     class: "",
-    key: ""
+    name: "",
+    type: "",
+    activated: false
 };
+
+let heartValues = [...positionsHearts];
+let intVal;
 
 export default function Simon () {
     
     const [modal, setModal] = useState(MODAL_DEFAULT_DATA);
     const [modalBody, setModalBody] = useState(null);
-    const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
+    const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);    
     
     const params = useParams();
     const { id } = params;
 
-    let keyPress = "";
-    let intVal;
+    const getAleatory = () => {
+        const min = 0;
+        const max = heartValues.length - 1;
+        const x = Math.floor(Math.random()*(max-min+1)+min);
+        const newData = heartValues[x];
+        heartValues = [...heartValues.slice(0, x), ...heartValues.slice(x + 1, heartValues.length)];
+        return newData;
+    };
 
-    const heartsGame = () => {
-        const container = document.getElementById("showImage");
-        let cont = 0;
-
-        intVal = setInterval(()=>{
-            if (cont < positionsHearts.length) {
-                const data = positionsHearts[cont];
-                
-                container.classList.add(data.class);
-                container.innerHTML=`<img src="${data.img}" />`;
-                console.log(data);
-                keyPress = data.key;
-                cont + 1;
-                setTimeout(()=>{
-                    container.classList.remove(data.class);
-                    container.innerHTML=``;
-                    keyPress = ""
-                }, 500);
+    const nextImage = () => {
+        if (gameData.name === "heart") {
+            if (heartValues.length > 0) {
+                setGameData({
+                    ...gameData,
+                    ...getAleatory()
+                });
             } else {
-                clearInterval(intVal);
+                setGameData(DEFAULT_GAME_DATA);
             }
-        }, 3000);
+        }
+    };
+
+    const clearImage = () => {
+        setGameData({
+            ...gameData,
+            img: "",
+            key: "None"
+        });
     };
 
     const handleStartHeart = () => {
@@ -62,11 +70,31 @@ export default function Simon () {
             ...modal,
             activated: false
         });
+        const newData = getAleatory();
+        setGameData({
+            ...gameData,
+            ...newData,
+            activated: true
+        });
     };
 
     const handleKey = (event) => {
-        console.log(String.fromCharCode(event.keyCode));
-        console.log('key', keyPress);
+        const keyPress = String.fromCharCode(event.keyCode);
+        if (gameData.name === "heart" && gameData.key !== "None" && gameData.activated) {
+            if (gameData.type === "test" && (keyPress !== gameData.key)) {
+                const errorMsg = `Debes presionar la tecla correspondiente a su lado, en este caso la tecla ${keyPress === "A" ? "L" : "A"}`; 
+                clearInterval(intVal);
+                swal({
+                    title: "Error",
+                    text: errorMsg,
+                    icon: "error",
+                    button: "ok",
+                }).then((value) => {
+                    nextImage();
+                });
+                
+            }
+        }
     };
 
     const startInstructionsHearts = () => {
@@ -77,12 +105,18 @@ export default function Simon () {
         setModalBody({ step: 1, data: instructionsFlowers[0] });
     };
 
+    // Efecto para mostrar las imagenes
     useEffect(() => {
-        if (!modal.activated && modal.instructions === "heart") {
-            heartsGame();
-        }
-    }, [modal]);
-
+       if (gameData.activated) {
+            if (gameData.name === "heart" && gameData.img !== "" && heartValues.length >= 0) {
+                intVal = setTimeout(clearImage, 3000);
+            } else if (gameData.name === "heart" && gameData.img === "") {
+                intVal = setTimeout(nextImage, 800);
+            }
+       } 
+    }, [gameData]);
+    
+    // Efecto para mostrar las instrucciones automaticamente
     useEffect(() => {
         if (modal.activated && modalBody) {
             if (modal.instructions === "heart" && modalBody.step < 5) {
@@ -97,6 +131,7 @@ export default function Simon () {
         }
     }, [modalBody, modal]);
     
+    // use Effect para resetear el evento que escucha la tecla a presionar
     useEffect(()=>{
         document.removeEventListener('keydown', handleKey);
         document.addEventListener('keydown', handleKey);
@@ -105,6 +140,7 @@ export default function Simon () {
         }
     }, [modal, gameData, modalBody]);
 
+    // Inicia con las instrucciones de la figura de corazon
     useEffect(() => {
         startInstructionsHearts();
     }, []);
@@ -129,7 +165,9 @@ export default function Simon () {
                     </div>
                 ) : (
                     <div className="simon-container">
-                        <div id="showImage" className="image-game"></div>
+                        <div id="showImage" className={`image-game ${gameData.class}`}>
+                            <img src={gameData.img} />
+                        </div>
                         <div className="image-center">
                             <img src={cross} />
                         </div>

@@ -1,19 +1,21 @@
 {
   "name": "electron-react",
   "version": "1.0.0",
-  "description": "",
+  "description": "Aplication UAEM",
   "homepage": "./",
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "webpack --config webpack.common.js --watch",
-    "start": "electron ."
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ezequiel de la luz Garcia",
   "license": "ISC",
   "dependencies": {
-    "electron": "^20.0.1",
+    "electron-squirrel-startup": "^1.0.0",
     "react": "^18.2.0",
     "react-data-table-component": "^7.5.2",
     "react-dom": "^18.2.0",
@@ -25,8 +27,14 @@
     "@babel/core": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-react": "^7.18.6",
+    "@electron-forge/cli": "^6.0.0-beta.65",
+    "@electron-forge/maker-deb": "^6.0.0-beta.65",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.65",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.65",
+    "@electron-forge/maker-zip": "^6.0.0-beta.65",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
+    "electron": "^20.0.3",
     "electron-reload": "^2.0.0-alpha.1",
     "file-loader": "^6.2.0",
     "sass": "^1.54.3",
@@ -34,5 +42,32 @@
     "style-loader": "^3.3.1",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "electron_react"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
+        }
+      ]
+    }
   }
 }

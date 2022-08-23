@@ -1,49 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
-import { positions } from "../utils/simonValues";
+import { positionsHearts, positionsFlowers, instructionsFlowers, instructionsHearts } from "../utils/simonValues";
 
 import '../styles/pages/simon.scss';
 
-import example from "../assets/images/example.png";
-import example2 from "../assets/images/example2.png";
-import keys from "../assets/images/keys.png";
 import cross from "../assets/images/cross.png";
+import heart from "../assets/images/heart.png";
+import flower from "../assets/images/flower.png";
 
-import circle1 from "../assets/images/circle1.png";
+const MODAL_DEFAULT_DATA = {
+    activated: true,
+    instructions: "heart"
+};
 
-const DEFAULT_MODAL_BODY = [
-    {
-        title: "Bienvenido",
-        body: "Pon tus dedos sobre los botones 'A' y 'L' de tu teclado",
-        img: example
-    },
-    {
-        title: "Te mostraremos unas figuras !!",
-        body: "Las figuras pueden aparecera la izquierda o a la derecha, si ves un figura, aprieta, del mismo lado que la figura",
-        img: example2
-    },
-    {
-        title: "Estas listo para jugar ?",
-        body: "Recuerda, aprieta el boton del mismo lado de la figura, intenta ser lo mas rapido posible al presionar el boton correcto",
-        img: keys
-    }
-];
-
+const DEFAULT_GAME_DATA = {
+    start: false,
+    positions: {},
+    type: "",
+    img: "",
+    class: ""
+};
 
 export default function Simon () {
     
-    const [modal, setModal] = useState(true);
-    const [modalBody, setModalBody] = useState({ step: 1, data: DEFAULT_MODAL_BODY[0] });
-    const [styles, setStyles] = useState({
-        index: 0, values: {} 
-    });    
+    const [modal, setModal] = useState(MODAL_DEFAULT_DATA);
+    const [modalBody, setModalBody] = useState(null);
+    const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
+    
     const params = useParams();
     const { id } = params;
 
-    const handleStart = () => {
-        setModal(false);
-        setModalBody({ step: 1, data: DEFAULT_MODAL_BODY[0] });
+    const heartsGame = () => {
+        // image-game--left
+    };
+
+    const handleStartHeart = () => {
+        setModalBody(null);
+        setModal({
+            ...modal,
+            activated: false
+        });
+        setGameData({
+            start: true,
+            positions: positionsHearts[0],
+            type: "test",
+            img: heart,
+            class: `image-game--${positionsHearts[0].position}`
+        });
     };
 
     const handleKey = (event) => {
@@ -55,53 +59,61 @@ export default function Simon () {
         }
     };
 
+    const startInstructionsHearts = () => {
+        setModalBody({ step: 1, data: instructionsHearts[0] });
+    };
+
+    const startInstructionsFlowers = () => {
+        setModalBody({ step: 1, data: instructionsFlowers[0] });
+    };
+
     useEffect(() => {
-        if (modal) {
-            if (modalBody.step === 1) {
+        if (modal.activated && modalBody) {
+            if (modal.instructions === "heart" && modalBody.step < 5) {
                 setTimeout(()=>{
-                    setModalBody({ step: 2, data: DEFAULT_MODAL_BODY[1] });
-                }, 3000);
-            } if (modalBody.step === 2) {
+                    setModalBody({ step: modalBody.step + 1, data: instructionsHearts[modalBody.step] });
+                }, 4000);
+            } else if (modal.instructions === "flowers" && modalBody.step < 5) {
                 setTimeout(()=>{
-                    setModalBody({ step: 3, data: DEFAULT_MODAL_BODY[2] });
-                }, 3000);
+                    setModalBody({ step: modalBody.step + 1, data: instructionsFlowers[modalBody.step] });
+                }, 4000);
             }
-        } else {
-            setStyles({
-                index: 1,
-                values: positions[0].styles
-            });
         }
     }, [modalBody, modal]);
 
     useEffect(() => {
-        if (!modal) {
-            if (styles.index < positions.length) {
-                setTimeout(()=> {
-                    setStyles({
-                        index: styles.index + 1,
-                        values: positions[styles.index + 1].styles
-                    });
-                }, 1000);
-            }
-        }
-    }, [styles]);
-
+      if (gameData.start && gameData.positions?.index < positionsHearts.length - 1) {
+        setTimeout(()=>{
+            const newValue = positionsHearts[gameData.positions.index + 1];
+            setGameData({
+                ...gameData,
+                positions: newValue,
+                index: gameData.positions.index + 1,
+                class: `image-game--${newValue.position}`
+            });
+        }, 2000);
+      }
+    }, [gameData]);
+    
     document.addEventListener('keydown', handleKey);
+
+    useEffect(() => {
+        startInstructionsHearts();
+    }, []);
 
     return (
         <div className="simon">
             {
-                modal ? (
+                modal.activated ? (
                     <div className="modal">
                         <div className="modal-container">
                             <div className="modal-container-text">
-                                <h1>{modalBody.data.title}</h1>
-                                <img src={modalBody.data.img} />
-                                <p>{modalBody.data.body}</p>
+                                <h1>{modalBody?.data.title}</h1>
+                                <img src={modalBody?.data.img} />
+                                <p>{modalBody?.data.body}</p>
                                 {
-                                    modalBody.step === 3 && (
-                                        <button onClick={handleStart}>Iniciar</button>
+                                    (modalBody?.step === 5 && modal.instructions === "heart" ) && (
+                                        <button onClick={handleStartHeart}>Iniciar</button>
                                     )
                                 }
                             </div>
@@ -109,9 +121,12 @@ export default function Simon () {
                     </div>
                 ) : (
                     <div className="simon-container">
-                        <div className="image-game" style={styles.values}>
-                            <img src={circle1} />
-                        </div>
+                        { 
+                            gameData.start && (
+                                <div className={`image-game ${gameData.class}`}>
+                                    <img src={gameData.img} />
+                                </div>)
+                        }
                         <div className="image-center">
                             <img src={cross} />
                         </div>

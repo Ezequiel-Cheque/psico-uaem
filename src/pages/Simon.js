@@ -19,18 +19,22 @@ const DEFAULT_GAME_DATA = {
     class: "",
     name: "",
     type: "",
-    activated: false
+    id: "",
+    activated: false,
+    timeStart: "",
+    timeEnd: ""
 };
 
 let heartValues = [...positionsHearts];
 let intVal;
+const responses = [];
 
 export default function Simon () {
     
     const [modal, setModal] = useState(MODAL_DEFAULT_DATA);
     const [modalBody, setModalBody] = useState(null);
-    const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);    
-    
+    const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
+
     const params = useParams();
     const { id } = params;
 
@@ -48,10 +52,12 @@ export default function Simon () {
             if (heartValues.length > 0) {
                 setGameData({
                     ...gameData,
-                    ...getAleatory()
+                    ...getAleatory(),
+                    timeStart: Date.now()
                 });
             } else {
-                setGameData(DEFAULT_GAME_DATA);
+                localStorage.setItem( "DataTest", JSON.stringify(responses));
+                setGameData(DEFAULT_GAME_DATA);                
             }
         }
     };
@@ -74,25 +80,56 @@ export default function Simon () {
         setGameData({
             ...gameData,
             ...newData,
-            activated: true
+            activated: true,
+            timeStart: Date.now()
         });
+    };
+
+    const saveResponse = (keyPress) => {
+        const response = {
+            id: gameData.id,
+            key: gameData.key,
+            type: gameData.type,
+            response: gameData.key === keyPress ? true: false,
+            keyPress,
+            time: `${((Date.now() - gameData.timeStart) / 1000)}s`
+        };
+        const exist = responses.filter((res)=>res.id === gameData.id);
+        if (exist.length === 0) {
+            responses.push(response);
+            return true;
+        } else {
+            false
+        }
     };
 
     const handleKey = (event) => {
         const keyPress = String.fromCharCode(event.keyCode);
         if (gameData.name === "heart" && gameData.key !== "None" && gameData.activated) {
-            if (gameData.type === "test" && (keyPress !== gameData.key)) {
-                const errorMsg = `Debes presionar la tecla correspondiente a su lado, en este caso la tecla ${keyPress === "A" ? "L" : "A"}`; 
-                clearInterval(intVal);
-                swal({
-                    title: "Error",
-                    text: errorMsg,
-                    icon: "error",
-                    button: "ok",
-                }).then((value) => {
-                    nextImage();
-                });
-                
+            if (saveResponse(keyPress)) {
+                if (gameData.type === "test" && (keyPress !== gameData.key)) {
+                    const errorMsg = `Debes presionar la tecla correspondiente, en este caso es la tecla ${keyPress === "A" ? "L" : "A"}`; 
+                    clearInterval(intVal);
+                    swal({
+                        title: "Error",
+                        text: errorMsg,
+                        icon: "error",
+                        button: "ok",
+                    }).then((value) => {
+                        clearImage();
+                    });
+                } else if (gameData.type === "test" && (keyPress === gameData.key)) {
+                    clearInterval(intVal);
+                    swal({
+                        title: "Correcto !!",
+                        text: "Buen trabajo",
+                        icon: "success",
+                        timer: 1200,
+                        buttons: false
+                    }).then((value) => {
+                        clearImage();
+                    });
+                }
             }
         }
     };
@@ -111,7 +148,7 @@ export default function Simon () {
             if (gameData.name === "heart" && gameData.img !== "" && heartValues.length >= 0) {
                 intVal = setTimeout(clearImage, 3000);
             } else if (gameData.name === "heart" && gameData.img === "") {
-                intVal = setTimeout(nextImage, 800);
+                intVal = setTimeout(nextImage, 1000);
             }
        } 
     }, [gameData]);

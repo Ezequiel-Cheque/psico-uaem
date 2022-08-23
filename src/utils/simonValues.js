@@ -33,7 +33,7 @@ const instructionsHearts = [
         title: "¿Estas listo para jugar?",
         body: `Recuerda:
         aprieta el boton del mismo lado que veas el corazon.
-        Intenta ser lo mas rapido posible al presionar el boton correcto`,
+        Intenta ser lo mas rapido posible al presionar el boton correcto, presiona en iniciar para hacer una prueba`,
         img: keys
     }
 ];
@@ -65,65 +65,65 @@ const instructionsFlowers = [
         title: "¿Estas listo para jugar?",
         body: `Recuerda:
         aprieta el boton del mismo lado que veas el corazon.
-        Intenta ser lo mas rapido posible al presionar el boton correcto, preciona en iniciar para hacer una prueba`,
+        Intenta ser lo mas rapido posible al presionar el boton correcto, presiona en iniciar para hacer una prueba`,
         img: keys
     }
 ];
 
 const positionsHearts = [
     {   
-        index: 0,
         position: "rigth",
         img: heart,
         class: "image-game--rigth",
         key: "L",
         type: "test",
-        name: "heart"
+        name: "heart",
+        id: "TH1"
     },
     {
-        index: 1,
         position: "rigth",
         img: heart,
         class: "image-game--rigth",
         key: "L",
         type: "test",
-        name: "heart"
+        name: "heart",
+        id: "TH2"
     },
     {   
-        index: 2,
         position: "left",
         img: heart,
         class: "image-game--left",
         key: "A",
         type: "test",
-        name: "heart"
+        name: "heart",
+        id: "TH3"
     },
     {
-        index: 3,
         position: "left",
         img: heart,
         class: "image-game--left",
         key: "A",
         type: "test",
-        name: "heart"
+        name: "heart",
+        id: "TH4"
     },
     {
-        index: 4,
         position: "rigth",
         img: heart,
         class: "image-game--rigth",
         key: "L",
         type: "test",
-        name: "heart"
+        name: "heart",
+        id: "TH5"
     },
     {
-        index: 5,
         position: "left",
         img: heart,
         class: "image-game--left",
         key: "A",
         type: "test",
-        name: "heart"
+        name: "heart",
+        id: "TH6"
     }
 ];
 

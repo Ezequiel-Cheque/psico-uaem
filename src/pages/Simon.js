@@ -2,15 +2,49 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 
-import { positionsHearts, positionsFlowers, instructionsFlowers, instructionsHearts } from "../utils/simonValues";
+import {
+
+    instructionsHearts,
+    instructionsHearts2,
+    positionsHearts,
+    positionsHearts2,
+    positionsFlowers,
+    instructionsFlowers } from "../utils/simonValues";
 
 import '../styles/pages/simon.scss';
 
 import cross from "../assets/images/cross.png";
 
+const simonSteps = [
+    {
+        step: 0,
+        name: "prueba congruentes",
+        instructions: instructionsHearts,
+        values: [...positionsHearts]
+    },
+    {   
+        step: 1,
+        name: "Nivel 1, congruentes",
+        instructions: instructionsHearts2,
+        values: [...positionsHearts2]
+    }
+];
+
+const DEFAULT_STEP = {
+    step: -1,
+    name: "",
+    instructions: [],
+    values: []
+};
+
 const MODAL_DEFAULT_DATA = {
-    activated: true,
-    instructions: "heart"
+    activated: false,
+    setp: 0,
+    data: {
+        title: "",
+        body: "",
+        img: ""
+    }
 };
 
 const DEFAULT_GAME_DATA = {
@@ -25,40 +59,94 @@ const DEFAULT_GAME_DATA = {
     timeEnd: ""
 };
 
-let heartValues = [...positionsHearts];
+let gameValues;
 let intVal;
+let results = {};
 const responses = [];
 
 export default function Simon () {
-    
-    const [modal, setModal] = useState(MODAL_DEFAULT_DATA);
-    const [modalBody, setModalBody] = useState(null);
+    const [modalBody, setModalBody] = useState(MODAL_DEFAULT_DATA);
     const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
+    const [step, setStep] = useState(DEFAULT_STEP);
 
     const params = useParams();
     const { id } = params;
 
+    const nextStep = () => {
+        if (step.step < simonSteps.length -1) {
+            const index = step.step + 1;
+            setStep(simonSteps[index]);
+            setModalBody({activated: true ,step: index, data: simonSteps[index].instructions[0]});
+        } else {
+            localStorage.setItem( id, JSON.stringify(results));
+            swal({
+                title: "Felicidades, has completado la prueba",
+                text: `Realisaste la prueba Simon, en su totalidad,
+                da clic en el boto para regresar al menu`,
+                icon: "success",
+                button: "Regresar",
+            }).then((value) => {
+                console.log("prueba terminados");
+            });
+        }
+    };
+
     const getAleatory = () => {
         const min = 0;
-        const max = heartValues.length - 1;
+        const max = gameValues.length - 1;
         const x = Math.floor(Math.random()*(max-min+1)+min);
-        const newData = heartValues[x];
-        heartValues = [...heartValues.slice(0, x), ...heartValues.slice(x + 1, heartValues.length)];
+        const newData = gameValues[x];
+        gameValues = [...gameValues.slice(0, x), ...gameValues.slice(x + 1, gameValues.length)];
         return newData;
     };
 
     const nextImage = () => {
-        if (gameData.name === "heart") {
-            if (heartValues.length > 0) {
-                setGameData({
-                    ...gameData,
-                    ...getAleatory(),
-                    timeStart: Date.now()
-                });
-            } else {
-                localStorage.setItem( "DataTest", JSON.stringify(responses));
-                setGameData(DEFAULT_GAME_DATA);                
+        if (gameValues.length > 0) {
+            setGameData({
+                ...gameData,
+                ...getAleatory(),
+                timeStart: Date.now()
+            });
+        } else {
+            if (step.step === 0) {
+                results = {
+                    ...results,
+                    practicaCongruentes: responses.filter((res)=> {
+                        return (res.type === "test" && res.name === "heart");
+                    })
+                };
+            } else if (step.step === 1) {
+                results = {
+                    ...results,
+                    congruentes: responses.filter((res)=>res.type === "congruente")
+                };
+            } else if (step.step === 2) {
+                results = {
+                    ...results,
+                    practicaIncongruentes: responses.filter((res)=>(
+                        res.type === "test" && res.name === "flower"))
+                };
+            } else if (step.step === 3) {
+                results = {
+                    ...results,
+                    incongruentes: responses.filter((res)=>(
+                        res.type === "incongruente" && res.name === "flower"))
+                };
+            } else if (step.step === 4) {
+                results = {
+                    ...results,
+                    practicaMixtos: responses.filter((res)=>(
+                        res.type === "test" && res.name === "mixto"))
+                };
+            } else if (step.step === 5) {
+                results = {
+                    ...results,
+                    mixtos: responses.filter((res)=>(
+                        res.type === "mixto" && res.name === "mixto"))
+                };
             }
+            setGameData(DEFAULT_GAME_DATA);
+            nextStep();
         }
     };
 
@@ -70,12 +158,9 @@ export default function Simon () {
         });
     };
 
-    const handleStartHeart = () => {
-        setModalBody(null);
-        setModal({
-            ...modal,
-            activated: false
-        });
+    const handleStart = () => {
+        gameValues = [...step.values]
+        setModalBody(MODAL_DEFAULT_DATA);
         const newData = getAleatory();
         setGameData({
             ...gameData,
@@ -87,9 +172,11 @@ export default function Simon () {
 
     const saveResponse = (keyPress) => {
         const response = {
+            title: step.name,
             id: gameData.id,
             key: gameData.key,
             type: gameData.type,
+            name: gameData.name,
             response: gameData.key === keyPress ? true: false,
             keyPress,
             time: `${((Date.now() - gameData.timeStart) / 1000)}s`
@@ -105,49 +192,67 @@ export default function Simon () {
 
     const handleKey = (event) => {
         const keyPress = String.fromCharCode(event.keyCode);
-        if (gameData.name === "heart" && gameData.key !== "None" && gameData.activated) {
+        if (gameData.activated && gameData.key !== "None") {
             if (saveResponse(keyPress)) {
-                if (gameData.type === "test" && (keyPress !== gameData.key)) {
-                    const errorMsg = `Debes presionar la tecla correspondiente, en este caso es la tecla ${keyPress === "A" ? "L" : "A"}`; 
+                if (gameData.type === "test" && gameData.name === "heart") {
+                    if ((keyPress !== gameData.key)) {
+                        const errorMsg = `Debes presionar la tecla correspondiente, en este caso es la tecla ${keyPress === "A" ? "L" : "A"}`; 
+                        clearInterval(intVal);
+                        swal({
+                            title: "Error",
+                            text: errorMsg,
+                            icon: "error",
+                            button: "ok",
+                        }).then((value) => {
+                            clearImage();
+                        });
+                    } else if ((keyPress === gameData.key)) {
+                        clearInterval(intVal);
+                        swal({
+                            title: "Correcto !!",
+                            text: "Buen trabajo",
+                            icon: "success",
+                            timer: 1200,
+                            buttons: false
+                        }).then((value) => {
+                            clearImage();
+                        });
+                    }
+                } else {
                     clearInterval(intVal);
-                    swal({
-                        title: "Error",
-                        text: errorMsg,
-                        icon: "error",
-                        button: "ok",
-                    }).then((value) => {
-                        clearImage();
-                    });
-                } else if (gameData.type === "test" && (keyPress === gameData.key)) {
-                    clearInterval(intVal);
-                    swal({
-                        title: "Correcto !!",
-                        text: "Buen trabajo",
-                        icon: "success",
-                        timer: 1200,
-                        buttons: false
-                    }).then((value) => {
-                        clearImage();
-                    });
+                    clearImage();
                 }
             }
         }
     };
 
-    const startInstructionsHearts = () => {
-        setModalBody({ step: 1, data: instructionsHearts[0] });
-    };
-
-    const startInstructionsFlowers = () => {
-        setModalBody({ step: 1, data: instructionsFlowers[0] });
-    };
-
     // Efecto para mostrar las imagenes
     useEffect(() => {
        if (gameData.activated) {
-            if (gameData.name === "heart" && gameData.img !== "" && heartValues.length >= 0) {
-                intVal = setTimeout(clearImage, 3000);
-            } else if (gameData.name === "heart" && gameData.img === "") {
+            if (gameData.img !== "" && gameValues.length >= 0) {
+                intVal = setTimeout(()=>{
+                    const exist = responses.filter((res)=>res.id === gameData.id);
+                    if (exist.length === 0) {
+                        saveResponse(null);    
+                        if (gameData.type === "test") {
+                            clearInterval(intVal);
+                            const errorMsg = `Ups, se te ha pasado el tiempo, procura ser mas rapido en tu respuesta`;
+                            swal({
+                                title: "Error",
+                                text: errorMsg,
+                                icon: "error",
+                                button: "ok",
+                            }).then((value) => {
+                                clearImage();
+                            });
+                        } else {
+                            clearImage();    
+                        }
+                    } else {
+                        clearImage();
+                    }
+                }, 3000);
+            } else if (gameData.img === "") {
                 intVal = setTimeout(nextImage, 1000);
             }
        } 
@@ -155,46 +260,46 @@ export default function Simon () {
     
     // Efecto para mostrar las instrucciones automaticamente
     useEffect(() => {
-        if (modal.activated && modalBody) {
-            if (modal.instructions === "heart" && modalBody.step < 5) {
+        if (modalBody.activated) {
+            if (modalBody.step < step.instructions.length) {
                 setTimeout(()=>{
-                    setModalBody({ step: modalBody.step + 1, data: instructionsHearts[modalBody.step] });
-                }, 4000);
-            } else if (modal.instructions === "flowers" && modalBody.step < 5) {
-                setTimeout(()=>{
-                    setModalBody({ step: modalBody.step + 1, data: instructionsFlowers[modalBody.step] });
+                    setModalBody({
+                        ...modalBody,
+                        step: modalBody.step + 1,
+                        data: step.instructions[modalBody.step]
+                    });
                 }, 4000);
             }
         }
-    }, [modalBody, modal]);
+    }, [modalBody]);
     
     // use Effect para resetear el evento que escucha la tecla a presionar
-    useEffect(()=>{
+    useEffect(() => {
         document.removeEventListener('keydown', handleKey);
         document.addEventListener('keydown', handleKey);
         return () => {
             document.removeEventListener('keydown', handleKey);
         }
-    }, [modal, gameData, modalBody]);
+    }, [gameData, modalBody]);
 
     // Inicia con las instrucciones de la figura de corazon
     useEffect(() => {
-        startInstructionsHearts();
+        nextStep();
     }, []);
 
     return (
         <div className="simon">
             {
-                modal.activated ? (
+                modalBody.activated ? (
                     <div className="modal">
                         <div className="modal-container">
                             <div className="modal-container-text">
-                                <h1>{modalBody?.data.title}</h1>
-                                <img src={modalBody?.data.img} />
-                                <p>{modalBody?.data.body}</p>
+                                <h1>{modalBody.data.title}</h1>
+                                <img src={modalBody.data.img} />
+                                <p>{modalBody.data.body}</p>
                                 {
-                                    (modalBody?.step === 5 && modal.instructions === "heart" ) && (
-                                        <button onClick={handleStartHeart}>Iniciar</button>
+                                    (modalBody.step === step.instructions.length) && (
+                                        <button onClick={handleStart}>Iniciar</button>
                                     )
                                 }
                             </div>

@@ -38,6 +38,15 @@ const instructionsHearts = [
     }
 ];
 
+const instructionsHearts2 = [
+    {
+        title: "Juguemos un poco mas !!",
+        body: `Pero esta vez no te diremos si es correcto.
+        presiona el boton de continuar para empezar`,
+        img: example
+    }
+];
+
 const instructionsFlowers = [
     {
         title: "Bienvenido",
@@ -67,6 +76,15 @@ const instructionsFlowers = [
         aprieta el boton del mismo lado que veas el corazon.
         Intenta ser lo mas rapido posible al presionar el boton correcto, presiona en iniciar para hacer una prueba`,
         img: keys
+    }
+];
+
+const instructionsFlowers2 = [
+    {
+        title: "Juguemos un poco mas !!",
+        body: `Pero esta vez no te diremos si es correcto.
+        presiona el boton de continuar para empezar`,
+        img: example
     }
 ];
 
@@ -124,6 +142,207 @@ const positionsHearts = [
         type: "test",
         name: "heart",
         id: "TH6"
+    },
+    {
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "test",
+        name: "heart",
+        id: "TH7"
+    },
+    {
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "test",
+        name: "heart",
+        id: "TH8"
+    }
+];
+
+const positionsHearts2 = [
+    {   
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH1"
+    },
+    {
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH2"
+    },
+    {
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH3"
+    },
+    {
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH4"
+    },
+    {
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH5"
+    },
+    {   
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH6"
+    },
+    {
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH7"
+    },
+    {
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH8"
+    },
+    {
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH9"
+    },
+    {
+        position: "rigth",
+        img: heart,
+        class: "image-game--rigth",
+        key: "L",
+        type: "congruente",
+        name: "heart",
+        id: "CH10"
+    },
+    {   
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH11"
+    },
+    {
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH12"
+    },
+    {
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH13"
+    },
+    {
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH14"
+    },
+    {
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH15"
+    },
+    {   
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH16"
+    },
+    {
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH17"
+    },
+    {
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH18"
+    },
+    {
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH19"
+    },
+    {
+        position: "left",
+        img: heart,
+        class: "image-game--left",
+        key: "A",
+        type: "congruente",
+        name: "heart",
+        id: "CH20"
     }
 ];
 
@@ -150,4 +369,11 @@ const positionsFlowers = [
     }
 ];
 
-export { positionsHearts, positionsFlowers, instructionsFlowers, instructionsHearts };
+export {
+    instructionsHearts,
+    instructionsHearts2,
+    positionsHearts,
+    positionsHearts2,
+    instructionsFlowers,
+    positionsFlowers
+};

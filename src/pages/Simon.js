@@ -8,8 +8,12 @@ import {
     instructionsHearts2,
     positionsHearts,
     positionsHearts2,
+    instructionsFlowers,
     positionsFlowers,
-    instructionsFlowers } from "../utils/simonValues";
+    instructionsFlowers2,
+    positionsFlowers2,
+    instructionsMixto
+} from "../utils/simonValues";
 
 import '../styles/pages/simon.scss';
 
@@ -22,11 +26,23 @@ const simonSteps = [
         instructions: instructionsHearts,
         values: [...positionsHearts]
     },
-    {   
+    {
         step: 1,
         name: "Nivel 1, congruentes",
         instructions: instructionsHearts2,
         values: [...positionsHearts2]
+    },
+    {   
+        step: 2,
+        name: "prueba incongruentes",
+        instructions: instructionsFlowers,
+        values: [...positionsFlowers]
+    },
+    {   
+        step: 3,
+        name: "Nivel 2, incongruentes",
+        instructions: instructionsFlowers2,
+        values: [...positionsFlowers2]
     }
 ];
 
@@ -76,7 +92,7 @@ export default function Simon () {
         if (step.step < simonSteps.length -1) {
             const index = step.step + 1;
             setStep(simonSteps[index]);
-            setModalBody({activated: true ,step: index, data: simonSteps[index].instructions[0]});
+            setModalBody({activated: true ,step: 0, data: simonSteps[index].instructions[0]});
         } else {
             localStorage.setItem( id, JSON.stringify(results));
             swal({
@@ -86,7 +102,7 @@ export default function Simon () {
                 icon: "success",
                 button: "Regresar",
             }).then((value) => {
-                console.log("prueba terminados");
+                navigate(`/user/${id}`);
             });
         }
     };
@@ -123,26 +139,26 @@ export default function Simon () {
             } else if (step.step === 2) {
                 results = {
                     ...results,
-                    practicaIncongruentes: responses.filter((res)=>(
-                        res.type === "test" && res.name === "flower"))
+                    practicaIncongruentes: responses.filter((res)=>{
+                        return (res.type === "test" && res.name === "flower");
+                    })
                 };
             } else if (step.step === 3) {
                 results = {
                     ...results,
-                    incongruentes: responses.filter((res)=>(
-                        res.type === "incongruente" && res.name === "flower"))
+                    incongruentes: responses.filter((res)=>res.type === "incongruente")
                 };
             } else if (step.step === 4) {
                 results = {
                     ...results,
-                    practicaMixtos: responses.filter((res)=>(
-                        res.type === "test" && res.name === "mixto"))
+                    practicaMixtos: responses.filter((res)=>{
+                        return (res.type === "test" && res.name === "mixto");
+                    })
                 };
             } else if (step.step === 5) {
                 results = {
                     ...results,
-                    mixtos: responses.filter((res)=>(
-                        res.type === "mixto" && res.name === "mixto"))
+                    mixtos: responses.filter((res)=>res.type === "mixto")
                 };
             }
             setGameData(DEFAULT_GAME_DATA);
@@ -194,7 +210,7 @@ export default function Simon () {
         const keyPress = String.fromCharCode(event.keyCode);
         if (gameData.activated && gameData.key !== "None") {
             if (saveResponse(keyPress)) {
-                if (gameData.type === "test" && gameData.name === "heart") {
+                if (gameData.type === "test" && (gameData.name === "heart" || gameData.name === "flower")) {
                     if ((keyPress !== gameData.key)) {
                         const errorMsg = `Debes presionar la tecla correspondiente, en este caso es la tecla ${keyPress === "A" ? "L" : "A"}`; 
                         clearInterval(intVal);

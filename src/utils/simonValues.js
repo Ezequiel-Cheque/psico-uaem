@@ -42,15 +42,6 @@ const instructionsHearts = [
     }
 ];
 
-const instructionsHearts2 = [
-    {
-        title: "Juguemos un poco mas !!",
-        body: `Pero esta vez no te diremos si es correcto.
-        presiona el boton de continuar para empezar`,
-        img: example
-    }
-];
-
 const instructionsFlowers = [
     {
         title: "Bienvenido",
@@ -80,15 +71,6 @@ const instructionsFlowers = [
         aprieta el boton del lado OPUESTO de donde veas la flor.
         Intenta ser lo mas rapido posible al presionar el boton correcto, presiona en iniciar para hacer una prueba`,
         img: flower
-    }
-];
-
-const instructionsFlowers2 = [
-    {
-        title: "Juguemos un poco mas !!",
-        body: `Pero esta vez no te diremos si es correcto.
-        presiona el boton de continuar para empezar`,
-        img: example
     }
 ];
 
@@ -130,9 +112,19 @@ const instructionsMixto = [
     {
         title: "¿Estas listo para jugar?",
         body: `Recuerda:
-        aprieta el boton del lado OPUESTO de donde veas la flor.
-        Intenta ser lo mas rapido posible al presionar el boton correcto, presiona en iniciar para hacer una prueba`,
+        aprieta el boton del lado OPUESTO de donde veas la flor, y el boton del mismo lado, si ves un corazon 
+        Intenta ser lo mas rapido posible al presionar el boton correcto.
+        Presiona en iniciar para hacer una prueba`,
         img: mixto
+    }
+];
+
+const instructionStart = [
+    {
+        title: "Juguemos un poco mas !!",
+        body: `Pero esta vez no te diremos si es correcto.
+        presiona el boton de continuar para empezar`,
+        img: example
     }
 ];
 
@@ -145,6 +137,7 @@ const positionsHearts = [
             key: "L",
             type: "test",
             name: "heart",
+            duration: 3000,
             id: `TH${id}`
         }
     )),
@@ -156,6 +149,7 @@ const positionsHearts = [
             key: "A",
             type: "test",
             name: "heart",
+            duration: 3000,
             id: `TH${id}`
         }
     ))
@@ -169,6 +163,7 @@ const positionsHearts2 = [
         key: "A",
         type: "congruente",
         name: "heart",
+        duration: 3000,
         id: `CH${id}`
     })),
     ...[11,12,13,14,15,16,17,18,19,20].map((id)=>({
@@ -177,6 +172,7 @@ const positionsHearts2 = [
         class: "image-game--right",
         key: "L",
         type: "congruente",
+        duration: 3000,
         name: "heart",
         id: `CH${id}`
     }))
@@ -191,6 +187,7 @@ const positionsFlowers = [
             key: "A",
             type: "test",
             name: "flower",
+            duration: 2000,
             id: `TF${id}`
         }
     )),
@@ -202,6 +199,7 @@ const positionsFlowers = [
             key: "L",
             type: "test",
             name: "flower",
+            duration: 2000,
             id: `TF${id}`
         }
     ))
@@ -215,6 +213,7 @@ const positionsFlowers2 = [
         key: "L",
         type: "incongruente",
         name: "flower",
+        duration: 2000,
         id: `IF${id}`
     })),
     ...[11,12,13,14,15,16,17,18,19,20].map((id)=>({
@@ -224,17 +223,122 @@ const positionsFlowers2 = [
         key: "A",
         type: "incongruente",
         name: "flower",
+        duration: 2000,
         id: `IF${id}`
     }))
 ];
 
+const positionsMixto = [ 
+    ...[1,2].map((id)=>(
+        {   
+            position: "right",
+            img: heart,
+            class: "image-game--right",
+            key: "L",
+            type: "test",
+            name: "mixto ",
+            duration: 1750,
+            id: `TM${id}`
+        }
+    )),
+    ...[3,4].map((id)=>(
+        {   
+            position: "right",
+            img: flower,
+            class: "image-game--right",
+            key: "A",
+            type: "test",
+            name: "mixto",
+            duration: 1750,
+            id: `TM${id}`
+        }
+    )),
+    ...[5,6].map((id)=>(
+        {   
+            position: "left",
+            img: heart,
+            class: "image-game--left",
+            key: "A",
+            type: "test",
+            name: "mixto",
+            duration: 1750,
+            id: `TM${id}`
+        }
+    )),
+    ...[7,8].map((id)=>(
+        {   
+            position: "left",
+            img: flower,
+            class: "image-game--left",
+            key: "L",
+            type: "test",
+            name: "mixto",
+            duration: 1750,
+            id: `TM${id}`
+        }
+    ))
+];
+
+const positionsMixto2 = [ 
+    ...[1,2,3,4,5].map((id)=>(
+        {   
+            position: "right",
+            img: heart,
+            class: "image-game--right",
+            key: "L",
+            type: "mixto",
+            name: "heart",
+            duration: 1750,
+            id: `M${id}`
+        }
+    )),
+    ...[6,7,8,9,10].map((id)=>(
+        {   
+            position: "right",
+            img: flower,
+            class: "image-game--right",
+            key: "A",
+            type: "mixto",
+            name: "flower",
+            duration: 1750,
+            id: `M${id}`
+        }
+    )),
+    ...[11,12,13,14,15].map((id)=>(
+        {   
+            position: "left",
+            img: heart,
+            class: "image-game--left",
+            key: "A",
+            type: "mixto",
+            name: "heart",
+            duration: 1750,
+            id: `M${id}`
+        }
+    )),
+    ...[16,17,18,19,20].map((id)=>(
+        {   
+            position: "left",
+            img: flower,
+            class: "image-game--left",
+            key: "L",
+            type: "mixto",
+            name: "flower",
+            duration: 1750,
+            id: `M${id}`
+        }
+    ))
+];
+
 export {
+    instructionStart,
     instructionsHearts,
-    instructionsHearts2,
     positionsHearts,
     positionsHearts2,
     instructionsFlowers,
-    instructionsFlowers2,
     positionsFlowers,
-    positionsFlowers2
+    positionsFlowers2,
+    instructionsMixto,
+    positionsMixto,
+    positionsMixto2
 };

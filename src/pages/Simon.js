@@ -3,16 +3,16 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 
 import {
-
+    instructionStart,
     instructionsHearts,
-    instructionsHearts2,
     positionsHearts,
     positionsHearts2,
     instructionsFlowers,
     positionsFlowers,
-    instructionsFlowers2,
     positionsFlowers2,
-    instructionsMixto
+    instructionsMixto,
+    positionsMixto,
+    positionsMixto2
 } from "../utils/simonValues";
 
 import '../styles/pages/simon.scss';
@@ -22,27 +22,39 @@ import cross from "../assets/images/cross.png";
 const simonSteps = [
     {
         step: 0,
-        name: "prueba congruentes",
+        name: "Prueba congruentes",
         instructions: instructionsHearts,
         values: [...positionsHearts]
     },
     {
         step: 1,
         name: "Nivel 1, congruentes",
-        instructions: instructionsHearts2,
+        instructions: instructionStart,
         values: [...positionsHearts2]
     },
     {   
         step: 2,
-        name: "prueba incongruentes",
+        name: "Prueba incongruentes",
         instructions: instructionsFlowers,
         values: [...positionsFlowers]
     },
     {   
         step: 3,
         name: "Nivel 2, incongruentes",
-        instructions: instructionsFlowers2,
+        instructions: instructionStart,
         values: [...positionsFlowers2]
+    },
+    {   
+        step: 4,
+        name: "Prueba, mixto",
+        instructions: instructionsMixto,
+        values: [...positionsMixto]
+    },
+    {   
+        step: 5,
+        name: "Nivel 3, mixto",
+        instructions: instructionStart,
+        values: [...positionsMixto2]
     }
 ];
 
@@ -84,9 +96,20 @@ export default function Simon () {
     const [modalBody, setModalBody] = useState(MODAL_DEFAULT_DATA);
     const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
     const [step, setStep] = useState(DEFAULT_STEP);
+    let navigate = useNavigate();
 
     const params = useParams();
     const { id } = params;
+
+    const saveAllData = () => {
+        const simonTestData = {
+            IdUser: id,
+            dataTest: results 
+        };
+        const SimonData = JSON.parse(localStorage.getItem("Simon"));
+        const newSimonData = SimonData ? [...SimonData, simonTestData] : [simonTestData];
+        localStorage.setItem( "Simon", JSON.stringify(newSimonData));
+    };
 
     const nextStep = () => {
         if (step.step < simonSteps.length -1) {
@@ -94,7 +117,6 @@ export default function Simon () {
             setStep(simonSteps[index]);
             setModalBody({activated: true ,step: 0, data: simonSteps[index].instructions[0]});
         } else {
-            localStorage.setItem( id, JSON.stringify(results));
             swal({
                 title: "Felicidades, has completado la prueba",
                 text: `Realisaste la prueba Simon, en su totalidad,
@@ -102,6 +124,7 @@ export default function Simon () {
                 icon: "success",
                 button: "Regresar",
             }).then((value) => {
+                saveAllData();
                 navigate(`/user/${id}`);
             });
         }
@@ -210,7 +233,7 @@ export default function Simon () {
         const keyPress = String.fromCharCode(event.keyCode);
         if (gameData.activated && gameData.key !== "None") {
             if (saveResponse(keyPress)) {
-                if (gameData.type === "test" && (gameData.name === "heart" || gameData.name === "flower")) {
+                if (gameData.type === "test" && (gameData.name === "heart" || gameData.name === "flower" || gameData.name === "mixto")) {
                     if ((keyPress !== gameData.key)) {
                         const errorMsg = `Debes presionar la tecla correspondiente, en este caso es la tecla ${keyPress === "A" ? "L" : "A"}`; 
                         clearInterval(intVal);
@@ -267,9 +290,9 @@ export default function Simon () {
                     } else {
                         clearImage();
                     }
-                }, 3000);
+                }, gameData.duration);
             } else if (gameData.img === "") {
-                intVal = setTimeout(nextImage, 1000);
+                intVal = setTimeout(nextImage, 500);
             }
        } 
     }, [gameData]);

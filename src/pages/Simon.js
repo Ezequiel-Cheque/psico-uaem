@@ -96,7 +96,7 @@ export default function Simon () {
     const [modalBody, setModalBody] = useState(MODAL_DEFAULT_DATA);
     const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
     const [step, setStep] = useState(DEFAULT_STEP);
-    let navigate = useNavigate();
+    const navigate = useNavigate();
 
     const params = useParams();
     const { id } = params;
@@ -120,7 +120,7 @@ export default function Simon () {
             swal({
                 title: "Felicidades, has completado la prueba",
                 text: `Realisaste la prueba Simon, en su totalidad,
-                da clic en el boto para regresar al menu`,
+                da clic en el boton para regresar al menu`,
                 icon: "success",
                 button: "Regresar",
             }).then((value) => {

@@ -1,78 +1,295 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from "react-router-dom";
+import swal from 'sweetalert';
 
-import { positions } from "../utils/stopValues";
+import { positions, instructions } from "../utils/stopValues";
 
 import '../styles/pages/stop.scss';
 
-import example from "../assets/images/exampleStop2.png";
-import signal from "../assets/images/stopSignal.png";
 
-import rigth from "../assets/images/right.png";
-import left from "../assets/images/left.png";
-
-const DEFAULT_MODAL_BODY = [
+const stopSteps = [
     {
-        title: "Bienvenido Stop test",
-        body: `En el test, aparecen senales, mostrandote una direccion.
-        Para la direccion izquierda, debes precionar la tecla A, para la direccion derecha
-        debes presionar la tecla L, cuando escuches la senal de stop, no debes presionar ninguna tecla`,
-        img: example
-    },
-    {
-        title: "Senal de stop",
-        body: `Da clic en el icono para escuchar la senal de stop, si no logras escucharla
-        correctamente, ajusta tu volumen, da clic, de nuevo en el icono, si todo esta bien, presiona en continuar`,
-        img: signal
+        step: 0,
+        name: "Prueba",
+        instructions: instructions,
+        values: [...positions]
     }
 ];
 
+const MODAL_DEFAULT_DATA = {
+    activated: false,
+    setp: 0,
+    data: {
+        title: "",
+        body: "",
+        img: ""
+    }
+};
+
+const DEFAULT_STEP = {
+    step: -1,
+    name: "",
+    instructions: [],
+    values: []
+};
+
+const DEFAULT_GAME_DATA = {
+    position: "",
+    img: '',
+    class: "",
+    name: "",
+    type: "",
+    id: "",
+    activated: false,
+    timeStart: "",
+    timeEnd: ""
+};
+
+let gameValues;
+let intVal;
+let results = {};
+const responses = [];
+
 export default function Stop() {
 
-    const [modal, setModal] = useState(true);
-    const [modalBody, setModalBody] = useState({ step: 1, data: DEFAULT_MODAL_BODY[0] });
-    const [signal, setSignal] = useState({ index: 0, image: "" });
+    const [modalBody, setModalBody] = useState(MODAL_DEFAULT_DATA);
+    const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
+    const [step, setStep] = useState(DEFAULT_STEP);
 
+    const navigate = useNavigate();
     const params = useParams();
     const { id } = params;
 
-    const handleStart = () => {
-        setModal(false);
+    const saveAllData = () => {
+        const stopTestData = {
+            IdUser: id,
+            dataTest: results 
+        };
+        // const StopData = JSON.parse(localStorage.getItem("Stop"));
+        // const newSimonData = StopData ? [...StopData, stopTestData] : [stopTestData];
+        // localStorage.setItem( "Stop", JSON.stringify(newSimonData));
+        console.log(stopTestData);
     };
 
-    useEffect(() => {
-        if (modal) {
-            if (modalBody.step === 1) {
-                setTimeout(()=>{
-                    setModalBody({ step: 2, data: DEFAULT_MODAL_BODY[1] });
-                }, 5000);
-            }
+    const nextStep = () => {
+        if (step.step < stopSteps.length -1) {
+            const index = step.step + 1;
+            setStep(stopSteps[index]);
+            setModalBody({activated: true ,step: 0, data: stopSteps[index].instructions[0]});
         } else {
-            setSignal({
-                index: 1,
-                image: positions[0].position === "rigth" ? rigth : left
+            swal({
+                title: "Felicidades, has completado la prueba",
+                text: `Realisaste la prueba Stop, en su totalidad,
+                da clic en el boton para regresar al menu`,
+                icon: "success",
+                button: "Regresar",
+            }).then((value) => {
+                saveAllData();
+                navigate(`/user/${id}`);
             });
         }
-    }, [modalBody, modal]);
+    };
 
-    useEffect(() => {
-        if (!modal) {
-            if (signal.index < positions.length) {
-                setTimeout(()=> {
-                    setSignal({
-                        index: signal.index + 1,
-                        image: positions[signal.index + 1].position === "rigth" ? rigth : left
-                    });
-                }, 1000);
+    const getAleatory = () => {
+        const min = 0;
+        const max = gameValues.length - 1;
+        const x = Math.floor(Math.random()*(max-min+1)+min);
+        const newData = gameValues[x];
+        gameValues = [...gameValues.slice(0, x), ...gameValues.slice(x + 1, gameValues.length)];
+        return newData;
+    };
+
+    const nextImage = () => {
+        if (gameValues.length > 0) {
+            setGameData({
+                ...gameData,
+                ...getAleatory(),
+                timeStart: Date.now()
+            });
+        } else {
+            if (step.step === 0) {
+                results = {
+                    ...results,
+                    Practica: responses.filter((res)=>res.type === "test")
+                };
+            }
+            setGameData(DEFAULT_GAME_DATA);
+            nextStep();
+        }
+    };
+
+    const clearImage = () => {
+        setGameData({
+            ...gameData,
+            img: "",
+            key: "None"
+        });
+    };
+
+    const handleStart = () => {
+        gameValues = [...step.values]
+        setModalBody(MODAL_DEFAULT_DATA);
+        const newData = getAleatory();
+        setGameData({
+            ...gameData,
+            ...newData,
+            activated: true,
+            timeStart: Date.now()
+        });
+    };
+
+    const saveResponse = (keyPress) => {
+        const response = {
+            title: step.name,
+            id: gameData.id,
+            key: gameData.key,
+            type: gameData.type,
+            signal: gameData.signal,
+            response: gameData.key === keyPress ? true: false,
+            keyPress,
+            time: `${((Date.now() - gameData.timeStart) / 1000)}s`
+        };
+        const exist = responses.filter((res)=>res.id === gameData.id);
+        if (exist.length === 0) {
+            responses.push(response);
+            return true;
+        } else {
+            false
+        }
+    };
+
+    const handleKey = (event) => {
+        const keyPress = String.fromCharCode(event.keyCode);
+        if (gameData.activated && gameData.key !== "None") {
+            if (saveResponse(keyPress)) {
+                if (gameData.type === "test") {
+                    if ((keyPress !== gameData.key) && !gameData.signal) {
+                        const errorMsg = `Debes presionar la tecla correspondiente, en este caso es la tecla ${keyPress === "A" ? "L" : "A"}`; 
+                        clearInterval(intVal);
+                        swal({
+                            title: "Error",
+                            text: errorMsg,
+                            icon: "error",
+                            button: "ok",
+                        }).then((value) => {
+                            clearImage();
+                        });
+                    } else if ((keyPress === gameData.key) && !gameData.signal) {
+                        clearInterval(intVal);
+                        swal({
+                            title: "Correcto !!",
+                            text: "Buen trabajo",
+                            icon: "success",
+                            timer: 1200,
+                            buttons: false
+                        }).then((value) => {
+                            clearImage();
+                        });
+                    } else if (gameData.signal) {
+                        const errorMsg = "Cuando suena la senal de stop, no debes precionar ninguna tecla";
+                        clearInterval(intVal);
+                        swal({
+                            title: "Error",
+                            text: errorMsg,
+                            icon: "error",
+                            button: "ok",
+                        }).then((value) => {
+                            clearImage();
+                        });
+                    }
+                } else {
+                    clearInterval(intVal);
+                    clearImage();
+                }
+            }
+        } else if (modalBody.activated && modalBody.step === step.instructions.length) {
+            if (keyPress === " ") {
+                console.log("barra espaciadora presionada");
             }
         }
-    }, [signal]);
+    };
 
-    console.log(signal);
+    // Efecto para mostrar las imagenes
+    useEffect(() => {
+        if (gameData.activated) {
+             if (gameData.img !== "" && gameValues.length >= 0) {
+                setTimeout(()=>{
+                    if (gameData.signal) {
+                        console.log("senal de stop");
+                    }
+                }, 250);
+                 intVal = setTimeout(()=>{
+                     const exist = responses.filter((res)=>res.id === gameData.id);
+                     if (exist.length === 0) {
+                         saveResponse(null);
+                         if (gameData.type === "test" && !gameData.signal) {
+                             clearInterval(intVal);
+                             const errorMsg = `Ups, se te ha pasado el tiempo, procura ser mas rapido en tu respuesta`;
+                             swal({
+                                 title: "Error",
+                                 text: errorMsg,
+                                 icon: "error",
+                                 button: "ok",
+                             }).then((value) => {
+                                 clearImage();
+                             });
+                         } else if (gameData.type === "test" && gameData.signal) {
+                            swal({
+                                title: "Correcto !!",
+                                text: "Buen trabajo",
+                                icon: "success",
+                                timer: 1200,
+                                buttons: false
+                            }).then((value) => {
+                                clearImage();
+                            });
+                         } else {
+                             clearImage();    
+                         }
+                     } else {
+                        
+                        clearImage();
+                     }
+                 }, 2000);
+             } else if (gameData.img === "") {
+                 intVal = setTimeout(nextImage, 500);
+             }
+        } 
+     }, [gameData]);
+
+    // Efecto para mostrar las instrucciones automaticamente
+    useEffect(() => {
+        if (modalBody.activated) {
+            if (modalBody.step < step.instructions.length) {
+                setTimeout(()=>{
+                    setModalBody({
+                        ...modalBody,
+                        step: modalBody.step + 1,
+                        data: step.instructions[modalBody.step]
+                    });
+                }, 4000);
+            }
+        }
+    }, [modalBody]);
+
+    // use Effect para resetear el evento que escucha la tecla a presionar
+    useEffect(() => {
+        document.removeEventListener('keydown', handleKey);
+        document.addEventListener('keydown', handleKey);
+        return () => {
+            document.removeEventListener('keydown', handleKey);
+        }
+    }, [gameData, modalBody]);
+
+    // Inicia con las instrucciones de la figura de corazon
+    useEffect(() => {
+        nextStep();
+    }, []);
+
     return (
         <div className="simon">
             {
-                modal ? (
+                modalBody.activated ? (
                     <div className="modal">
                         <div className="modal-container">
                             <div className="modal-container-text">
@@ -80,7 +297,7 @@ export default function Stop() {
                                 <img src={modalBody.data.img} />
                                 <p>{modalBody.data.body}</p>
                                 {
-                                    modalBody.step === 2 && (
+                                    (modalBody.step === step.instructions.length) && (
                                         <button onClick={handleStart}>Iniciar</button>
                                     )
                                 }
@@ -90,7 +307,7 @@ export default function Stop() {
                 ) : (
                     <div className="stop-container">
                         <div className="image-game">
-                            <img src={signal.image} />
+                            <img src={gameData.img} />
                         </div>
                     </div>
                 )

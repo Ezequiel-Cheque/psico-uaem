@@ -26,21 +26,39 @@ export default function User () {
         }
     };
 
+    const searchTest = (test) => {
+      const search = JSON.parse(localStorage.getItem(test));
+      if (search) {
+        const find = search.filter((user)=>user.IdUser===id);
+        return find ? true : false;
+      } else {
+        return false;
+      }
+    };
+
+    const getProgress = () => {
+      const Simon = searchTest("Simon") ? 1 : 0;
+      const Stop = searchTest("Stop") ? 1 : 0;
+      const MMST = searchTest("MMST") ? 1 : 0;
+      const progress = ((Simon + Stop + MMST) / 3) * 100;
+      return progress.toFixed(3);
+    };
+
     const data = [
         {
             test: "SIMON",
-            progress: "20/20",
-            finished: false
+            duration: "7 minutos aprox.",
+            finished: searchTest("Simon")
         },
         {
             test: "STOP",
-            progress: "01/120",
-            finished: false
+            duration: "5 minutos aprox.",
+            finished: searchTest("Stop")
         },
         {
             test: "MMST",
-            progress: "0/50",
-            finished: false
+            duration: "5 minutos aprox.",
+            finished: searchTest("MMST")
         }
     ];
 
@@ -62,8 +80,8 @@ export default function User () {
             center: true
         },
         {
-            name: 'Avance',
-            selector: row => row.progress,
+            name: 'Duracion',
+            selector: row => row.duration,
             center: true
             
         },
@@ -90,14 +108,15 @@ return (
               <p>{ id }</p>
             </div>
             <div className="user__menubar-icon">
-              <embed src={progress} />
-              <p>Progreso</p>
+              {/* <embed src={progress} /> */}
+              <p>{getProgress()}% Progreso</p>
             </div>
         </div>
         <div className="panel__table-container">
           <Table
             columns={columns}
             data={data}
+            pagination={false}
           />
         </div>
     </div>

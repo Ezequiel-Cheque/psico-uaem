@@ -5,7 +5,7 @@ import DataTable from 'react-data-table-component';
 
 import '../styles/table.scss';
 
-export const Table = ({ columns, data, title="", filter=false }) => {
+export const Table = ({ columns, data, title="", filter=false , pagination = true}) => {
 
   const [activeTransFilter, setactiveTransFilter] = useState("");
 
@@ -74,7 +74,7 @@ export const Table = ({ columns, data, title="", filter=false }) => {
         data={generalData(data, activeTransFilter)}
         theme="dark"
         className="table__container"
-        pagination
+        pagination={pagination}
         paginationComponentOptions={paginationOptions}
         fixedHeader
         fixedHeaderScrollHeight= "600px"

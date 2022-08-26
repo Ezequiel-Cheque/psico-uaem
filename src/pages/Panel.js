@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from "../components/Table";
 import { Link } from "react-router-dom";
 
@@ -113,9 +113,35 @@ const simonData = [
   }
 ];
 
+const DEFAULT_TEST_DATA = {
+  Simon: [],
+  Stop: [],
+  MMST: []
+};
+
 export default function Panel() {
 
   const [extraTable, setExtraTable] = useState(DEFAULT_EXTRA_TABLE);
+  const [tests, setTests] = useState(DEFAULT_TEST_DATA);
+
+  const getTests = ()=> {
+    const Simon = JSON.parse(localStorage.getItem("Simon"));
+    const Stop = JSON.parse(localStorage.getItem("Stop"));
+    const MMST = JSON.parse(localStorage.getItem("MMST"));
+    setTests({
+      Simon: Simon ? Simon : [],
+      Stop: Stop ? Stop : [],
+      MMST: MMST ? MMST : []
+    });
+  };
+
+  const getNumberTest = () => {
+    const Simon = tests.Simon.length;
+    const Stop = tests.Stop.length
+    const MMST = tests.MMST.length
+
+    return Simon + Stop + MMST;
+  };
 
   const data = [
     {
@@ -319,6 +345,11 @@ const columns = [
     center: true
   }
 ];
+
+  useEffect(() => {
+    getTests();
+  },[]);
+
     return (
       <div className="panel">
         <div className="panel__menubar">
@@ -334,7 +365,7 @@ const columns = [
             </div>
             <div className="panel__menubar-icon">
               <embed src={groupIcon} />
-              <p>Pruebas realizadas 50</p>
+              <p>Pruebas realizadas {getNumberTest()}</p>
             </div>
         </div>
 

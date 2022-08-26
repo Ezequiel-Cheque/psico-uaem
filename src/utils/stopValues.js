@@ -20,6 +20,15 @@ const instructions = [
 }
 ];
 
+const instructionStart = [
+    {
+        title: "Juguemos un poco mas !!",
+        body: `Pero esta vez no te diremos si es correcto.
+        presiona el boton de continuar para empezar`,
+        img: example
+    }
+];
+
 const positions = [
 ...[1,2,3,4,5,6,7,8,9,10,11,12].map((id)=>(
     {   
@@ -59,4 +68,53 @@ const positions = [
 ))
 ];
 
-export { positions, instructions };
+const withoutSignal1 = new Array(81);
+const withoutSignal2 = new Array(81);
+const withSignal1 = new Array(27);
+const withSignal2 = new Array(27);
+
+withoutSignal1.fill(1,0,81);
+withSignal1.fill(81,0,27);
+withoutSignal2.fill(108,0,81);
+withSignal2.fill(189,0,27);
+
+const positions2 = [
+    ...withoutSignal1.map((id,index)=>(
+        {   
+            id: `PS${index + 1}`,
+            signal: false,
+            img: rigth,
+            type: "prueba",
+            key: "L" 
+        }
+    )),
+    ...withSignal1.map((id, index)=>(
+        {   
+            id: `PS${id + (index + 1)}`,
+            signal: true,
+            img: rigth,
+            type: "prueba",
+            key: null
+        }
+    )),
+    ...withoutSignal2.map((id, index)=>(
+        {   
+            id: `PS${id + (index + 1)}`,
+            signal: false,
+            img: left,
+            type: "prueba",
+            key: "A"
+        }
+    )),
+    ...withSignal2.map((id, index)=>(
+        {
+            id: `PS${id + (index + 1)}`,
+            signal: true,
+            img: left,
+            type: "prueba",
+            key: "A"
+        }
+    ))
+];
+
+export { positions, instructions, instructionStart, positions2 };

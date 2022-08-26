@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 
-import { positions, instructions } from "../utils/stopValues";
+import { positions, instructions, instructionStart, positions2 } from "../utils/stopValues";
+
+import stopSound from "../assets/audio/stop.mp3";
 
 import '../styles/pages/stop.scss';
 
@@ -13,6 +15,12 @@ const stopSteps = [
         name: "Prueba",
         instructions: instructions,
         values: [...positions]
+    },
+    {
+        step: 1,
+        name: "Stop test",
+        instructions: instructionStart,
+        values: [...positions2]
     }
 ];
 
@@ -65,12 +73,16 @@ export default function Stop() {
             IdUser: id,
             dataTest: results 
         };
-        // const StopData = JSON.parse(localStorage.getItem("Stop"));
-        // const newSimonData = StopData ? [...StopData, stopTestData] : [stopTestData];
-        // localStorage.setItem( "Stop", JSON.stringify(newSimonData));
-        console.log(stopTestData);
+        const StopData = JSON.parse(localStorage.getItem("Stop"));
+        const newSimonData = StopData ? [...StopData, stopTestData] : [stopTestData];
+        localStorage.setItem( "Stop", JSON.stringify(newSimonData));
     };
 
+    const playStopSound = () => {
+        const audio = new Audio(stopSound);
+        audio.play();
+    }
+    
     const nextStep = () => {
         if (step.step < stopSteps.length -1) {
             const index = step.step + 1;
@@ -111,6 +123,11 @@ export default function Stop() {
                 results = {
                     ...results,
                     Practica: responses.filter((res)=>res.type === "test")
+                };
+            } if (step.step === 1) {
+                results = {
+                    ...results,
+                    Ensayo: responses.filter((res)=>res.type === "prueba")
                 };
             }
             setGameData(DEFAULT_GAME_DATA);
@@ -198,13 +215,15 @@ export default function Stop() {
                         });
                     }
                 } else {
-                    clearInterval(intVal);
-                    clearImage();
+                    if (!gameData.signal) {
+                        clearInterval(intVal);
+                        clearImage();
+                    }
                 }
             }
         } else if (modalBody.activated && modalBody.step === step.instructions.length) {
             if (keyPress === " ") {
-                console.log("barra espaciadora presionada");
+                playStopSound();
             }
         }
     };
@@ -215,7 +234,7 @@ export default function Stop() {
              if (gameData.img !== "" && gameValues.length >= 0) {
                 setTimeout(()=>{
                     if (gameData.signal) {
-                        console.log("senal de stop");
+                        playStopSound();
                     }
                 }, 250);
                  intVal = setTimeout(()=>{

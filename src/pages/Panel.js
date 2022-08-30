@@ -114,85 +114,39 @@ const simonData = [
 ];
 
 const DEFAULT_TEST_DATA = {
-  Simon: [],
-  Stop: [],
-  MMST: []
+  data: [],
+  numTest: 0
 };
 
 export default function Panel() {
 
-  const [extraTable, setExtraTable] = useState(DEFAULT_EXTRA_TABLE);
+  const [extraTable, setExtraTable] = useState(`DEFAULT_EXTRA_TABLE`);
   const [tests, setTests] = useState(DEFAULT_TEST_DATA);
 
-  const getTests = ()=> {
-    const Simon = JSON.parse(localStorage.getItem("Simon"));
-    const Stop = JSON.parse(localStorage.getItem("Stop"));
-    const MMST = JSON.parse(localStorage.getItem("MMST"));
-    setTests({
-      Simon: Simon ? Simon : [],
-      Stop: Stop ? Stop : [],
-      MMST: MMST ? MMST : []
-    });
-  };
-
-  const getNumberTest = () => {
-    const Simon = tests.Simon.length;
-    const Stop = tests.Stop.length
-    const MMST = tests.MMST.length
-
-    return Simon + Stop + MMST;
-  };
-
-  const data = [
-    {
-        id: 1,
-        idusuario: 'ID-1000000001',
-        register: '14-07-2022',
-        simon: false, 
-        stop: true,
-        mmst: true,
-    },
-    {
-      id: 2,
-      idusuario: 'ID-1000000002',
-      register: '14-07-2022',
-      simon: true, 
-      stop: true,
-      mmst: true,
-    },
-    {
-      id: 3,
-      idusuario: 'ID-1000000003',
-      register: '14-07-2022',
-      simon: true, 
-      stop: false,
-      mmst: true,
-    },
-    {
-      id: 4,
-      idusuario: 'ID-1000000004',
-      register: '14-07-2022',
-      simon: true, 
-      stop: true,
-      mmst: false,
-    },
-    {
-      id: 5,
-      idusuario: 'ID-1000000005',
-      register: '14-07-2022',
-      simon: true, 
-      stop: false,
-      mmst: true,
-    },
-    {
-      id: 6,
-      idusuario: 'ID-1000000006',
-      register: '14-07-2022',
-      simon: true, 
-      stop: true,
-      mmst: false,
+  const getTests = () => {
+    const data = JSON.parse(localStorage.getItem("data"));
+    if (data) {
+      const dataTable = data.map((item, index)=>{
+        const simon = item.test.filter((t)=>t.test === "Simon");
+        const stop = item.test.filter((t)=>t.test === "Stop");
+        const MMST = item.test.filter((t)=>t.test === "MMST"); 
+        
+        return {
+          id: index + 1,
+          idusuario: item.id,
+          register: item.date,
+          simon: simon.length > 0 ? true : false,
+          stop: stop.length > 0 ? true : false,
+          mmst: MMST.length > 0 ? true : false,
+      };
+      })
+      setTests({
+        numTest: dataTable.length,
+        data: dataTable,
+        allData: data
+      });
     }
-];
+  };
 
 const columnsSimon = [
   {
@@ -245,6 +199,12 @@ const columnsStop = [
     selector: row => row.response,
     sortable: true,
     center: true
+  },
+  {
+    name: 'Tiempo de respuesta',
+    selector: row => row.time,
+    sortable: true,
+    center: true
   }
 ];
 
@@ -279,14 +239,85 @@ const clickHandler = (id, title, available) => {
   if (available) {
     let data=[];
     if (title === "simon") {
-      data = simonData.filter((data)=>data.idusuario)[0].data;
+      const dataUser = tests.allData.filter((item)=>item.id === id)[0];
+      const testData = dataUser.test.filter((item)=>item.test === "Simon")[0].data;
+      data = [
+        ...testData.practicaCongruentes.map((ensayo, index)=>(
+          {
+            id: index + 1,
+            type: ensayo.title,
+            response: ensayo.response ? "Acierto" : "Error",
+            time: ensayo.time
+          }
+        )),
+        ...testData.congruentes.map((ensayo, index)=>(
+          {
+            id: index + 9,
+            type: ensayo.title,
+            response: ensayo.response ? "Acierto" : "Error",
+            time: ensayo.time
+          }
+        )),
+        ...testData.practicaIncongruentes.map((ensayo, index)=>(
+          {
+            id: index + 29,
+            type: ensayo.title,
+            response: ensayo.response ? "Acierto" : "Error",
+            time: ensayo.time
+          }
+        )),
+        ...testData.incongruentes.map((ensayo, index)=>(
+          {
+            id: index + 37,
+            type: ensayo.title,
+            response: ensayo.response ? "Acierto" : "Error",
+            time: ensayo.time
+          }
+        )),
+        ...testData.practicaMixtos.map((ensayo, index)=>(
+          {
+            id: index + 57,
+            type: ensayo.title,
+            response: ensayo.response ? "Acierto" : "Error",
+            time: ensayo.time
+          }
+        )),
+        ...testData.mixtos.map((ensayo, index)=>(
+          {
+            id: index + 65,
+            type: ensayo.title,
+            response: ensayo.response ? "Acierto" : "Error",
+            time: ensayo.time
+          }
+        ))
+      ];
     } else if (title === "stop") {
-      data = stopData.filter((data)=>data.idusuario)[0].data;
+      const dataUser = tests.allData.filter((item)=>item.id === id)[0];
+      const testData = dataUser.test.filter((item)=>item.test === "Stop")[0].data;
+      data = [
+        ...testData.Practica.map((ensayo, index)=>(
+          {
+            block: "Prueba",
+            number: index + 1,
+            signal: ensayo.signal ? "con senal" : "sin senal",
+            response: ensayo.response ? "Acierto" : "Error",
+            time: ensayo.time
+          }
+        )),
+        ...testData.Ensayo.map((ensayo, index) => (
+          {
+            block: "Ensayo",
+            number: index + 33,
+            signal: ensayo.signal ? "con senal" : "sin senal",
+            response: ensayo.response ? "Acierto" : "Error",
+            time: ensayo.time
+          }
+        ))
+      ];
     } else if (title === "mmst") {
       data = stopMMST.filter((data)=>data.idusuario)[0].data;
     }
     setExtraTable({
-      ...extraTable,
       columns: extraTableColumns[title],
       title:`Table ${title} ${id}`,
       available: available,
@@ -365,14 +396,14 @@ const columns = [
             </div>
             <div className="panel__menubar-icon">
               <embed src={groupIcon} />
-              <p>Pruebas realizadas {getNumberTest()}</p>
+              <p>Pruebas realizadas {tests.numTest}</p>
             </div>
         </div>
 
         <div className="panel__table-container">
           <Table
             columns={columns}
-            data={data}
+            data={tests.data}
             filter={true}
           />
         </div>

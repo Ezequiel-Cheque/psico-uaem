@@ -102,13 +102,26 @@ export default function Simon () {
     const { id } = params;
 
     const saveAllData = () => {
+        const date = new Date();
         const simonTestData = {
-            IdUser: id,
-            dataTest: results 
+            test: "Simon",
+            data: results
         };
-        const SimonData = JSON.parse(localStorage.getItem("Simon"));
-        const newSimonData = SimonData ? [...SimonData, simonTestData] : [simonTestData];
-        localStorage.setItem( "Simon", JSON.stringify(newSimonData));
+        let newData = [];
+        const data = JSON.parse(localStorage.getItem("data"));
+        if (data) {
+            const user = data.filter((item)=>item.id === id);
+            if (user.length > 0) {
+                const restData = data.filter((user)=>user.id !== id);
+                const userData = user[0];
+                newData = [...restData, { id, date: date.toLocaleDateString(),test: [...userData.test, simonTestData] }];
+            } else {
+                newData = [...data, { id, date: date.toLocaleDateString(), test: [simonTestData] }];    
+            }
+        } else {
+            newData = [{ id, test: [simonTestData], date: date.toLocaleDateString() }];
+        }
+        localStorage.setItem( "data", JSON.stringify(newData));
     };
 
     const nextStep = () => {

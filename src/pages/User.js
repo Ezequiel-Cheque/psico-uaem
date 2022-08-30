@@ -4,7 +4,6 @@ import { Table } from "../components/Table";
 
 import homeIcon from "../assets/icons/home.svg";
 import account from "../assets/icons/account.svg";
-import progress from "../assets/icons/progress.svg";
 
 import '../styles/pages/user.scss';
 
@@ -26,11 +25,21 @@ export default function User () {
         }
     };
 
-    const searchTest = (test) => {
-      const search = JSON.parse(localStorage.getItem(test));
-      if (search) {
-        const find = search.filter((user)=>user.IdUser===id);
-        return find ? true : false;
+    const searchTest = (name) => {  
+      const data = JSON.parse(localStorage.getItem("data"));
+      if (data) {
+        const existUser = data.filter((item)=>item.id === id);
+        if (existUser.length > 0) {
+          const userData = data.filter((item)=>item.id === id)[0];
+          const search = userData.test.filter((item)=>item.test === name);
+          if (search.length > 0) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
@@ -41,7 +50,7 @@ export default function User () {
       const Stop = searchTest("Stop") ? 1 : 0;
       const MMST = searchTest("MMST") ? 1 : 0;
       const progress = ((Simon + Stop + MMST) / 3) * 100;
-      return progress.toFixed(3);
+      return progress.toFixed(1);
     };
 
     const data = [

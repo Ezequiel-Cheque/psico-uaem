@@ -85,7 +85,7 @@ export default function Home() {
                 ) : (
                   <div className="home__right-container-form">
                     <form onSubmit={handleUser}>
-                      <input type="text" name="idUser" placeholder="Ingresa tu ID"/>
+                      <input type="text" name="idUser" placeholder="Ingresa tu ID" required/>
                       <button type="submit">Iniciar</button>
                     </form>
                     <p onClick={handleLogin}>INGRESAR AL PANEL</p>

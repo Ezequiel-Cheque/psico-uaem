@@ -69,13 +69,26 @@ export default function Stop() {
     const { id } = params;
 
     const saveAllData = () => {
+        const date = new Date();
         const stopTestData = {
-            IdUser: id,
-            dataTest: results 
+            test: "Stop",
+            data: results
         };
-        const StopData = JSON.parse(localStorage.getItem("Stop"));
-        const newSimonData = StopData ? [...StopData, stopTestData] : [stopTestData];
-        localStorage.setItem( "Stop", JSON.stringify(newSimonData));
+        let newData = [];
+        const data = JSON.parse(localStorage.getItem("data"));
+        if (data) {
+            const user = data.filter((item)=>item.id === id);
+            if (user.length > 0) {
+                const restData = data.filter((user)=>user.id !== id);
+                const userData = user[0];
+                newData = [...restData, { id, date: date.toLocaleDateString(), test: [...userData.test, stopTestData] }];
+            } else {
+                newData = [...data, { id, date: date.toLocaleDateString(), test: [stopTestData] }];    
+            }
+        } else {
+            newData = [{ id, date: date.toLocaleDateString(), test: [stopTestData] }];
+        }
+        localStorage.setItem( "data", JSON.stringify(newData));
     };
 
     const playStopSound = () => {

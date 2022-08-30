@@ -14,6 +14,7 @@ import Panel from '../pages/Panel';
 import User from '../pages/User';
 import Simon from '../pages/Simon';
 import Stop from '../pages/Stop';
+import MMST from '../pages/MMST';
 
 const root = ReactDOM.createRoot(
     document.getElementById("root")
@@ -27,6 +28,7 @@ root.render(
             <Route path="/user/:id" element={<User />} />
             <Route path="/simon/:id" element={<Simon />} />
             <Route path="/stop/:id" element={<Stop />} />
+            <Route path="/mmst/:id" element={<MMST />} />
         </Routes>
     </HashRouter>
 );

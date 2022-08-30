@@ -228,7 +228,7 @@ const positionsFlowers2 = [
     }))
 ];
 
-const positionsMixto = [ 
+const positionsMixto = [
     ...[1,2].map((id)=>(
         {   
             position: "right",

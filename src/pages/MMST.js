@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 
-import { positions, instructions, instructionStart, positions2 } from "../utils/stopValues";
+import { instructions, mmstPrueba, instructionStart } from "../utils/mmstValues";
 
 // import stopSound from "../assets/audio/stop.mp3";
 
@@ -16,13 +16,13 @@ const stopSteps = [
         step: 0,
         name: "Prueba",
         instructions: instructions,
-        values: [...positions]
+        values: [...mmstPrueba]
     }
 ];
 
 const MODAL_DEFAULT_DATA = {
     activated: false,
-    setp: 0,
+    step: 0,
     data: {
         title: "",
         body: "",
@@ -38,15 +38,10 @@ const DEFAULT_STEP = {
 };
 
 const DEFAULT_GAME_DATA = {
-    position: "",
-    img: '',
-    class: "",
-    name: "",
+    id: 0,
+    number:  0,
     type: "",
-    id: "",
-    activated: false,
-    timeStart: "",
-    timeEnd: ""
+    time: 0
 };
 
 let gameValues;
@@ -60,60 +55,52 @@ export default function MMST() {
     const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
     const [step, setStep] = useState(DEFAULT_STEP);
 
-    // const navigate = useNavigate();
-    // const params = useParams();
-    // const { id } = params;
+    const navigate = useNavigate();
+    const params = useParams();
+    const { id } = params;
 
-    // const saveAllData = () => {
-    //     const date = new Date();
-    //     const stopTestData = {
-    //         test: "Stop",
-    //         data: results
-    //     };
-    //     let newData = [];
-    //     const data = JSON.parse(localStorage.getItem("data"));
-    //     if (data) {
-    //         const user = data.filter((item)=>item.id === id);
-    //         if (user.length > 0) {
-    //             const restData = data.filter((user)=>user.id !== id);
-    //             const userData = user[0];
-    //             newData = [...restData, { id, date: date.toLocaleDateString(), test: [...userData.test, stopTestData] }];
-    //         } else {
-    //             newData = [...data, { id, date: date.toLocaleDateString(), test: [stopTestData] }];    
-    //         }
-    //     } else {
-    //         newData = [{ id, date: date.toLocaleDateString(), test: [stopTestData] }];
-    //     }
-    //     localStorage.setItem( "data", JSON.stringify(newData));
-    // };
+    const saveAllData = () => {
+        const date = new Date();
+        const mmstTestData = {
+            test: "MMST",
+            data: results
+        };
+        let newData = [];
+        const data = JSON.parse(localStorage.getItem("data"));
+        if (data) {
+            const user = data.filter((item)=>item.id === id);
+            if (user.length > 0) {
+                const restData = data.filter((user)=>user.id !== id);
+                const userData = user[0];
+                newData = [...restData, { id, date: date.toLocaleDateString(), test: [...userData.test, mmstTestData] }];
+            } else {
+                newData = [...data, { id, date: date.toLocaleDateString(), test: [mmstTestData] }];    
+            }
+        } else {
+            newData = [{ id, date: date.toLocaleDateString(), test: [mmstTestData] }];
+        }
+        localStorage.setItem( "data", JSON.stringify(newData));
+    };
     
-    // const nextStep = () => {
-    //     if (step.step < stopSteps.length -1) {
-    //         const index = step.step + 1;
-    //         setStep(stopSteps[index]);
-    //         setModalBody({activated: true ,step: 0, data: stopSteps[index].instructions[0]});
-    //     } else {
-    //         swal({
-    //             title: "Felicidades, has completado la prueba",
-    //             text: `Realisaste la prueba Stop, en su totalidad,
-    //             da clic en el boton para regresar al menu`,
-    //             icon: "success",
-    //             button: "Regresar",
-    //         }).then((value) => {
-    //             saveAllData();
-    //             navigate(`/user/${id}`);
-    //         });
-    //     }
-    // };
+    const nextStep = () => {
+        if (step.step < stopSteps.length -1) {
+            const index = step.step + 1;
+            setStep(stopSteps[index]);
+            setModalBody({activated: true ,step: 0, data: stopSteps[index].instructions[0]});
+        } else {
+            swal({
+                title: "Felicidades, has completado la prueba",
+                text: `Realisaste la prueba Stop, en su totalidad,
+                da clic en el boton para regresar al menu`,
+                icon: "success",
+                button: "Regresar",
+            }).then((value) => {
+                saveAllData();
+                navigate(`/user/${id}`);
+            });
+        }
+    };
 
-    // const getAleatory = () => {
-    //     const min = 0;
-    //     const max = gameValues.length - 1;
-    //     const x = Math.floor(Math.random()*(max-min+1)+min);
-    //     const newData = gameValues[x];
-    //     gameValues = [...gameValues.slice(0, x), ...gameValues.slice(x + 1, gameValues.length)];
-    //     return newData;
-    // };
 
     // const nextImage = () => {
     //     if (gameValues.length > 0) {
@@ -304,10 +291,10 @@ export default function MMST() {
     //     }
     // }, [gameData, modalBody]);
 
-    // // Inicia con las instrucciones de la figura de corazon
-    // useEffect(() => {
-    //     nextStep();
-    // }, []);
+    // Inicia con las instrucciones
+    useEffect(() => {
+        nextStep();
+    }, []);
 
     return (
         <div className="mmst">
@@ -330,7 +317,7 @@ export default function MMST() {
                 ) : (
                     <div className="mmst-container">
                         <div className= "num-section">
-                            <div className="num-section--value">10</div>
+                            <div className="num-section--value">{gameData.number}</div>
                             <div className="num-section--score">
                                 <label>Score</label><input name="score" type="text" readOnly/>
                             </div>

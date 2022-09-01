@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 
-import { instructions, mmstPrueba, instructionStart } from "../utils/mmstValues";
+import { instructions, mmstPrueba, instructionStart, images1, images2 } from "../utils/mmstValues";
 
 // import stopSound from "../assets/audio/stop.mp3";
 
@@ -11,12 +11,20 @@ import positiva1 from "../assets/images/positiva1.jpg";
 import '../styles/pages/mmst.scss';
 
 
-const stopSteps = [
+const mmstSteps = [
     {
         step: 0,
+        name: "Imagenes",
+        instructions: [],
+        values: [],
+        images: images1
+    },
+    {
+        step: 1,
         name: "Prueba",
         instructions: instructions,
-        values: [...mmstPrueba]
+        values: [...mmstPrueba],
+        images: images2
     }
 ];
 
@@ -31,7 +39,7 @@ const MODAL_DEFAULT_DATA = {
 };
 
 const DEFAULT_STEP = {
-    step: -1,
+    step: 0,
     name: "",
     instructions: [],
     values: []
@@ -41,7 +49,10 @@ const DEFAULT_GAME_DATA = {
     id: 0,
     number:  0,
     type: "",
-    time: 0
+    time: 0,
+    oldNumer: 0,
+    activated: false,
+    timeStart: 0
 };
 
 let gameValues;
@@ -81,12 +92,29 @@ export default function MMST() {
         }
         localStorage.setItem( "data", JSON.stringify(newData));
     };
-    
+    console.log(step);
     const nextStep = () => {
-        if (step.step < stopSteps.length -1) {
-            const index = step.step + 1;
-            setStep(stopSteps[index]);
-            setModalBody({activated: true ,step: 0, data: stopSteps[index].instructions[0]});
+        if (step.step < mmstSteps.length -1) {
+            if (mmstSteps[step.step + 1].instructions.length > 0) {
+                const index = step.step + 1;
+                setStep(mmstSteps[index]);
+                setModalBody({activated: true ,step: 0, data: mmstSteps[index].instructions[0]});
+            } else if (mmstSteps[step.step + 1].values.length > 0) {
+                console.log(mmstSteps[step.step + 1]);
+                setModalBody(MODAL_DEFAULT_DATA);
+                const index = step.step + 1;
+                setStep(mmstSteps[index]);
+                const newData = mmstSteps[step.step + 1].values[0];
+                setTimeout(()=>{
+                    setGameData({
+                        ...gameData,
+                        ...newData,
+                        oldNumer: newData.number,
+                        activated: true,
+                        timeStart: Date.now()
+                    });
+                }, 1500)
+            }
         } else {
             swal({
                 title: "Felicidades, has completado la prueba",
@@ -134,17 +162,18 @@ export default function MMST() {
     //     });
     // };
 
-    // const handleStart = () => {
-    //     gameValues = [...step.values]
-    //     setModalBody(MODAL_DEFAULT_DATA);
-    //     const newData = getAleatory();
-    //     setGameData({
-    //         ...gameData,
-    //         ...newData,
-    //         activated: true,
-    //         timeStart: Date.now()
-    //     });
-    // };
+    const handleNext = () => {
+        console.log(modalBody.step);
+        if (modalBody.step < step.instructions.length -1) {
+            setModalBody({
+                ...modalBody,
+                step: modalBody.step + 1,
+                data: step.instructions[modalBody.step + 1]
+            });
+        } else if (modalBody.step === step.instructions.length -1) {
+            nextStep();
+        }
+    };
 
     // const saveResponse = (keyPress) => {
     //     const response = {
@@ -166,121 +195,25 @@ export default function MMST() {
     //     }
     // };
 
-    // const handleKey = (event) => {
-    //     const keyPress = String.fromCharCode(event.keyCode);
-    //     if (gameData.activated && gameData.key !== "None") {
-    //         if (saveResponse(keyPress)) {
-    //             if (gameData.type === "test") {
-    //                 if ((keyPress !== gameData.key) && !gameData.signal) {
-    //                     const errorMsg = `Debes presionar la tecla correspondiente, en este caso es la tecla ${keyPress === "A" ? "L" : "A"}`; 
-    //                     clearInterval(intVal);
-    //                     swal({
-    //                         title: "Error",
-    //                         text: errorMsg,
-    //                         icon: "error",
-    //                         button: "ok",
-    //                     }).then((value) => {
-    //                         clearImage();
-    //                     });
-    //                 } else if ((keyPress === gameData.key) && !gameData.signal) {
-    //                     clearInterval(intVal);
-    //                     swal({
-    //                         title: "Correcto !!",
-    //                         text: "Buen trabajo",
-    //                         icon: "success",
-    //                         timer: 1200,
-    //                         buttons: false
-    //                     }).then((value) => {
-    //                         clearImage();
-    //                     });
-    //                 } else if (gameData.signal) {
-    //                     const errorMsg = "Cuando suena la senal de stop, no debes precionar ninguna tecla";
-    //                     clearInterval(intVal);
-    //                     swal({
-    //                         title: "Error",
-    //                         text: errorMsg,
-    //                         icon: "error",
-    //                         button: "ok",
-    //                     }).then((value) => {
-    //                         clearImage();
-    //                     });
-    //                 }
-    //             } else {
-    //                 if (!gameData.signal) {
-    //                     clearInterval(intVal);
-    //                     clearImage();
-    //                 }
-    //             }
-    //         }
-    //     } else if (modalBody.activated && modalBody.step === step.instructions.length) {
-    //         if (keyPress === " ") {
-    //             playStopSound();
-    //         }
-    //     }
-    // };
-
-    // // Efecto para mostrar las imagenes
-    // useEffect(() => {
-    //     if (gameData.activated) {
-    //          if (gameData.img !== "" && gameValues.length >= 0) {
-    //             setTimeout(()=>{
-    //                 if (gameData.signal) {
-    //                     playStopSound();
-    //                 }
-    //             }, 250);
-    //              intVal = setTimeout(()=>{
-    //                  const exist = responses.filter((res)=>res.id === gameData.id);
-    //                  if (exist.length === 0) {
-    //                      saveResponse(null);
-    //                      if (gameData.type === "test" && !gameData.signal) {
-    //                          clearInterval(intVal);
-    //                          const errorMsg = `Ups, se te ha pasado el tiempo, procura ser mas rapido en tu respuesta`;
-    //                          swal({
-    //                              title: "Error",
-    //                              text: errorMsg,
-    //                              icon: "error",
-    //                              button: "ok",
-    //                          }).then((value) => {
-    //                              clearImage();
-    //                          });
-    //                      } else if (gameData.type === "test" && gameData.signal) {
-    //                         swal({
-    //                             title: "Correcto !!",
-    //                             text: "Buen trabajo",
-    //                             icon: "success",
-    //                             timer: 1200,
-    //                             buttons: false
-    //                         }).then((value) => {
-    //                             clearImage();
-    //                         });
-    //                      } else {
-    //                          clearImage();    
-    //                      }
-    //                  } else {
-                        
-    //                     clearImage();
-    //                  }
-    //              }, 2000);
-    //          } else if (gameData.img === "") {
-    //              intVal = setTimeout(nextImage, 500);
-    //          }
-    //     } 
-    //  }, [gameData]);
-
-    // // Efecto para mostrar las instrucciones automaticamente
-    // useEffect(() => {
-    //     if (modalBody.activated) {
-    //         if (modalBody.step < step.instructions.length) {
-    //             setTimeout(()=>{
-    //                 setModalBody({
-    //                     ...modalBody,
-    //                     step: modalBody.step + 1,
-    //                     data: step.instructions[modalBody.step]
-    //                 });
-    //             }, 4000);
-    //         }
-    //     }
-    // }, [modalBody]);
+    // // Efecto para mostrar los numeros
+    useEffect(() => {
+        if (gameData.activated) {
+             if (gameData.number < step.values.length) {
+                setTimeout(()=>{
+                    const newData = step.values[gameData.id];
+                    setGameData({
+                        ...gameData,
+                        ...newData,
+                        oldNumer: gameData.number,
+                        activated: true,
+                        timeStart: Date.now()
+                    });
+                }, gameData.time);
+             } else {
+                nextStep();
+             }
+        } 
+     }, [gameData]);
 
     // // use Effect para resetear el evento que escucha la tecla a presionar
     // useEffect(() => {
@@ -304,13 +237,9 @@ export default function MMST() {
                         <div className="modal-container">
                             <div className="modal-container-text">
                                 <h1>{modalBody.data.title}</h1>
-                                <img src={modalBody.data.img} />
+                                <img style={{width: modalBody.data.size}} src={modalBody.data.img} />
                                 <p>{modalBody.data.body}</p>
-                                {
-                                    (modalBody.step === step.instructions.length) && (
-                                        <button onClick={handleStart}>Iniciar</button>
-                                    )
-                                }
+                                <button onClick={handleNext}>Continuar</button>
                             </div>
                         </div>
                     </div>

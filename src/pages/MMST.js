@@ -39,7 +39,7 @@ const MODAL_DEFAULT_DATA = {
 };
 
 const DEFAULT_STEP = {
-    step: 0,
+    step: -1,
     name: "",
     instructions: [],
     values: []
@@ -55,7 +55,12 @@ const DEFAULT_GAME_DATA = {
     timeStart: 0
 };
 
-let gameValues;
+const DEFAULT_IMAGES_DATA = {
+    img: "",
+    time: 0
+};
+
+let imageValues = null;
 let intVal;
 let results = {};
 const responses = [];
@@ -64,6 +69,7 @@ export default function MMST() {
 
     const [modalBody, setModalBody] = useState(MODAL_DEFAULT_DATA);
     const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
+    const [imagesData, setImagesData] = useState(DEFAULT_IMAGES_DATA);
     const [step, setStep] = useState(DEFAULT_STEP);
 
     const navigate = useNavigate();
@@ -92,28 +98,43 @@ export default function MMST() {
         }
         localStorage.setItem( "data", JSON.stringify(newData));
     };
-    console.log(step);
+
+    const getAleatory = () => {
+        const min = 0;
+        const max = imageValues.length - 1;
+        const x = Math.floor(Math.random()*(max-min+1)+min);
+        const newData = imageValues[x];
+        imageValues = [...imageValues.slice(0, x), ...imageValues.slice(x + 1, imageValues.length)];
+        return newData;
+    };
+
     const nextStep = () => {
-        if (step.step < mmstSteps.length -1) {
-            if (mmstSteps[step.step + 1].instructions.length > 0) {
-                const index = step.step + 1;
-                setStep(mmstSteps[index]);
-                setModalBody({activated: true ,step: 0, data: mmstSteps[index].instructions[0]});
-            } else if (mmstSteps[step.step + 1].values.length > 0) {
-                console.log(mmstSteps[step.step + 1]);
-                setModalBody(MODAL_DEFAULT_DATA);
-                const index = step.step + 1;
-                setStep(mmstSteps[index]);
-                const newData = mmstSteps[step.step + 1].values[0];
-                setTimeout(()=>{
-                    setGameData({
-                        ...gameData,
-                        ...newData,
-                        oldNumer: newData.number,
-                        activated: true,
-                        timeStart: Date.now()
-                    });
-                }, 1500)
+        const newStep = step.step + 1;
+        if (newStep <= mmstSteps.length) {
+            const newDataStep = mmstSteps[newStep];
+            if (newDataStep.instructions.length > 0) {
+                setStep(mmstSteps[newStep]);
+                setModalBody({activated: true ,step: 0, data: newDataStep.instructions[0]});
+            } else if (newDataStep.images.length > 0) {
+                imageValues = [...newDataStep.images];
+                const imageAleatory = getAleatory();
+                setImagesData(imageAleatory);
+                setStep(mmstSteps[newStep]);
+                
+                // console.log(mmstSteps[step.step + 1]);
+                // setModalBody(MODAL_DEFAULT_DATA);
+                // const index = step.step + 1;
+                // setStep(mmstSteps[index]);
+                // const newData = mmstSteps[step.step + 1].values[0];
+                // setTimeout(()=>{
+                //     setGameData({
+                //         ...gameData,
+                //         ...newData,
+                //         oldNumer: newData.number,
+                //         activated: true,
+                //         timeStart: Date.now()
+                //     });
+                // }, 1500)
             }
         } else {
             swal({
@@ -123,7 +144,7 @@ export default function MMST() {
                 icon: "success",
                 button: "Regresar",
             }).then((value) => {
-                saveAllData();
+                // saveAllData();
                 navigate(`/user/${id}`);
             });
         }
@@ -154,16 +175,19 @@ export default function MMST() {
     //     }
     // };
 
-    // const clearImage = () => {
-    //     setGameData({
-    //         ...gameData,
-    //         img: "",
-    //         key: "None"
-    //     });
-    // };
+    const handleStart = () => {
+        setModalBody(MODAL_DEFAULT_DATA);
+        imageValues=null;
+        setImagesData(DEFAULT_IMAGES_DATA);
+        setGameData({
+            ...gameData,
+            ...step.values[0],
+            activated: true,
+            timeStart: Date.now()
+        });
+    };
 
     const handleNext = () => {
-        console.log(modalBody.step);
         if (modalBody.step < step.instructions.length -1) {
             setModalBody({
                 ...modalBody,
@@ -171,58 +195,49 @@ export default function MMST() {
                 data: step.instructions[modalBody.step + 1]
             });
         } else if (modalBody.step === step.instructions.length -1) {
-            nextStep();
+            handleStart();
         }
     };
 
-    // const saveResponse = (keyPress) => {
-    //     const response = {
-    //         title: step.name,
-    //         id: gameData.id,
-    //         key: gameData.key,
-    //         type: gameData.type,
-    //         signal: gameData.signal,
-    //         response: gameData.key === keyPress ? true: false,
-    //         keyPress,
-    //         time: `${((Date.now() - gameData.timeStart) / 1000)}s`
-    //     };
-    //     const exist = responses.filter((res)=>res.id === gameData.id);
-    //     if (exist.length === 0) {
-    //         responses.push(response);
-    //         return true;
-    //     } else {
-    //         false
-    //     }
-    // };
+    const handleClick = (event) => {
+        const numberSelected = event.target.innerHTML;
+        console.log(gameData);
+        console.log(numberSelected);
+    }; 
 
     // // Efecto para mostrar los numeros
     useEffect(() => {
         if (gameData.activated) {
-             if (gameData.number < step.values.length) {
+             if (gameData.id < step.values.length) {
                 setTimeout(()=>{
                     const newData = step.values[gameData.id];
                     setGameData({
                         ...gameData,
                         ...newData,
                         oldNumer: gameData.number,
-                        activated: true,
                         timeStart: Date.now()
                     });
                 }, gameData.time);
              } else {
-                nextStep();
+                // nextStep();
+                console.log("final del juego");
              }
         } 
      }, [gameData]);
 
-    // // use Effect para resetear el evento que escucha la tecla a presionar
-    // useEffect(() => {
-    //     document.removeEventListener('keydown', handleKey);
-    //     document.addEventListener('keydown', handleKey);
-    //     return () => {
-    //         document.removeEventListener('keydown', handleKey);
-    //     }
-    // }, [gameData, modalBody]);
+     // // Efecto para mostrar las imagenes random
+    useEffect(() => {
+        if (imageValues) {
+            if (imageValues.length > 0) {
+                const newImage = getAleatory();
+                setTimeout(() => {
+                 setImagesData(newImage);   
+                }, imagesData.time);
+            } else {
+                nextStep();
+            }
+        }
+    }, [imagesData]);
 
     // Inicia con las instrucciones
     useEffect(() => {
@@ -245,42 +260,48 @@ export default function MMST() {
                     </div>
                 ) : (
                     <div className="mmst-container">
-                        <div className= "num-section">
-                            <div className="num-section--value">{gameData.number}</div>
-                            <div className="num-section--score">
-                                <label>Score</label><input name="score" type="text" readOnly/>
-                            </div>
-                            <div className="num-section--first">
-                                <div className="num-section-number">1</div>
-                                <div className="num-section-number">2</div>
-                                <div className="num-section-number">3</div>
-                                <div className="num-section-number">4</div>
-                                <div className="num-section-number">5</div>
-                                <div className="num-section-number">6</div>
-                            </div>
-                            <div className="num-section--second">
-                                <div className="num-section-number">7</div>
-                                <div className="num-section-number">8</div>
-                            </div>
-                            <div className="num-section--trhird">
-                                <div className="num-section-number">9</div>
-                                <div className="num-section-number">10</div>
-                            </div>
-                            <div className="num-section--fourth">
-                                <div className="num-section-number">11</div>
-                                <div className="num-section-number">12</div>
-                            </div>
-                            <div className="num-section--end">
-                                <div className="num-section-number">13</div>
-                                <div className="num-section-number">14</div>
-                                <div className="num-section-number">15</div>
-                                <div className="num-section-number">16</div>
-                                <div className="num-section-number">17</div>
-                                <div className="num-section-number">18</div>
-                            </div>
-                        </div>
+                        {
+                            gameData.activated ? (
+                                <div className= "num-section">
+                                    <div className="num-section--value">{gameData.number}</div>
+                                    <div className="num-section--score">
+                                        <label>Score</label><input name="score" type="text" readOnly/>
+                                    </div>
+                                    <div className="num-section--first">
+                                        <div className="num-section-number" onClick={handleClick}>1</div>
+                                        <div className="num-section-number" onClick={handleClick}>2</div>
+                                        <div className="num-section-number" onClick={handleClick}>3</div>
+                                        <div className="num-section-number" onClick={handleClick}>4</div>
+                                        <div className="num-section-number" onClick={handleClick}>5</div>
+                                        <div className="num-section-number" onClick={handleClick}>6</div>
+                                    </div>
+                                    <div className="num-section--second">
+                                        <div className="num-section-number" onClick={handleClick}>7</div>
+                                        <div className="num-section-number" onClick={handleClick}>8</div>
+                                    </div>
+                                    <div className="num-section--trhird">
+                                        <div className="num-section-number" onClick={handleClick}>9</div>
+                                        <div className="num-section-number" onClick={handleClick}>10</div>
+                                    </div>
+                                    <div className="num-section--fourth">
+                                        <div className="num-section-number" onClick={handleClick}>11</div>
+                                        <div className="num-section-number" onClick={handleClick}>12</div>
+                                    </div>
+                                    <div className="num-section--end">
+                                        <div className="num-section-number" onClick={handleClick}>13</div>
+                                        <div className="num-section-number" onClick={handleClick}>14</div>
+                                        <div className="num-section-number" onClick={handleClick}>15</div>
+                                        <div className="num-section-number" onClick={handleClick}>16</div>
+                                        <div className="num-section-number" onClick={handleClick}>17</div>
+                                        <div className="num-section-number" onClick={handleClick}>18</div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className= "num-section"></div >
+                            )
+                        }
                         <div className="img-section">
-                            <img src={positiva1} />
+                            <img src={imagesData.img} />
                         </div>
                     </div>
                 )

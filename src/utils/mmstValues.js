@@ -26,9 +26,9 @@ const positivas = {
 };
 
 const images1 = [
-    ...[1,2,3,4,5].map((item)=>(
+    ...[1,2,3,4,5,6].map((item)=>(
         {
-            img: positivas[item],
+            img: positivas[`positivas${item}`],
             time: 2000
         }
     ))
@@ -37,7 +37,7 @@ const images1 = [
 const images2 = [
     ...[1,2,3,4,5, 6, 7, 8, 9, 10].map((item)=>(
         {
-            img: positivas[item],
+            img: positivas[`positivas${item}`],
             time: 2000
         }
     ))

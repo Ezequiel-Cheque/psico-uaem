@@ -6,19 +6,19 @@ import { instructions, mmstPrueba, instructionStart, images1, images2 } from "..
 
 // import stopSound from "../assets/audio/stop.mp3";
 
-import positiva1 from "../assets/images/positiva1.jpg";
+import  coin from "../assets/images/coin.png";
 
 import '../styles/pages/mmst.scss';
 
 
 const mmstSteps = [
-    {
-        step: 0,
-        name: "Imagenes",
-        instructions: [],
-        values: [],
-        images: images1
-    },
+    // {
+    //     step: 0,
+    //     name: "Imagenes",
+    //     instructions: [],
+    //     values: [],
+    //     images: images1
+    // },
     {
         step: 1,
         name: "Prueba",
@@ -42,22 +42,24 @@ const DEFAULT_STEP = {
     step: -1,
     name: "",
     instructions: [],
-    values: []
+    values: [],
+    images: []
 };
 
 const DEFAULT_GAME_DATA = {
     id: 0,
-    number:  0,
+    number:  null,
     type: "",
     time: 0,
-    oldNumer: 0,
+    oldNumber: null,
     activated: false,
     timeStart: 0
 };
 
 const DEFAULT_IMAGES_DATA = {
     img: "",
-    time: 0
+    time: 0,
+    id: null
 };
 
 let imageValues = null;
@@ -99,43 +101,11 @@ export default function MMST() {
         localStorage.setItem( "data", JSON.stringify(newData));
     };
 
-    const getAleatory = () => {
-        const min = 0;
-        const max = imageValues.length - 1;
-        const x = Math.floor(Math.random()*(max-min+1)+min);
-        const newData = imageValues[x];
-        imageValues = [...imageValues.slice(0, x), ...imageValues.slice(x + 1, imageValues.length)];
-        return newData;
-    };
-
     const nextStep = () => {
         const newStep = step.step + 1;
-        if (newStep <= mmstSteps.length) {
+        if (newStep < mmstSteps.length) {
             const newDataStep = mmstSteps[newStep];
-            if (newDataStep.instructions.length > 0) {
-                setStep(mmstSteps[newStep]);
-                setModalBody({activated: true ,step: 0, data: newDataStep.instructions[0]});
-            } else if (newDataStep.images.length > 0) {
-                imageValues = [...newDataStep.images];
-                const imageAleatory = getAleatory();
-                setImagesData(imageAleatory);
-                setStep(mmstSteps[newStep]);
-                
-                // console.log(mmstSteps[step.step + 1]);
-                // setModalBody(MODAL_DEFAULT_DATA);
-                // const index = step.step + 1;
-                // setStep(mmstSteps[index]);
-                // const newData = mmstSteps[step.step + 1].values[0];
-                // setTimeout(()=>{
-                //     setGameData({
-                //         ...gameData,
-                //         ...newData,
-                //         oldNumer: newData.number,
-                //         activated: true,
-                //         timeStart: Date.now()
-                //     });
-                // }, 1500)
-            }
+            setStep(newDataStep);
         } else {
             swal({
                 title: "Felicidades, has completado la prueba",
@@ -150,35 +120,31 @@ export default function MMST() {
         }
     };
 
-
-    // const nextImage = () => {
-    //     if (gameValues.length > 0) {
-    //         setGameData({
-    //             ...gameData,
-    //             ...getAleatory(),
-    //             timeStart: Date.now()
-    //         });
-    //     } else {
-    //         if (step.step === 0) {
-    //             results = {
-    //                 ...results,
-    //                 Practica: responses.filter((res)=>res.type === "test")
-    //             };
-    //         } if (step.step === 1) {
-    //             results = {
-    //                 ...results,
-    //                 Ensayo: responses.filter((res)=>res.type === "prueba")
-    //             };
-    //         }
-    //         setGameData(DEFAULT_GAME_DATA);
-    //         nextStep();
-    //     }
-    // };
+    const saveResponse = (keyPress) => {
+        if (gameData.number !== "") {
+            console.log("number saved");
+            const response = {
+                title: step.name,
+                id: gameData.id,
+                type: gameData.type,
+                level: gameData.level,
+                response: (gameData.oldNumber + gameData.number) === keyPress ? true: false,
+                keyPress,
+                correct: gameData.oldNumber + gameData.number,
+                time: `${((Date.now() - gameData.timeStart) / 1000)}s`
+            };
+            const exist = responses.filter((res)=>res.id === gameData.id);
+            if (exist.length === 0) {
+                responses.push(response);
+                return true;
+            } else {
+                false
+            }
+        }
+    };
 
     const handleStart = () => {
         setModalBody(MODAL_DEFAULT_DATA);
-        imageValues=null;
-        setImagesData(DEFAULT_IMAGES_DATA);
         setGameData({
             ...gameData,
             ...step.values[0],
@@ -200,44 +166,76 @@ export default function MMST() {
     };
 
     const handleClick = (event) => {
-        const numberSelected = event.target.innerHTML;
-        console.log(gameData);
-        console.log(numberSelected);
-    }; 
+        const numberSelected = parseInt(event.target.innerHTML, 10);;
+        // saveResponse(numberSelected);
+    };
 
+    const clearNumber = () => {
+        setGameData({
+            ...gameData,
+            number: ""
+        });
+    };
+
+    const nextNumber = () => {
+        if (gameData.id < step.values.length -1) {
+            const newData = step.values[gameData.id + 1];
+            // const exist = responses.filter((res)=>res.id === gameData.id);
+            // if (exist.length === 0) {
+            //     saveResponse(null);
+            // }
+            setGameData({
+                ...gameData,
+                ...newData,
+                oldNumber: step.values[gameData.id].number,
+                timeStart: Date.now()
+            });          
+        } else {
+           console.log("final del juego");
+           console.log(responses);
+        }
+    };
+
+    console.log(gameData);
     // // Efecto para mostrar los numeros
     useEffect(() => {
         if (gameData.activated) {
-             if (gameData.id < step.values.length) {
-                setTimeout(()=>{
-                    const newData = step.values[gameData.id];
-                    setGameData({
-                        ...gameData,
-                        ...newData,
-                        oldNumer: gameData.number,
-                        timeStart: Date.now()
-                    });
+            if (gameData.number !== "") {
+                intVal = setTimeout(() => { 
+                    clearNumber();
                 }, gameData.time);
-             } else {
-                // nextStep();
-                console.log("final del juego");
-             }
+            } else {
+                intVal = setTimeout(nextNumber, 500);
+            }
         } 
      }, [gameData]);
 
      // // Efecto para mostrar las imagenes random
     useEffect(() => {
-        if (imageValues) {
-            if (imageValues.length > 0) {
-                const newImage = getAleatory();
-                setTimeout(() => {
-                 setImagesData(newImage);   
-                }, imagesData.time);
-            } else {
-                nextStep();
-            }
+        if (imagesData.img !== "" && imagesData.time > 0) {
+            setTimeout(() => {
+                const nextIndex = imagesData.id + 1;
+                if ( nextIndex < step.images.length) {
+                    const newImageData = step.images[nextIndex];
+                    setImagesData(newImageData);
+                } else {
+                    setImagesData(DEFAULT_IMAGES_DATA);
+                    if (step.step === 0) {
+                        nextStep();   
+                    }
+                }
+            }, imagesData.time);
         }
     }, [imagesData]);
+
+    useEffect(() => {
+        if (step.step === 0) {
+            setImagesData(step.images[0]);
+        } else if (step.step === 1) {
+            setModalBody({activated: true ,step: 0, data: step.instructions[0]});
+        }
+    }, [step])
+    
 
     // Inicia con las instrucciones
     useEffect(() => {
@@ -265,7 +263,8 @@ export default function MMST() {
                                 <div className= "num-section">
                                     <div className="num-section--value">{gameData.number}</div>
                                     <div className="num-section--score">
-                                        <label>Score</label><input name="score" type="text" readOnly/>
+                                        <div><img src={coin}/></div>
+                                        <input name="score" type="text" readOnly/>
                                     </div>
                                     <div className="num-section--first">
                                         <div className="num-section-number" onClick={handleClick}>1</div>

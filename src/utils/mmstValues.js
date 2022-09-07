@@ -1,6 +1,7 @@
 import mmst1 from "../assets/images/mmst1.png";
 import mmst2 from "../assets/images/mmst2.png";
 
+import positivas0 from "../assets/images/5760.jpg";
 import positivas1 from "../assets/images/2165.jpg";
 import positivas2 from "../assets/images/2530.jpg";
 import positivas3 from "../assets/images/2655.jpg";
@@ -10,9 +11,9 @@ import positivas6 from "../assets/images/4750.jpg";
 import positivas7 from "../assets/images/5250.jpg";
 import positivas8 from "../assets/images/5260.jpg";
 import positivas9 from "../assets/images/5593.jpg";
-import positivas10 from "../assets/images/5760.jpg";
 
-const positivas = {
+const positivas = [
+    positivas0,
     positivas1,
     positivas2,
     positivas3,
@@ -21,27 +22,45 @@ const positivas = {
     positivas6,
     positivas7,
     positivas8,
-    positivas9,
-    positivas10
+    positivas9
+];
+
+const negativas = [];
+
+const getAleatoryImages = (num, type) => {
+    let arrayImages = [];
+    const newImages = [];
+    if (type === "positivas") {
+        arrayImages = [...positivas];
+    } else if (type === "negativas") {
+        arrayImages = [...negativas];
+    }
+    for (let i = 0; i < num; i++) {
+        const min = 0;
+        const max = arrayImages.length - 1;
+        const x = Math.floor(Math.random()*(max-min+1)+min);
+        const newData = arrayImages[x];
+        arrayImages = [...arrayImages.slice(0, x), ...arrayImages.slice(x + 1, arrayImages.length)];
+        newImages.push(newData);
+    }
+    return newImages;
 };
 
-const images1 = [
-    ...[1,2,3,4,5,6].map((item)=>(
-        {
-            img: positivas[`positivas${item}`],
-            time: 2000
-        }
-    ))
-];
+const images1 = getAleatoryImages(5, "positivas").map((item, index) => (
+    {   
+        id: index,
+        img: item,
+        time: 2000
+    }
+));
 
-const images2 = [
-    ...[1,2,3,4,5, 6, 7, 8, 9, 10].map((item)=>(
-        {
-            img: positivas[`positivas${item}`],
-            time: 2000
-        }
-    ))
-];
+const images2 = getAleatoryImages(10, "positivas").map((item, index) => (
+    {   
+        id: index,
+        img: item,
+        time: 2000
+    }
+));
 
 const instructions = [
     {
@@ -79,12 +98,13 @@ const getAleatory = () => {
 };
 
 const mmstPrueba = [
-    ...[1,2,3,4,5,6,7,8].map((item)=>(
+    ...[0,1,2,3,4,5,6,7].map((item)=>(
         {   
             id: item,
             number:  getAleatory(),
             type: "test",
-            time: 3000
+            time: 3000,
+            level: 1
         }
     )),
     // ...[9,10,11,12,13,14,15,16].map((item)=>(

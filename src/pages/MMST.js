@@ -122,7 +122,6 @@ export default function MMST() {
 
     const saveResponse = (keyPress) => {
         if (gameData.number !== "") {
-            console.log("number saved");
             const response = {
                 title: step.name,
                 id: gameData.id,
@@ -131,12 +130,14 @@ export default function MMST() {
                 response: (gameData.oldNumber + gameData.number) === keyPress ? true: false,
                 keyPress,
                 correct: gameData.oldNumber + gameData.number,
+                number: gameData.number,
+                numberBefore: gameData.oldNumber,
                 time: `${((Date.now() - gameData.timeStart) / 1000)}s`
             };
             const exist = responses.filter((res)=>res.id === gameData.id);
             if (exist.length === 0) {
                 responses.push(response);
-                return true;
+                return response;
             } else {
                 false
             }
@@ -180,23 +181,18 @@ export default function MMST() {
     const nextNumber = () => {
         if (gameData.id < step.values.length -1) {
             const newData = step.values[gameData.id + 1];
-            // const exist = responses.filter((res)=>res.id === gameData.id);
-            // if (exist.length === 0) {
-            //     saveResponse(null);
-            // }
             setGameData({
                 ...gameData,
                 ...newData,
                 oldNumber: step.values[gameData.id].number,
                 timeStart: Date.now()
-            });          
+            });
         } else {
            console.log("final del juego");
            console.log(responses);
         }
     };
 
-    console.log(gameData);
     // // Efecto para mostrar los numeros
     useEffect(() => {
         if (gameData.activated) {
@@ -204,6 +200,22 @@ export default function MMST() {
                 intVal = setTimeout(() => { 
                     clearNumber();
                 }, gameData.time);
+                const exist = responses.filter((res)=>res.id === gameData.id);
+                if (exist.length === 0) {
+                    const save = saveResponse(null);
+                    // if (gameData.type === "test" && gameData.id !==0) {
+                    //     clearInterval(intVal);
+                    //     swal({
+                    //         title: "Error",
+                    //         text: "Error, debes presionar una respuesta, recuerda que debes sumar el numero en pantalla, con el numero mostrado anteriormente",
+                    //         icon: "error",
+                    //         button: "ok",
+                    //     }).then((value) => {
+                    //         clearNumber();        
+                    //     });
+                    // }
+                }
+                
             } else {
                 intVal = setTimeout(nextNumber, 500);
             }

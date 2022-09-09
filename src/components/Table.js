@@ -58,11 +58,21 @@ export const Table = ({ columns, data, title="", filter=false , pagination = tru
     selectAllRowsItemText: "todos"
   };
 
+  const Export = () => (
+    <button>Descargar</button>
+  );
+
+  const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(data)} />, []);
+
   const activeTransComponent = useMemo(() => {
     return (
-      <ActiveTransactionsFilter
-        onFilter={(e) => setactiveTransFilter(e.target.value)}
-      />
+      <div className='table-header-component'>
+        <div>
+          <ActiveTransactionsFilter
+            onFilter={(e) => setactiveTransFilter(e.target.value)}
+          />
+        </div>
+      </div>
     );
   }, []);
 
@@ -80,6 +90,7 @@ export const Table = ({ columns, data, title="", filter=false , pagination = tru
         fixedHeaderScrollHeight= "600px"
         subHeader
         subHeaderComponent={filter && activeTransComponent}
+        actions={actionsMemo}
       />
     </div>
   )

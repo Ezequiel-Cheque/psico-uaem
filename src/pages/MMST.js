@@ -12,13 +12,13 @@ import '../styles/pages/mmst.scss';
 
 
 const mmstSteps = [
-    // {
-    //     step: 0,
-    //     name: "Imagenes",
-    //     instructions: [],
-    //     values: [],
-    //     images: images1
-    // },
+    {
+        step: 0,
+        name: "Imagenes",
+        instructions: [],
+        values: [],
+        images: images1
+    },
     {
         step: 1,
         name: "Prueba",
@@ -168,7 +168,38 @@ export default function MMST() {
 
     const handleClick = (event) => {
         const numberSelected = parseInt(event.target.innerHTML, 10);;
-        // saveResponse(numberSelected);
+        const response = saveResponse(numberSelected);
+        if (gameData.type === "test" && gameData.id === 0) {
+            clearInterval(intVal);
+            swal({
+                title: "Error",
+                text: "Error, debes esperar el segundo numero, para escoger una respuesta",
+                icon: "error",
+                button: "ok",
+            }).then((value) => {
+                clearNumber();        
+            });
+        } else if (gameData.type === "test" && response.response === false) {
+            clearInterval(intVal);
+            swal({
+                title: "Error",
+                text: `Error, respuesta incorrecta, la respuesta correcta es: ${response.correct}`,
+                icon: "error",
+                button: "ok",
+            }).then((value) => {
+                clearNumber();        
+            });
+        } else if (gameData.type === "test" && response.response === true) {
+            clearInterval(intVal);
+            swal({
+                title: "Correcto",
+                text: "Bien hecho, la suma es correcta",
+                icon: "success",
+                button: "continuar",
+            }).then((value) => {
+                clearNumber();        
+            });
+        }
     };
 
     const clearNumber = () => {
@@ -198,23 +229,26 @@ export default function MMST() {
         if (gameData.activated) {
             if (gameData.number !== "") {
                 intVal = setTimeout(() => { 
-                    clearNumber();
+                    const exist = responses.filter((res)=>res.id === gameData.id);
+                    if (exist.length === 0) {
+                        const save = saveResponse(null);
+                        if (gameData.type === "test" && gameData.id !==0) {
+                            clearInterval(intVal);
+                            swal({
+                                title: "Error",
+                                text: "Error, debes presionar una respuesta, recuerda que debes sumar el numero en pantalla, con el numero mostrado anteriormente",
+                                icon: "error",
+                                button: "ok",
+                            }).then((value) => {
+                                clearNumber();        
+                            });
+                        } else {
+                            clearNumber();    
+                        }
+                    } else {
+                        clearNumber();
+                    }
                 }, gameData.time);
-                const exist = responses.filter((res)=>res.id === gameData.id);
-                if (exist.length === 0) {
-                    const save = saveResponse(null);
-                    // if (gameData.type === "test" && gameData.id !==0) {
-                    //     clearInterval(intVal);
-                    //     swal({
-                    //         title: "Error",
-                    //         text: "Error, debes presionar una respuesta, recuerda que debes sumar el numero en pantalla, con el numero mostrado anteriormente",
-                    //         icon: "error",
-                    //         button: "ok",
-                    //     }).then((value) => {
-                    //         clearNumber();        
-                    //     });
-                    // }
-                }
                 
             } else {
                 intVal = setTimeout(nextNumber, 500);
@@ -279,32 +313,32 @@ export default function MMST() {
                                         <input name="score" type="text" readOnly/>
                                     </div>
                                     <div className="num-section--first">
-                                        <div className="num-section-number" onClick={handleClick}>1</div>
-                                        <div className="num-section-number" onClick={handleClick}>2</div>
-                                        <div className="num-section-number" onClick={handleClick}>3</div>
-                                        <div className="num-section-number" onClick={handleClick}>4</div>
-                                        <div className="num-section-number" onClick={handleClick}>5</div>
-                                        <div className="num-section-number" onClick={handleClick}>6</div>
-                                    </div>
-                                    <div className="num-section--second">
-                                        <div className="num-section-number" onClick={handleClick}>7</div>
-                                        <div className="num-section-number" onClick={handleClick}>8</div>
-                                    </div>
-                                    <div className="num-section--trhird">
-                                        <div className="num-section-number" onClick={handleClick}>9</div>
-                                        <div className="num-section-number" onClick={handleClick}>10</div>
-                                    </div>
-                                    <div className="num-section--fourth">
-                                        <div className="num-section-number" onClick={handleClick}>11</div>
                                         <div className="num-section-number" onClick={handleClick}>12</div>
-                                    </div>
-                                    <div className="num-section--end">
                                         <div className="num-section-number" onClick={handleClick}>13</div>
                                         <div className="num-section-number" onClick={handleClick}>14</div>
                                         <div className="num-section-number" onClick={handleClick}>15</div>
                                         <div className="num-section-number" onClick={handleClick}>16</div>
                                         <div className="num-section-number" onClick={handleClick}>17</div>
+                                    </div>
+                                    <div className="num-section--second">
+                                        <div className="num-section-number" onClick={handleClick}>11</div>
                                         <div className="num-section-number" onClick={handleClick}>18</div>
+                                    </div>
+                                    <div className="num-section--trhird">
+                                        <div className="num-section-number" onClick={handleClick}>10</div>
+                                        <div className="num-section-number" onClick={handleClick}>1</div>
+                                    </div>
+                                    <div className="num-section--fourth">
+                                        <div className="num-section-number" onClick={handleClick}>9</div>
+                                        <div className="num-section-number" onClick={handleClick}>2</div>
+                                    </div>
+                                    <div className="num-section--end">
+                                        <div className="num-section-number" onClick={handleClick}>8</div>
+                                        <div className="num-section-number" onClick={handleClick}>7</div>
+                                        <div className="num-section-number" onClick={handleClick}>6</div>
+                                        <div className="num-section-number" onClick={handleClick}>5</div>
+                                        <div className="num-section-number" onClick={handleClick}>4</div>
+                                        <div className="num-section-number" onClick={handleClick}>3</div>
                                     </div>
                                 </div>
                             ) : (

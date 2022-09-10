@@ -39,15 +39,22 @@
         color: #fff;
         font-weight: 600;
     
-        &--active {
+        &--active, &--done {
             @extend .table__button;
             background-color: #28A745;
         }
     
-        &--inactive {
+        &--inactive, &--enable {
             @extend .table__button;
             background-color: #FD7E14;
             cursor: pointer;
         }
+
+        &--disabled {
+            @extend .table__button;
+            background-color: #e61919;
+            // filter: grayscale(0.4);
+        }
+
     }
 }

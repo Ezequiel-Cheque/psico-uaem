@@ -114,12 +114,17 @@ export default function Simon () {
             if (user.length > 0) {
                 const restData = data.filter((user)=>user.id !== id);
                 const userData = user[0];
-                newData = [...restData, { id, date: date.toLocaleDateString(),test: [...userData.test, simonTestData] }];
+                const preTestExist = userData.preTest.filter((t)=>t.test === "Simon");
+                if (preTestExist.length > 0) {
+                    newData = [...restData, { ...userData, posTest:[...userData.posTest, simonTestData] }]
+                } else {
+                    newData = [...restData, { ...userData, preTest:[...userData.preTest, simonTestData] }]
+                }
             } else {
-                newData = [...data, { id, date: date.toLocaleDateString(), test: [simonTestData] }];    
+                newData = [...data, { id, date: date.toLocaleDateString(), preTest: [simonTestData], posTest:[] }];    
             }
         } else {
-            newData = [{ id, test: [simonTestData], date: date.toLocaleDateString() }];
+            newData = [{ id, preTest: [simonTestData], posTest: [], date: date.toLocaleDateString() }];
         }
         localStorage.setItem( "data", JSON.stringify(newData));
     };
@@ -278,6 +283,18 @@ export default function Simon () {
         }
     };
 
+    const handleNext = () => {
+        if (modalBody.step < step.instructions.length -1) {
+            setModalBody({
+                ...modalBody,
+                step: modalBody.step + 1,
+                data: step.instructions[modalBody.step + 1]
+            });
+        } else if (modalBody.step === step.instructions.length -1) {
+            handleStart();
+        }
+    };
+
     // Efecto para mostrar las imagenes
     useEffect(() => {
        if (gameData.activated) {
@@ -311,19 +328,19 @@ export default function Simon () {
     }, [gameData]);
     
     // Efecto para mostrar las instrucciones automaticamente
-    useEffect(() => {
-        if (modalBody.activated) {
-            if (modalBody.step < step.instructions.length) {
-                setTimeout(()=>{
-                    setModalBody({
-                        ...modalBody,
-                        step: modalBody.step + 1,
-                        data: step.instructions[modalBody.step]
-                    });
-                }, 4000);
-            }
-        }
-    }, [modalBody]);
+    // useEffect(() => {
+    //     if (modalBody.activated) {
+    //         if (modalBody.step < step.instructions.length) {
+    //             setTimeout(()=>{
+    //                 setModalBody({
+    //                     ...modalBody,
+    //                     step: modalBody.step + 1,
+    //                     data: step.instructions[modalBody.step]
+    //                 });
+    //             }, 4000);
+    //         }
+    //     }
+    // }, [modalBody]);
     
     // use Effect para resetear el evento que escucha la tecla a presionar
     useEffect(() => {
@@ -349,11 +366,7 @@ export default function Simon () {
                                 <h1>{modalBody.data.title}</h1>
                                 <img src={modalBody.data.img} />
                                 <p>{modalBody.data.body}</p>
-                                {
-                                    (modalBody.step === step.instructions.length) && (
-                                        <button onClick={handleStart}>Iniciar</button>
-                                    )
-                                }
+                                <button onClick={handleNext}>continuar</button>
                             </div>
                         </div>
                     </div>

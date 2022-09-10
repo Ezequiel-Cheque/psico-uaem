@@ -4,14 +4,26 @@
   justify-content: space-around;
 
   button {
-    width: 100px;
+    width: 150px;
+    padding: 5px;
     height: 40px;
     align-self: center;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-right: 50px;
     background-color: rgb(41, 121, 255);
     color: #fff;
     font-weight: 500;
+    display: flex;
+    justify-content: space-around;
+
+    img {
+      width: 20px;
+      margin: 0 5px;
+    }
+
+    p {
+      align-self: center;
+    }
 
     &:hover {
       cursor: pointer;

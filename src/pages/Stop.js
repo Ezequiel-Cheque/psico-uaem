@@ -81,12 +81,17 @@ export default function Stop() {
             if (user.length > 0) {
                 const restData = data.filter((user)=>user.id !== id);
                 const userData = user[0];
-                newData = [...restData, { id, date: date.toLocaleDateString(), test: [...userData.test, stopTestData] }];
+                const preTestExist = userData.preTest.filter((t)=>t.test === "Stop");
+                if (preTestExist.length > 0) {
+                    newData = [...restData, { ...userData, posTest:[...userData.posTest, stopTestData] }]
+                } else {
+                    newData = [...restData, { ...userData, preTest:[...userData.preTest, stopTestData] }]
+                }
             } else {
-                newData = [...data, { id, date: date.toLocaleDateString(), test: [stopTestData] }];    
+                newData = [...data, { id, date: date.toLocaleDateString(), preTest: [stopTestData], posTest:[] }];
             }
         } else {
-            newData = [{ id, date: date.toLocaleDateString(), test: [stopTestData] }];
+            newData = [{ id, preTest: [stopTestData], posTest: [], date: date.toLocaleDateString() }];
         }
         localStorage.setItem( "data", JSON.stringify(newData));
     };

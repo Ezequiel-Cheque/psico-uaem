@@ -91,12 +91,17 @@ export default function MMST() {
             if (user.length > 0) {
                 const restData = data.filter((user)=>user.id !== id);
                 const userData = user[0];
-                newData = [...restData, { id, date: date.toLocaleDateString(), test: [...userData.test, mmstTestData] }];
+                const preTestExist = userData.preTest.filter((t)=>t.test === "Simon");
+                if (preTestExist.length > 0) {
+                    newData = [...restData, { ...userData, posTest:[...userData.posTest, mmstTestData] }]
+                } else {
+                    newData = [...restData, { ...userData, preTest:[...userData.preTest, mmstTestData] }]
+                }
             } else {
-                newData = [...data, { id, date: date.toLocaleDateString(), test: [mmstTestData] }];    
+                newData = [...data, { id, date: date.toLocaleDateString(), preTest: [mmstTestData], posTest:[] }];    
             }
         } else {
-            newData = [{ id, date: date.toLocaleDateString(), test: [mmstTestData] }];
+            newData = [{ id, preTest: [mmstTestData], posTest: [], date: date.toLocaleDateString() }];
         }
         localStorage.setItem( "data", JSON.stringify(newData));
     };

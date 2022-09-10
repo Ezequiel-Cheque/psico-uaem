@@ -12,133 +12,44 @@ const DEFAULT_EXTRA_TABLE = {
   columns: null,
   title: null,
   data: null,
-  available: false
+  available: false,
+  name: "",
+  id: null
 };
-
-const stopMMST = [
-  {
-    idusuario: "ID-1000000001",
-    data: [
-      {
-        number: "Ensayo 1",
-        response: "Acierto",
-        time: "2s"
-      },
-      {
-        number: "Ensayo 2",
-        response: "Acierto",
-        time: "3s"
-      },
-      {
-        number: "Ensayo 3",
-        response: "Acierto",
-        time: "2s"
-      },
-      {
-        number: "Ensayo 4",
-        response: "Acierto",
-        time: "2s"
-      }
-    ]
-  }
-];
-
-const stopData = [
-  {
-    idusuario: "ID-1000000001",
-    data: [
-      {
-        block: "Prueba",
-        number: "1",
-        signal: "sin senal",
-        response: "Acierto"
-      },
-      {
-        block: "Prueba",
-        number: "2",
-        signal: "sin senal",
-        response: "Acierto"
-      },
-      {
-        block: "Prueba",
-        number: "3",
-        signal: "sin senal",
-        response: "Acierto"
-      },
-      {
-        block: "Prueba",
-        number: "4",
-        signal: "con senal",
-        response: "Error"
-      }
-    ]
-  }
-];
-
-const simonData = [
-  {
-    idusuario: "ID-1000000001",
-    data: [
-      {
-        id: "1",
-        type: "congruente",
-        response: "Acierto",
-        time: "0.5 s"
-      },
-      {
-        id: "2",
-        type: "congruente",
-        response: "Acierto",
-        time: "0.5 s"
-      },
-      {
-        id: "3",
-        type: "congruente",
-        response: "Acierto",
-        time: "0.5 s"
-      },
-      {
-        id: "4",
-        type: "congruente",
-        response: "Acierto",
-        time: "0.5 s"
-      },
-      {
-        id: "5",
-        type: "congruente",
-        response: "Error",
-        time: "0.5 s"
-      }
-    ]
-  }
-];
 
 const DEFAULT_TEST_DATA = {
   data: [],
-  numTest: 0
+  numTest: 0,
+  allData: []
 };
 
 export default function Panel() {
 
-  const [extraTable, setExtraTable] = useState(`DEFAULT_EXTRA_TABLE`);
+  const [extraTable, setExtraTable] = useState(DEFAULT_EXTRA_TABLE);
   const [tests, setTests] = useState(DEFAULT_TEST_DATA);
 
   const getTests = () => {
     const data = JSON.parse(localStorage.getItem("data"));
     if (data) {
       const dataTable = data.map((item, index)=>{
-        const simon = item.test.filter((t)=>t.test === "Simon");
-        const stop = item.test.filter((t)=>t.test === "Stop");
-        const MMST = item.test.filter((t)=>t.test === "MMST"); 
+        const simon = item.preTest.filter((t)=>t.test === "Simon");
+        const simon2 = item.posTest.filter((t)=>t.test === "Simon");
+        const stop = item.preTest.filter((t)=>t.test === "Stop");
+        const stop2 = item.posTest.filter((t)=>t.test === "Stop");
+        const MMST = item.preTest.filter((t)=>t.test === "MMST");
+        const MMST2 = item.posTest.filter((t)=>t.test === "MMST");
         
         return {
           id: index + 1,
           idusuario: item.id,
           register: item.date,
           simon: simon.length > 0 ? true : false,
+          simon2: simon2.length > 0 ? true : false,
           stop: stop.length > 0 ? true : false,
+          stop2: stop2.length > 0 ? true : false,
           mmst: MMST.length > 0 ? true : false,
-      };
+          mmst2: MMST2.length > 0 ? true : false,
+        };
       })
       setTests({
         numTest: dataTable.length,
@@ -149,6 +60,18 @@ export default function Panel() {
   };
 
 const columnsSimon = [
+  {
+    name: 'ID Usuario',
+    selector: row => row.idu,
+    sortable: true,
+    center: true
+  },
+  {
+    name: 'Tipo de test',
+    selector: row => row.typeTest,
+    sortable: true,
+    center: true
+  },
   {
     name: 'N. Estimulo',
     selector: row => row.id,
@@ -231,36 +154,28 @@ const columnsMMST = [
 
 const extraTableColumns = {
   "simon" : columnsSimon,
+  "simon2" : columnsSimon,
   "stop": columnsStop,
-  "mmst": columnsMMST
+  "stop2": columnsStop,
+  "mmst": columnsMMST,
+  "mmst2": columnsMMST
 };
 
 const clickHandler = (id, title, available) => {
   if (available) {
     let data=[];
-    if (title === "simon") {
+    if (title === "simon" || title === "simon2") {
+      const typeTest = title === "simon"? "Pre-Test" : "Pos-Test";
       const dataUser = tests.allData.filter((item)=>item.id === id)[0];
-      const testData = dataUser.test.filter((item)=>item.test === "Simon")[0].data;
+      const testData = title === "simon" ?
+      dataUser.preTest.filter((item)=>item.test === "Simon")[0].data
+      : dataUser.posTest.filter((item)=>item.test === "Simon")[0].data;
       data = [
-        ...testData.practicaCongruentes.map((ensayo, index)=>(
-          {
-            id: index + 1,
-            type: ensayo.title,
-            response: ensayo.response ? "Acierto" : "Error",
-            time: ensayo.time
-          }
-        )),
         ...testData.congruentes.map((ensayo, index)=>(
           {
-            id: index + 9,
-            type: ensayo.title,
-            response: ensayo.response ? "Acierto" : "Error",
-            time: ensayo.time
-          }
-        )),
-        ...testData.practicaIncongruentes.map((ensayo, index)=>(
-          {
-            id: index + 29,
+            idu: id,
+            typeTest: typeTest,
+            id: index + 1,
             type: ensayo.title,
             response: ensayo.response ? "Acierto" : "Error",
             time: ensayo.time
@@ -268,15 +183,9 @@ const clickHandler = (id, title, available) => {
         )),
         ...testData.incongruentes.map((ensayo, index)=>(
           {
-            id: index + 37,
-            type: ensayo.title,
-            response: ensayo.response ? "Acierto" : "Error",
-            time: ensayo.time
-          }
-        )),
-        ...testData.practicaMixtos.map((ensayo, index)=>(
-          {
-            id: index + 57,
+            idu: id,
+            typeTest: typeTest,
+            id: index + 21,
             type: ensayo.title,
             response: ensayo.response ? "Acierto" : "Error",
             time: ensayo.time
@@ -284,42 +193,39 @@ const clickHandler = (id, title, available) => {
         )),
         ...testData.mixtos.map((ensayo, index)=>(
           {
-            id: index + 65,
+            idu: id,
+            typeTest: typeTest,
+            id: index + 41,
             type: ensayo.title,
             response: ensayo.response ? "Acierto" : "Error",
             time: ensayo.time
           }
         ))
       ];
-    } else if (title === "stop") {
+    } else if (title === "stop" || title === "stop2") {
       const dataUser = tests.allData.filter((item)=>item.id === id)[0];
-      const testData = dataUser.test.filter((item)=>item.test === "Stop")[0].data;
+      const testData = title === "stop" ?
+      dataUser.preTest.filter((item)=>item.test === "Stop")[0].data
+      : dataUser.posTest.filter((item)=>item.test === "Stop")[0].data;
       data = [
-        ...testData.Practica.map((ensayo, index)=>(
-          {
-            block: "Prueba",
-            number: index + 1,
-            signal: ensayo.signal ? "con senal" : "sin senal",
-            response: ensayo.response ? "Acierto" : "Error",
-            time: ensayo.time
-          }
-        )),
         ...testData.Ensayo.map((ensayo, index) => (
           {
             block: "Ensayo",
-            number: index + 33,
+            number: index + 1,
             signal: ensayo.signal ? "con senal" : "sin senal",
             response: ensayo.response ? "Acierto" : "Error",
             time: ensayo.time
           }
         ))
       ];
-    } else if (title === "mmst") {
+    } else if (title === "mmst2" || title === "mmst2") {
       data = stopMMST.filter((data)=>data.idusuario)[0].data;
     }
     setExtraTable({
       columns: extraTableColumns[title],
       title:`Table ${title} ${id}`,
+      name: title,
+      id: id,
       available: available,
       data: data
     });
@@ -345,16 +251,23 @@ const columns = [
       center: true
   },
   {
-      name: 'Test tipo Simon',
+      name: 'Pre-Test Simon',
       selector: row => row.simon,
       cell: (row) => (setButton(row, "simon")),
       ignoreRowClick: true,
       allowOverflow: true,
-      center: true
-      
+      center: true   
   },
   {
-    name: 'Test tipo Stop',
+    name: 'Pos-Test Simon',
+    selector: row => row.simon2,
+    cell: (row) => (setButton(row, "simon2")),
+    ignoreRowClick: true,
+    allowOverflow: true,
+    center: true   
+  },
+  {
+    name: 'Pre-Test Stop',
     selector: row => row.stop,
     cell: (row) => (setButton(row, "stop")),
     ignoreRowClick: true,
@@ -362,9 +275,25 @@ const columns = [
     center: true
   },
   {
-    name: 'Test tipo MMST',
+    name: 'Pos-Test Stop',
+    selector: row => row.stop2,
+    cell: (row) => (setButton(row, "stop2")),
+    ignoreRowClick: true,
+    allowOverflow: true,
+    center: true
+  },
+  {
+    name: 'Pre-Test MMST',
     selector: row => row.mmst,
     cell: (row) => (setButton(row, "mmst")),
+    ignoreRowClick: true,
+    allowOverflow: true,
+    center: true
+  },
+  {
+    name: 'Pos-Test MMST',
+    selector: row => row.mmst2,
+    cell: (row) => (setButton(row, "mmst2")),
     ignoreRowClick: true,
     allowOverflow: true,
     center: true
@@ -413,9 +342,12 @@ const columns = [
             <div className="panel__table-container extra-table">
               <Table
                 title={extraTable.title}
+                name={extraTable.name}
                 columns={extraTable.columns}
                 data={extraTable.data}
-                filter={true}
+                id={extraTable.id}
+                filter
+                download
               />
             </div>
           )

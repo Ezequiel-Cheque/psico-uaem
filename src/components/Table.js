@@ -1,11 +1,13 @@
 import React, { useMemo, useState } from 'react';
-
+import { downloadExcel } from 'react-export-table-to-excel';
 
 import DataTable from 'react-data-table-component';
 
 import '../styles/table.scss';
 
-export const Table = ({ columns, data, title="", filter=false , pagination = true}) => {
+import downloadIcon from "../assets/images/download.png";
+
+export const Table = ({ columns, data, title="", filter=false , pagination = true, download = false, name, id}) => {
 
   const [activeTransFilter, setactiveTransFilter] = useState("");
 
@@ -58,15 +60,34 @@ export const Table = ({ columns, data, title="", filter=false , pagination = tru
     selectAllRowsItemText: "todos"
   };
 
-  const Export = () => (
-    <button>Descargar</button>
-  );
-
-  const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(data)} />, []);
+  const handleDownloadExcel = () => {
+    const header = columns.map((c)=>c.name);
+    let body = [];
+    if (["simon", "simon2"].includes(name)) {
+      body = data.map((c)=>[
+        c.idu, c.typeTest, c.id, c.type, c.response, c.time
+      ]);
+    }
+    downloadExcel({
+      fileName: `Table-data-${name}`,
+      sheet: "Data",
+      tablePayload: {
+        header,
+        body: body,
+      },
+    });
+  };
 
   const activeTransComponent = useMemo(() => {
     return (
       <div className='table-header-component'>
+        {
+          download && (
+            <button onClick={handleDownloadExcel}>
+              <img src={downloadIcon}/> <p>Descargar datos</p>
+            </button>
+          )
+        }
         <div>
           <ActiveTransactionsFilter
             onFilter={(e) => setactiveTransFilter(e.target.value)}
@@ -74,7 +95,7 @@ export const Table = ({ columns, data, title="", filter=false , pagination = tru
         </div>
       </div>
     );
-  }, []);
+  }, [title]);
 
   return (
     <div className='table'>
@@ -90,7 +111,6 @@ export const Table = ({ columns, data, title="", filter=false , pagination = tru
         fixedHeaderScrollHeight= "600px"
         subHeader
         subHeaderComponent={filter && activeTransComponent}
-        actions={actionsMemo}
       />
     </div>
   )

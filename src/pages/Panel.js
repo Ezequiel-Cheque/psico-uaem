@@ -100,6 +100,18 @@ const columnsSimon = [
 
 const columnsStop = [
   {
+    name: 'ID Usuario',
+    selector: row => row.idu,
+    sortable: true,
+    center: true
+  },
+  {
+    name: 'Tipo de test',
+    selector: row => row.typeTest,
+    sortable: true,
+    center: true
+  },
+  {
     name: 'Bloque',
     selector: row => row.block,
     sortable: true,
@@ -204,12 +216,15 @@ const clickHandler = (id, title, available) => {
       ];
     } else if (title === "stop" || title === "stop2") {
       const dataUser = tests.allData.filter((item)=>item.id === id)[0];
+      const typeTest = title === "stop"? "Pre-Test" : "Pos-Test";
       const testData = title === "stop" ?
       dataUser.preTest.filter((item)=>item.test === "Stop")[0].data
       : dataUser.posTest.filter((item)=>item.test === "Stop")[0].data;
       data = [
         ...testData.Ensayo.map((ensayo, index) => (
           {
+            idu: id,
+            typeTest: typeTest,
             block: "Ensayo",
             number: index + 1,
             signal: ensayo.signal ? "con senal" : "sin senal",

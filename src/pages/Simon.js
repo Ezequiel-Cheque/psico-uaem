@@ -90,7 +90,7 @@ const DEFAULT_GAME_DATA = {
 let gameValues;
 let intVal;
 let results = {};
-const responses = [];
+let responses = [];
 
 export default function Simon () {
     const [modalBody, setModalBody] = useState(MODAL_DEFAULT_DATA);
@@ -143,6 +143,12 @@ export default function Simon () {
                 button: "Regresar",
             }).then((value) => {
                 saveAllData();
+                setStep(DEFAULT_STEP);
+                setGameData(DEFAULT_GAME_DATA);
+                setModalBody(MODAL_DEFAULT_DATA);
+                gameValues=[];
+                results = {};
+                responses = [];
                 navigate(`/user/${id}`);
             });
         }
@@ -251,7 +257,7 @@ export default function Simon () {
         const keyPress = String.fromCharCode(event.keyCode);
         if (gameData.activated && gameData.key !== "None") {
             if (saveResponse(keyPress)) {
-                if (gameData.type === "test" && (gameData.name === "heart" || gameData.name === "flower" || gameData.name === "mixto")) {
+                if (gameData.type === "test") {
                     if ((keyPress !== gameData.key)) {
                         const errorMsg = `Debes presionar la tecla correspondiente, en este caso es la tecla ${keyPress === "A" ? "L" : "A"}`; 
                         clearInterval(intVal);

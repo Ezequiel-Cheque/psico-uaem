@@ -56,7 +56,7 @@ const DEFAULT_GAME_DATA = {
 let gameValues;
 let intVal;
 let results = {};
-const responses = [];
+let responses = [];
 
 export default function Stop() {
 
@@ -115,6 +115,12 @@ export default function Stop() {
                 button: "Regresar",
             }).then((value) => {
                 saveAllData();
+                setStep(DEFAULT_STEP);
+                setGameData(DEFAULT_GAME_DATA);
+                setModalBody(MODAL_DEFAULT_DATA);
+                gameValues=[];
+                results = {};
+                responses = [];
                 navigate(`/user/${id}`);
             });
         }
@@ -239,10 +245,17 @@ export default function Stop() {
                     }
                 }
             }
-        } else if (modalBody.activated && modalBody.step === step.instructions.length) {
-            if (keyPress === " ") {
-                playStopSound();
-            }
+        }
+        // else if (modalBody.activated && modalBody.step === step.instructions.length) {
+        //     if (keyPress === " ") {
+        //         playStopSound();
+        //     }
+        // }
+    };
+
+    const handleImageClick = () => {
+        if (modalBody.activated && modalBody.step === step.instructions.length - 1) {
+            playStopSound();
         }
     };
 
@@ -295,19 +308,30 @@ export default function Stop() {
      }, [gameData]);
 
     // Efecto para mostrar las instrucciones automaticamente
-    useEffect(() => {
-        if (modalBody.activated) {
-            if (modalBody.step < step.instructions.length) {
-                setTimeout(()=>{
-                    setModalBody({
-                        ...modalBody,
-                        step: modalBody.step + 1,
-                        data: step.instructions[modalBody.step]
-                    });
-                }, 4000);
-            }
+        // useEffect(() => {
+        //     if (modalBody.activated) {
+        //         if (modalBody.step < step.instructions.length) {
+        //             setTimeout(()=>{
+        //                 setModalBody({
+        //                     ...modalBody,
+        //                     step: modalBody.step + 1,
+        //                     data: step.instructions[modalBody.step]
+        //                 });
+        //             }, 4000);
+        //         }
+        //     }
+        // }, [modalBody]);
+    const handleNext = () => {
+        if (modalBody.step < step.instructions.length -1) {
+            setModalBody({
+                ...modalBody,
+                step: modalBody.step + 1,
+                data: step.instructions[modalBody.step + 1]
+            });
+        } else if (modalBody.step === step.instructions.length -1) {
+            handleStart();
         }
-    }, [modalBody]);
+    };
 
     // use Effect para resetear el evento que escucha la tecla a presionar
     useEffect(() => {
@@ -331,13 +355,13 @@ export default function Stop() {
                         <div className="modal-container">
                             <div className="modal-container-text">
                                 <h1>{modalBody.data.title}</h1>
-                                <img src={modalBody.data.img} />
+                                <img
+                                    src={modalBody.data.img}
+                                    onClick={handleImageClick}
+                                    style={(modalBody.activated && modalBody.step === step.instructions.length - 1) ? { cursor: "pointer"} : {} }
+                                />
                                 <p>{modalBody.data.body}</p>
-                                {
-                                    (modalBody.step === step.instructions.length) && (
-                                        <button onClick={handleStart}>Iniciar</button>
-                                    )
-                                }
+                                <button onClick={handleNext}>Iniciar</button>
                             </div>
                         </div>
                     </div>

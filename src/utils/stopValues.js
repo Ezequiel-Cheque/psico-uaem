@@ -14,7 +14,7 @@ const instructions = [
 },
 {
     title: "Senal de stop",
-    body: `Presiona la barra espaciadora para escuchar la senal de stop, si no logras escucharla
+    body: `Presiona el icono la bocina para escuchar la senal de stop, si no logras escucharla
     correctamente, ajusta tu volumen, da clic, de nuevo en el icono, si todo esta bien, presiona en continuar`,
     img: signal
 }

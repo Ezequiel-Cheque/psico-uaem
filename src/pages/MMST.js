@@ -60,7 +60,8 @@ const DEFAULT_GAME_DATA = {
     time: 0,
     oldNumber: null,
     activated: false,
-    timeStart: 0
+    timeStart: 0,
+    index: 0
 };
 
 const DEFAULT_IMAGES_DATA = {
@@ -80,6 +81,7 @@ export default function MMST() {
     const [gameData, setGameData] = useState(DEFAULT_GAME_DATA);
     const [imagesData, setImagesData] = useState(DEFAULT_IMAGES_DATA);
     const [step, setStep] = useState(DEFAULT_STEP);
+    const [score, setScore] = useState(0);
 
     const navigate = useNavigate();
     const params = useParams();
@@ -148,6 +150,9 @@ export default function MMST() {
                 numberBefore: gameData.oldNumber,
                 time: `${((Date.now() - gameData.timeStart) / 1000)}s`
             };
+            if (response.response) {
+                setScore(score + 100);
+            }
             const exist = responses.filter((res)=>res.id === gameData.id);
             if (exist.length === 0) {
                 responses.push(response);
@@ -160,12 +165,16 @@ export default function MMST() {
 
     const handleStart = () => {
         setModalBody(MODAL_DEFAULT_DATA);
+        setScore(0);
         setGameData({
             ...gameData,
             ...step.values[0],
             activated: true,
             timeStart: Date.now()
         });
+        if (step.step === 2) {
+            setImagesData(step.images[0]);
+        }
     };
 
     const handleNext = () => {
@@ -213,6 +222,9 @@ export default function MMST() {
             }).then((value) => {
                 clearNumber();        
             });
+        } else if (gameData.type === "prueba") {
+            clearInterval(intVal);
+            clearNumber();
         }
     };
 
@@ -224,7 +236,6 @@ export default function MMST() {
     };
 
     const nextNumber = () => {
-        console.log(gameData);
         if (gameData.index < step.values.length -1) {
             const newData = step.values[gameData.index + 1];
             setGameData({
@@ -289,7 +300,7 @@ export default function MMST() {
     useEffect(() => {
         if (step.step === 0) {
             setImagesData(step.images[0]);
-        } else if (step.step === 1) {
+        } else if (step.step === 1 || step.step === 2) {
             setModalBody({activated: true ,step: 0, data: step.instructions[0]});
         }
     }, [step])
@@ -322,7 +333,7 @@ export default function MMST() {
                                     <div className="num-section--value">{gameData.number}</div>
                                     <div className="num-section--score">
                                         <div><img src={coin}/></div>
-                                        <input name="score" type="text" readOnly/>
+                                        <input name="score" type="text" value={score} readOnly/>
                                     </div>
                                     <div className="num-section--first">
                                         <div className="num-section-number" onClick={handleClick}>12</div>

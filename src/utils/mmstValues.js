@@ -12,6 +12,8 @@ import positivas7 from "../assets/images/5250.jpg";
 import positivas8 from "../assets/images/5260.jpg";
 import positivas9 from "../assets/images/5593.jpg";
 
+import negativas1 from "../assets/images/9920.jpg";
+
 const positivas = [
     positivas0,
     positivas1,
@@ -25,7 +27,7 @@ const positivas = [
     positivas9
 ];
 
-const negativas = [];
+const negativas = [negativas1];
 
 const getAleatoryImages = (num, type) => {
     let arrayImages = [];
@@ -54,13 +56,36 @@ const images1 = getAleatoryImages(5, "positivas").map((item, index) => (
     }
 ));
 
-const images2 = getAleatoryImages(10, "positivas").map((item, index) => (
-    {   
-        id: index,
-        img: item,
-        time: 2000
-    }
-));
+const images2 = [
+    ...getAleatoryImages(5, "positivas").map((item, index) => (
+        {   
+            id: index,
+            img: item,
+            time: 2000
+        }
+    )),
+    ...getAleatoryImages(1, "negativa").map((item, index) => (
+        {   
+            id: index + 5,
+            img: item,
+            time: 2000
+        }
+    )),
+    ...getAleatoryImages(5, "positivas").map((item, index) => (
+        {   
+            id: index + 6,
+            img: item,
+            time: 2000
+        }
+    )),
+    ...getAleatoryImages(1, "negativa").map((item, index) => (
+        {   
+            id: index + 11,
+            img: item,
+            time: 2000
+        }
+    ))
+];
 
 const instructions = [
     {

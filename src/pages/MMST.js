@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from "react-router-dom";
 import swal from 'sweetalert';
 
-import { instructions, mmstPrueba, instructionStart, images1, images2 } from "../utils/mmstValues";
+import { instructions, mmstPrueba, mmstPrueba2, instructionStart, images1, images2 } from "../utils/mmstValues";
 
 // import stopSound from "../assets/audio/stop.mp3";
 
@@ -24,6 +24,13 @@ const mmstSteps = [
         name: "Prueba",
         instructions: instructions,
         values: [...mmstPrueba],
+        images: images2
+    },
+    {
+        step: 2,
+        name: "Test MMST",
+        instructions: instructionStart,
+        values: [...mmstPrueba2],
         images: images2
     }
 ];
@@ -120,7 +127,9 @@ export default function MMST() {
                 button: "Regresar",
             }).then((value) => {
                 // saveAllData();
-                navigate(`/user/${id}`);
+                // navigate(`/user/${id}`);
+                console.log("final del juego");
+                console.log(responses);
             });
         }
     };
@@ -174,7 +183,7 @@ export default function MMST() {
     const handleClick = (event) => {
         const numberSelected = parseInt(event.target.innerHTML, 10);;
         const response = saveResponse(numberSelected);
-        if (gameData.type === "test" && gameData.id === 0) {
+        if (gameData.type === "test" && gameData.index === 0) {
             clearInterval(intVal);
             swal({
                 title: "Error",
@@ -215,17 +224,17 @@ export default function MMST() {
     };
 
     const nextNumber = () => {
-        if (gameData.id < step.values.length -1) {
-            const newData = step.values[gameData.id + 1];
+        console.log(gameData);
+        if (gameData.index < step.values.length -1) {
+            const newData = step.values[gameData.index + 1];
             setGameData({
                 ...gameData,
                 ...newData,
-                oldNumber: step.values[gameData.id].number,
+                oldNumber: step.values[gameData.index].number,
                 timeStart: Date.now()
             });
         } else {
-           console.log("final del juego");
-           console.log(responses);
+           nextStep();
         }
     };
 
@@ -233,28 +242,26 @@ export default function MMST() {
     useEffect(() => {
         if (gameData.activated) {
             if (gameData.number !== "") {
-                intVal = setTimeout(() => { 
+                intVal = setTimeout(() => {
                     const exist = responses.filter((res)=>res.id === gameData.id);
                     if (exist.length === 0) {
                         const save = saveResponse(null);
-                        if (gameData.type === "test" && gameData.id !==0) {
-                            clearInterval(intVal);
+                        if (gameData.type === "test" && gameData.index !==0) {
                             swal({
                                 title: "Error",
                                 text: "Error, debes presionar una respuesta, recuerda que debes sumar el numero en pantalla, con el numero mostrado anteriormente",
                                 icon: "error",
                                 button: "ok",
                             }).then((value) => {
-                                clearNumber();        
+                                clearNumber();
                             });
                         } else {
-                            clearNumber();    
+                            clearNumber();
                         }
                     } else {
                         clearNumber();
                     }
                 }, gameData.time);
-                
             } else {
                 intVal = setTimeout(nextNumber, 500);
             }

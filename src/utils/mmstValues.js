@@ -99,34 +99,73 @@ const getAleatory = () => {
 
 const mmstPrueba = [
     ...[0,1,2,3,4,5,6,7].map((item)=>(
-        {   
-            id: item,
+        {
+            id: `P${item}`,
+            index: item,
             number:  getAleatory(),
             type: "test",
             time: 3000,
             level: 1
         }
     )),
-    // ...[9,10,11,12,13,14,15,16].map((item)=>(
-    //     {   
-    //         id: item,
-    //         number:  getAleatory(),
-    //         type: "test",
-    //         time: 2000
-    //     }
-    // )),
-    // ...[17,18,19,20,21,22,23,24].map((item)=>(
-    //     {   
-    //         id: item,
-    //         number:  getAleatory(),
-    //         type: "test",
-    //         time: 1000
-    //     }
-    // ))
+    ...[8,9,10,11,12,13,14,15].map((item)=>(
+        {   
+            id: `P${item}`,
+            index: item,
+            number:  getAleatory(),
+            type: "test",
+            time: 2000
+        }
+    )),
+    ...[16,17,18,19,20,21,22,23].map((item)=>(
+        {   
+            id: `P${item}`,
+            index: item,
+            number:  getAleatory(),
+            type: "test",
+            time: 1000
+        }
+    ))
+];
+
+const leve1 = new Array(40);
+const leve2 = new Array(60);
+const leve3 = new Array(60);
+
+const mmstPrueba2 = [
+    ...leve1.fill(1,0).map((item, index)=>(
+        {
+            id: `T${index}`,
+            index: index,
+            number:  getAleatory(),
+            type: "prueba",
+            time: 3000,
+            level: 1
+        }
+    )),
+    ...leve2.fill(1,0).map((item, index)=>(
+        {   
+            id: `T${index + 40}`,
+            index: index + 40,
+            number:  getAleatory(),
+            type: "prueba",
+            time: 2000
+        }
+    )),
+    ...leve3.fill(1,0).map((item, index)=>(
+        {   
+            id: `T${index + 100}`,
+            index: index + 100,
+            number:  getAleatory(),
+            type: "prueba",
+            time: 1000
+        }
+    ))
 ];
 
 export {
     mmstPrueba,
+    mmstPrueba2,
     instructions,
     instructionStart,
     images1,

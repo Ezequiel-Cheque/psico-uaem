@@ -4,7 +4,24 @@ import swal from 'sweetalert';
 
 import { instructions, mmstPrueba, mmstPrueba2, instructionStart, images1, images2 } from "../utils/mmstValues";
 
-// import stopSound from "../assets/audio/stop.mp3";
+import audio_uno from "../assets/audio/uno.mp3";
+import audio_dos from "../assets/audio/dos.mp3";
+import audio_tres from "../assets/audio/tres.mp3";
+import audio_cuatro from "../assets/audio/cuatro.mp3";
+import audio_cinco from "../assets/audio/cinco.mp3";
+import audio_seis from "../assets/audio/seis.mp3";
+import audio_siete from "../assets/audio/siete.mp3";
+import audio_ocho from "../assets/audio/ocho.mp3";
+import audio_nueve from "../assets/audio/nueve.mp3";
+import audio_diez from "../assets/audio/diez.mp3";
+import audio_once from "../assets/audio/once.mp3";
+import audio_doce from "../assets/audio/doce.mp3";
+import audio_trece from "../assets/audio/trece.mp3";
+import audio_catorce from "../assets/audio/catorce.mp3";
+import audio_quince from "../assets/audio/quince.mp3";
+import audio_dieciseis from "../assets/audio/dieciseis.mp3";
+import audio_diecisiete from "../assets/audio/diecisiete.mp3";
+import audio_dieciocho from "../assets/audio/dieciocho.mp3";
 
 import  coin from "../assets/images/coin.png";
 
@@ -74,6 +91,27 @@ let imageValues = null;
 let intVal;
 let results = {};
 const responses = [];
+
+const audio = [
+    audio_uno,
+    audio_dos,
+    audio_tres,
+    audio_cuatro,
+    audio_cinco,
+    audio_seis,
+    audio_siete,
+    audio_ocho,
+    audio_nueve,
+    audio_diez,
+    audio_once,
+    audio_doce,
+    audio_trece,
+    audio_catorce,
+    audio_quince,
+    audio_dieciseis,
+    audio_diecisiete,
+    audio_dieciocho
+];
 
 export default function MMST() {
 
@@ -162,6 +200,13 @@ export default function MMST() {
             }
         }
     };
+
+    const playSound = (number) => {
+        const audioNumber = audio[number - 1];
+        // console.log(audioNumber);
+        const audioPlay = new Audio(audioNumber);
+        audioPlay.play();
+    }
 
     const handleStart = () => {
         setModalBody(MODAL_DEFAULT_DATA);
@@ -253,6 +298,7 @@ export default function MMST() {
     useEffect(() => {
         if (gameData.activated) {
             if (gameData.number !== "") {
+                playSound(gameData.number);
                 intVal = setTimeout(() => {
                     const exist = responses.filter((res)=>res.id === gameData.id);
                     if (exist.length === 0) {

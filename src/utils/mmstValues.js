@@ -49,8 +49,8 @@ import neutras30 from "../assets/images/neutras/7510.jpg";
 import neutras31 from "../assets/images/neutras/7545.jpg";
 import neutras32 from "../assets/images/neutras/7580.jpg";
 
-import negativas0 from "../assets/images/negativas/1300.jpg";
 import negativas1 from "../assets/images/negativas/1301.jpg";
+import negativas0 from "../assets/images/negativas/1300.jpg";
 import negativas2 from "../assets/images/negativas/2120.jpg";
 import negativas3 from "../assets/images/negativas/2130.jpg";
 import negativas4 from "../assets/images/negativas/2720.jpg";
@@ -112,7 +112,88 @@ const positivas = [
     positivas12
 ];
 
-const negativas = [negativas1];
+const negativas = [
+    negativas1,
+    negativas0,
+    negativas2,
+    negativas3,
+    negativas4,
+    negativas5,
+    negativas6,
+    negativas7,
+    negativas8,
+    negativas9,
+    negativas10,
+    negativas11,
+    negativas12,
+    negativas13,
+    negativas14,
+    negativas15,
+    negativas16,
+    negativas17,
+    negativas18,
+    negativas19,
+    negativas20,
+    negativas21,
+    negativas22,
+    negativas23,
+    negativas24,
+    negativas25,
+    negativas26,
+    negativas27,
+    negativas28,
+    negativas29,
+    negativas30,
+    negativas31,
+    negativas32,
+    negativas33,
+    negativas34,
+    negativas35,
+    negativas36,
+    negativas37,
+    negativas38,
+    negativas39,
+    negativas40,
+    negativas41,
+    negativas42,
+    negativas43
+];
+
+const neutras = [
+    neutras0,
+    neutras1,
+    neutras2,
+    neutras3,
+    neutras4,
+    neutras5,
+    neutras6,
+    neutras7,
+    neutras8,
+    neutras9,
+    neutras10,
+    neutras11,
+    neutras12,
+    neutras13,
+    neutras14,
+    neutras15,
+    neutras16,
+    neutras17,
+    neutras18,
+    neutras19,
+    neutras20,
+    neutras21,
+    neutras22,
+    neutras23,
+    neutras24,
+    neutras25,
+    neutras26,
+    neutras27,
+    neutras28,
+    neutras29,
+    neutras30,
+    neutras31,
+    neutras32
+];
 
 const getAleatoryImages = (num, type) => {
     let arrayImages = [];
@@ -121,6 +202,8 @@ const getAleatoryImages = (num, type) => {
         arrayImages = [...positivas];
     } else if (type === "negativas") {
         arrayImages = [...negativas];
+    } else if (type === "neutras") {
+        arrayImages = [...neutras];
     }
     for (let i = 0; i < num; i++) {
         const min = 0;
@@ -133,41 +216,195 @@ const getAleatoryImages = (num, type) => {
     return newImages;
 };
 
-const images1 = getAleatoryImages(5, "positivas").map((item, index) => (
-    {   
+const images1 = getAleatoryImages(5, "neutras").map((item, index) => (
+    {
         id: index,
         img: item,
-        time: 2000
+        time: 5000
     }
 ));
 
 const images2 = [
-    ...getAleatoryImages(5, "positivas").map((item, index) => (
-        {   
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {
             id: index,
             img: item,
-            time: 2000
+            time: 5000
         }
     )),
-    ...getAleatoryImages(1, "negativa").map((item, index) => (
-        {   
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {
             id: index + 5,
             img: item,
-            time: 2000
+            time: 3000
         }
     )),
-    ...getAleatoryImages(5, "positivas").map((item, index) => (
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
         {   
             id: index + 6,
             img: item,
-            time: 2000
+            time: 5000
         }
     )),
-    ...getAleatoryImages(1, "negativa").map((item, index) => (
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
         {   
             id: index + 11,
             img: item,
-            time: 2000
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 12,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 17,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 18,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 23,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 24,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 29,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 30,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 35,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 36,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 41,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 42,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 47,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 48,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 53,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 54,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 59,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 60,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 65,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 66,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 71,
+            img: item,
+            time: 3000
+        }
+    )),
+    ...getAleatoryImages(5, "negativas").map((item, index) => (
+        {   
+            id: index + 72,
+            img: item,
+            time: 5000
+        }
+    )),
+    ...getAleatoryImages(1, "positivas").map((item, index) => (
+        {   
+            id: index + 77,
+            img: item,
+            time: 3000
         }
     ))
 ];
@@ -237,6 +474,8 @@ const mmstPrueba = [
         }
     ))
 ];
+
+// const leve1 = new Array(5);
 
 const leve1 = new Array(40);
 const leve2 = new Array(60);

@@ -246,11 +246,6 @@ export default function Stop() {
                 }
             }
         }
-        // else if (modalBody.activated && modalBody.step === step.instructions.length) {
-        //     if (keyPress === " ") {
-        //         playStopSound();
-        //     }
-        // }
     };
 
     const handleImageClick = () => {

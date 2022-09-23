@@ -27,6 +27,7 @@ import  coin from "../assets/images/coin.png";
 
 import '../styles/pages/mmst.scss';
 
+import errorSound from "../assets/audio/stop.mp3";
 
 const mmstSteps = [
     {
@@ -41,7 +42,7 @@ const mmstSteps = [
         name: "Prueba",
         instructions: instructions,
         values: [...mmstPrueba],
-        images: images2
+        images: []
     },
     {
         step: 2,
@@ -87,10 +88,9 @@ const DEFAULT_IMAGES_DATA = {
     id: null
 };
 
-let imageValues = null;
 let intVal;
 let results = {};
-const responses = [];
+let responses = [];
 
 const audio = [
     audio_uno,
@@ -138,7 +138,7 @@ export default function MMST() {
             if (user.length > 0) {
                 const restData = data.filter((user)=>user.id !== id);
                 const userData = user[0];
-                const preTestExist = userData.preTest.filter((t)=>t.test === "Simon");
+                const preTestExist = userData.preTest.filter((t)=>t.test === "MMST");
                 if (preTestExist.length > 0) {
                     newData = [...restData, { ...userData, posTest:[...userData.posTest, mmstTestData] }]
                 } else {
@@ -166,13 +166,21 @@ export default function MMST() {
                 icon: "success",
                 button: "Regresar",
             }).then((value) => {
-                // saveAllData();
-                // navigate(`/user/${id}`);
-                console.log("final del juego");
-                console.log(responses);
+                saveAllData();
+                setStep(DEFAULT_STEP);
+                setGameData(DEFAULT_GAME_DATA);
+                setModalBody(MODAL_DEFAULT_DATA);
+                results = {};
+                responses = [];
+                navigate(`/user/${id}`);
             });
         }
     };
+
+    const playStopSound = () => {
+        const audio = new Audio(errorSound);
+        audio.play();
+    }
 
     const saveResponse = (keyPress) => {
         if (gameData.number !== "") {
@@ -190,6 +198,9 @@ export default function MMST() {
             };
             if (response.response) {
                 setScore(score + 100);
+            } else if (!response.response && gameData.index !== 0) {
+                playStopSound();
+                setScore(score - 100);
             }
             const exist = responses.filter((res)=>res.id === gameData.id);
             if (exist.length === 0) {
@@ -290,7 +301,19 @@ export default function MMST() {
                 timeStart: Date.now()
             });
         } else {
-           nextStep();
+            if (step.step === 1) {
+                results = {
+                    ...results,
+                    Practica: responses.filter((res)=>res.type === "test")
+                };
+            } if (step.step === 2) {
+                results = {
+                    ...results,
+                    Ensayo: responses.filter((res)=>res.type === "prueba")
+                };
+            }
+            setGameData(DEFAULT_GAME_DATA);
+            nextStep();
         }
     };
 

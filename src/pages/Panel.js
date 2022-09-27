@@ -145,8 +145,44 @@ const columnsStop = [
 
 const columnsMMST = [
   {
+    name: 'ID Usuario',
+    selector: row => row.idu,
+    sortable: true,
+    center: true
+  },
+  {
     name: 'N. Ensayo',
+    selector: row => row.index,
+    sortable: true,
+    center: true
+  },
+  {
+    name: 'Nivel',
+    selector: row => row.level,
+    sortable: true,
+    center: true
+  },
+  {
+    name: 'Test',
+    selector: row => row.typeTest,
+    sortable: true,
+    center: true
+  },
+  {
+    name: 'Mostrado',
     selector: row => row.number,
+    sortable: true,
+    center: true
+  },
+  {
+    name: 'Anterior',
+    selector: row => row.numberBefore,
+    sortable: true,
+    center: true
+  },
+  {
+    name: 'Seleccionado',
+    selector: row => row.selectedNumber,
     sortable: true,
     center: true
   },
@@ -233,8 +269,27 @@ const clickHandler = (id, title, available) => {
           }
         ))
       ];
-    } else if (title === "mmst2" || title === "mmst2") {
-      data = stopMMST.filter((data)=>data.idusuario)[0].data;
+    } else if (title === "mmst" || title === "mmst2") {
+      const dataUser = tests.allData.filter((item)=>item.id === id)[0];
+      const typeTest = title === "mmst"? "Pre-Test" : "Pos-Test";
+      const testData = title === "mmst" ?
+      dataUser.preTest.filter((item)=>item.test === "MMST")[0].data
+      : dataUser.posTest.filter((item)=>item.test === "MMST")[0].data;
+      data = [
+        ...testData.Ensayo.map((ensayo, index) => (
+          {
+            idu: id,
+            index: index + 1,
+            typeTest: typeTest,
+            number: ensayo.number,
+            numberBefore: ensayo.numberBefore ? ensayo.numberBefore : "Ninguno",
+            selectedNumber: ensayo.keyPress ? ensayo.keyPress : "Ninguno",
+            response: ensayo.response ? "Acierto" : "Error",
+            time: ensayo.time,
+            level: `Nivel ${ensayo.level}`
+          }
+        ))
+      ];
     }
     setExtraTable({
       columns: extraTableColumns[title],

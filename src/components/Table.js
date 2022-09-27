@@ -71,6 +71,10 @@ export const Table = ({ columns, data, title="", filter=false , pagination = tru
       body = data.map((c)=>[
         c.idu, c.typeTest, c.block, c.number, c.signal, c.response, c.time
       ]);
+    } else if (["mmst", "mmst2"].includes(name)) {
+      body = data.map((c)=>[
+        c.idu, c.index, c.level, c.typeTest, c.number, c.numberBefore, c.selectedNumber, c.response, c.time
+      ]);
     }
     downloadExcel({
       fileName: `Table-data-${name}`,

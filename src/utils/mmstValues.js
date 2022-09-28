@@ -475,11 +475,11 @@ const mmstPrueba = [
     ))
 ];
 
-const leve1 = new Array(5);
+// const leve1 = new Array(5);
 
-// const leve1 = new Array(40);
-// const leve2 = new Array(60);
-// const leve3 = new Array(60);
+const leve1 = new Array(40);
+const leve2 = new Array(60);
+const leve3 = new Array(60);
 
 const mmstPrueba2 = [
     ...leve1.fill(1,0).map((item, index)=>(
@@ -491,26 +491,25 @@ const mmstPrueba2 = [
             time: 3000,
             level: 1
         }
+    )),
+    ...leve2.fill(1,0).map((item, index)=>(
+        {   
+            id: `T${index + 40}`,
+            index: index + 40,
+            number:  getAleatory(),
+            type: "prueba",
+            time: 2000
+        }
+    )),
+    ...leve3.fill(1,0).map((item, index)=>(
+        {   
+            id: `T${index + 100}`,
+            index: index + 100,
+            number:  getAleatory(),
+            type: "prueba",
+            time: 1000
+        }
     ))
-    // ,
-    // ...leve2.fill(1,0).map((item, index)=>(
-    //     {   
-    //         id: `T${index + 40}`,
-    //         index: index + 40,
-    //         number:  getAleatory(),
-    //         type: "prueba",
-    //         time: 2000
-    //     }
-    // )),
-    // ...leve3.fill(1,0).map((item, index)=>(
-    //     {   
-    //         id: `T${index + 100}`,
-    //         index: index + 100,
-    //         number:  getAleatory(),
-    //         type: "prueba",
-    //         time: 1000
-    //     }
-    // ))
 ];
 
 export {

@@ -28,6 +28,7 @@ import  coin from "../assets/images/coin.png";
 import '../styles/pages/mmst.scss';
 
 import errorSound from "../assets/audio/stop.mp3";
+import whiteSound from "../assets/audio/sonidoBlanco.mp3";
 
 const mmstSteps = [
     {
@@ -113,6 +114,8 @@ const audio = [
     audio_dieciocho
 ];
 
+let whiteVolume = 0.78;
+
 export default function MMST() {
 
     const [modalBody, setModalBody] = useState(MODAL_DEFAULT_DATA);
@@ -120,6 +123,9 @@ export default function MMST() {
     const [imagesData, setImagesData] = useState(DEFAULT_IMAGES_DATA);
     const [step, setStep] = useState(DEFAULT_STEP);
     const [score, setScore] = useState(0);
+    const [count, setCount] = useState(0);
+    const whiteS = new Audio(whiteSound);
+    whiteS.volume = whiteVolume;
 
     const navigate = useNavigate();
     const params = useParams();
@@ -214,7 +220,6 @@ export default function MMST() {
 
     const playSound = (number) => {
         const audioNumber = audio[number - 1];
-        // console.log(audioNumber);
         const audioPlay = new Audio(audioNumber);
         audioPlay.play();
     }
@@ -230,6 +235,8 @@ export default function MMST() {
         });
         if (step.step === 2) {
             setImagesData(step.images[0]);
+            whiteS.play();
+            setCount(1)
         }
     };
 
@@ -317,6 +324,19 @@ export default function MMST() {
         }
     };
 
+    // Efecto para subir volumen al ruido blanco cada 20 segundos
+    useEffect(() => {
+        if (step.step === 2) {
+            if (count % 20 === 0) {
+                console.log(whiteVolume);
+                whiteVolume += 0.01;
+            }
+            setTimeout(() => {
+                setCount(count + 1);
+            }, 1000);
+        }
+    }, [count])
+    
     // // Efecto para mostrar los numeros
     useEffect(() => {
         if (gameData.activated) {

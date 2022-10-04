@@ -13,11 +13,11 @@
 }
 
 .num-section {
-    width: 50%;
+    width: 43%;
     max-width: 550px;
     padding: 10px;
     position: relative;
-    min-width: 677px;
+    // min-width: 677px;
     margin: auto;
 
     label {
@@ -38,7 +38,7 @@
         position: absolute;
         right: 56%;
         margin-right: -100px;
-        bottom: 43%;
+        bottom: 38%;
     }
 
     &--score {
@@ -62,7 +62,7 @@
     }
 
     &--first {
-        height: 200px;
+        height: 155px;
         display: flex;
         align-items: end;
         justify-content: space-around;
@@ -72,14 +72,14 @@
             align-self: flex-start;
         }
         div:nth-child(2), div:nth-child(5) {
-            margin-bottom: 90px;
+            margin-bottom: 80px;
         }
         div:nth-child(1), div:nth-child(6) {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
     }
    &--end {
-        height: 200px;
+        height: 155px;
         display: flex;
         align-items: flex-start;
         justify-content: space-around;
@@ -89,14 +89,14 @@
             align-self: flex-end;
         }
         div:nth-child(2), div:nth-child(5) {
-            margin-top: 90px;
+            margin-top: 80px;
         }
         div:nth-child(1), div:nth-child(6) {
-            margin-top: 20px;
+            margin-top: 10px;
         }
    }
    &--second {
-        height: 80px;
+        height: 55px;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
@@ -104,7 +104,7 @@
    }
    
    &--trhird {
-        height: 80px;
+        height: 55px;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
@@ -113,7 +113,7 @@
    }
    
    &--fourth {
-        height: 80px;
+        height: 55px;
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
@@ -122,10 +122,10 @@
     &-number {
         background-color: #2f6997;
         // margin: 10px;
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
         font-size: 40px;
-        padding: 10px;
+        padding: 7px;
         text-align: center;
         align-items: center;
         font-weight: 400;

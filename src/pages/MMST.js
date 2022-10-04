@@ -30,13 +30,13 @@ import '../styles/pages/mmst.scss';
 import errorSound from "../assets/audio/stop.mp3";
 
 const mmstSteps = [
-    {
-        step: 0,
-        name: "Imagenes",
-        instructions: [],
-        values: [],
-        images: images1
-    },
+    // {
+    //     step: 0,
+    //     name: "Imagenes",
+    //     instructions: [],
+    //     values: [],
+    //     images: images1
+    // },
     {
         step: 1,
         name: "Prueba",

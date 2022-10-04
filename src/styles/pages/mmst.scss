@@ -13,11 +13,11 @@
 }
 
 .num-section {
-    width: 43%;
+    width: 45%;
     max-width: 550px;
+    min-width: 550px;
     padding: 10px;
     position: relative;
-    // min-width: 677px;
     margin: auto;
 
     label {
@@ -62,7 +62,7 @@
     }
 
     &--first {
-        height: 155px;
+        height: 160px;
         display: flex;
         align-items: end;
         justify-content: space-around;
@@ -79,7 +79,7 @@
         }
     }
    &--end {
-        height: 155px;
+        height: 160px;
         display: flex;
         align-items: flex-start;
         justify-content: space-around;

@@ -13,31 +13,29 @@ import mixto from "../assets/images/example-mixto.png";
 const instructionsHearts = [
     {
         title: "Bienvenido",
-        body: "Pon tus dedos sobre los botones 'A' y 'L' de tu teclado",
+        body: "Coloca tus dedos índices sobre las teclas izquierda y derecha de tu teclado",
         img: example
     },
     {
-        title: "Te mostraremos unos corazones !!",
-        body: "Los corazones pueden aparecera la izquierda o a la derecha",
+        title: "Te mostraremos un corazón, presiona el botón del mismo lado en que se muestre el corazón.",
+        body: "Si ves el corazón de lado derecho, presiona la tecla de lado derecho.",
         img: heart1
     },
+    // {
+    //     title: `Si ves un corazon:
+    //     Aprieta el botón DEL MISMO lado que el corazón`,
+    //     body: "si ves el corazón en este lado: aprieta este boton",
+    //     img: heart2
+    // },
+    // {
+    //     title: `Si ves un corazon:
+    //     Aprieta el botón DEL MISMO lado que el corazón`,
+    //     body: "si ves el corazón en este lado: aprieta este boton",
+    //     img: heart3
+    // },
     {
-        title: `Si ves un corazon:
-        Aprieta el botón DEL MISMO lado que el corazón`,
-        body: "si ves el corazón en este lado: aprieta este boton",
-        img: heart2
-    },
-    {
-        title: `Si ves un corazon:
-        Aprieta el botón DEL MISMO lado que el corazón`,
-        body: "si ves el corazón en este lado: aprieta este boton",
-        img: heart3
-    },
-    {
-        title: "¿Estas listo para jugar?",
-        body: `Recuerda:
-        aprieta el boton del mismo lado que veas el corazon.
-        Intenta ser lo mas rapido posible al presionar el boton correcto, presiona en iniciar para hacer una prueba`,
+        title: "¿Estás listo para iniciar?",
+        body: `Recuerda, presiona el botón del mismo lado que se muestre el corazón, intenta ser lo más rápido posible al responder. Presiona continuar para iniciar una prueba del ejercicio.`,
         img: keys
     }
 ];
@@ -121,9 +119,8 @@ const instructionsMixto = [
 
 const instructionStart = [
     {
-        title: "Juguemos un poco mas !!",
-        body: `Pero esta vez no te diremos si es correcto.
-        presiona el boton de continuar para empezar`,
+        title: "Juguemos un poco más.",
+        body: `Esta vez no diremos si es correcto o incorrecto. Presiona el botón de continuar para iniciar el ejercicio.`,
         img: example
     }
 ];

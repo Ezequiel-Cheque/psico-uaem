@@ -421,7 +421,7 @@ const mmstPrueba = [
             index: item,
             number:  getAleatory(),
             type: "test",
-            time: 2000
+            time: 3000
         }
     )),
     ...[16,17,18,19,20,21,22,23].map((item)=>(
@@ -430,7 +430,7 @@ const mmstPrueba = [
             index: item,
             number:  getAleatory(),
             type: "test",
-            time: 1000
+            time: 3000
         }
     ))
 ];

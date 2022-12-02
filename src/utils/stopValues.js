@@ -6,25 +6,23 @@ import left from "../assets/images/left.png";
 
 const instructions = [
 {
-    title: "Bienvenido Stop test",
-    body: `En el test, aparecen senales, mostrandote una direccion.
-    Para la direccion izquierda, debes precionar la tecla A, para la direccion derecha
-    debes presionar la tecla L, cuando escuches la senal de stop, no debes presionar ninguna tecla`,
+    title: "Bienvenido",
+    body: `A continuación, se mostrará una flecha, señalando una dirección específica.
+    Si la flecha se encuentra hacia la izquierda debes presionar la tecla de lado izquierdo, si la flecha se encuentra hacia la derecha debes presionar la tecla de lado derecho. Si escuchas la señal de alto, no debes presionar ninguna tecla, sin importar hacia donde señale.
+    `,
     img: example
 },
 {
-    title: "Senal de stop",
-    body: `Presiona el icono la bocina para escuchar la senal de stop, si no logras escucharla
-    correctamente, ajusta tu volumen, da clic, de nuevo en el icono, si todo esta bien, presiona en continuar`,
+    title: "Señal de alto",
+    body: `Presiona el icono la bocina para escuchar la señal de alto, si no logras escucharla correctamente solicita apoyo al aplicador, si escuchas la señal claramente, presiona en Iniciar.`,
     img: signal
 }
 ];
 
 const instructionStart = [
     {
-        title: "Juguemos un poco mas !!",
-        body: `Pero esta vez no te diremos si es correcto.
-        presiona el boton de continuar para empezar`,
+        title: "Juguemos un poco más",
+        body: `Esta vez no te diremos si es correcto o incorrecto. Presiona el botón de continuar para iniciar el ejercicio.`,
         img: example
     }
 ];

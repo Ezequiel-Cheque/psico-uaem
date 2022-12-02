@@ -115,6 +115,8 @@ const audio = [
 ];
 
 let whiteVolume = 0.78;
+const whiteS = new Audio(whiteSound);
+whiteS.volume = whiteVolume;
 
 export default function MMST() {
 
@@ -124,8 +126,6 @@ export default function MMST() {
     const [step, setStep] = useState(DEFAULT_STEP);
     const [score, setScore] = useState(0);
     const [count, setCount] = useState(0);
-    const whiteS = new Audio(whiteSound);
-    whiteS.volume = whiteVolume;
 
     const navigate = useNavigate();
     const params = useParams();
@@ -165,6 +165,7 @@ export default function MMST() {
             const newDataStep = mmstSteps[newStep];
             setStep(newDataStep);
         } else {
+            console.log("sound", whiteS);
             whiteS.pause();
             swal({
                 title: "Felicidades, has completado la prueba",

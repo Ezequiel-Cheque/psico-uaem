@@ -205,10 +205,10 @@ export default function Stop() {
             if (saveResponse(keyPress)) {
                 if (gameData.type === "test") {
                     if ((keyPress !== gameData.key) && !gameData.signal) {
-                        const errorMsg = `Debes presionar la tecla correspondiente, en este caso es la tecla ${keyPress === "A" ? "L" : "A"}`; 
+                        const errorMsg = `Debes presionar la tecla correspondiente, en este caso la tecla ${keyPress === "A" ? "L" : "A"}`; 
                         clearInterval(intVal);
                         swal({
-                            title: "Error",
+                            title: "¡ERROR!",
                             text: errorMsg,
                             icon: "error",
                             button: "ok",
@@ -218,7 +218,7 @@ export default function Stop() {
                     } else if ((keyPress === gameData.key) && !gameData.signal) {
                         clearInterval(intVal);
                         swal({
-                            title: "Correcto !!",
+                            title: "¡Correcto!",
                             text: "Buen trabajo",
                             icon: "success",
                             timer: 1200,
@@ -227,10 +227,10 @@ export default function Stop() {
                             clearImage();
                         });
                     } else if (gameData.signal) {
-                        const errorMsg = "Cuando suena la senal de stop, no debes precionar ninguna tecla";
+                        const errorMsg = "Cuando suena la señal de alto, no debes presionar ninguna tecla.";
                         clearInterval(intVal);
                         swal({
-                            title: "Error",
+                            title: "¡ERROR!",
                             text: errorMsg,
                             icon: "error",
                             button: "ok",
@@ -269,9 +269,9 @@ export default function Stop() {
                          saveResponse(null);
                          if (gameData.type === "test" && !gameData.signal) {
                              clearInterval(intVal);
-                             const errorMsg = `Ups, se te ha pasado el tiempo, procura ser mas rapido en tu respuesta`;
+                             const errorMsg = `Se te ha pasado el tiempo, procura ser más rápido en tu siguiente respuesta.`;
                              swal({
-                                 title: "Error",
+                                 title: "¡ERROR!",
                                  text: errorMsg,
                                  icon: "error",
                                  button: "ok",

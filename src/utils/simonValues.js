@@ -1,5 +1,5 @@
 import example from "../assets/images/example.png";
-import heart1 from "../assets/images/heart_example1.png";
+// import heart1 from "../assets/images/heart_example1.png";
 import heart2 from "../assets/images/heart_example.png";
 import heart3 from "../assets/images/heart_example2.png";
 import keys from "../assets/images/keys.png";
@@ -19,20 +19,8 @@ const instructionsHearts = [
     {
         title: "Te mostraremos un corazón, presiona el botón del mismo lado en que se muestre el corazón.",
         body: "Si ves el corazón de lado derecho, presiona la tecla de lado derecho.",
-        img: heart1
+        img: heart2
     },
-    // {
-    //     title: `Si ves un corazon:
-    //     Aprieta el botón DEL MISMO lado que el corazón`,
-    //     body: "si ves el corazón en este lado: aprieta este boton",
-    //     img: heart2
-    // },
-    // {
-    //     title: `Si ves un corazon:
-    //     Aprieta el botón DEL MISMO lado que el corazón`,
-    //     body: "si ves el corazón en este lado: aprieta este boton",
-    //     img: heart3
-    // },
     {
         title: "¿Estás listo para iniciar?",
         body: `Recuerda, presiona el botón del mismo lado que se muestre el corazón, intenta ser lo más rápido posible al responder. Presiona continuar para iniciar una prueba del ejercicio.`,
@@ -43,31 +31,17 @@ const instructionsHearts = [
 const instructionsFlowers = [
     {
         title: "Bienvenido",
-        body: "Pon tus dedos sobre los botones 'A' y 'L' de tu teclado",
+        body: "Coloca tus dedos índices sobre las teclas izquierda y derecha de tu teclado",
         img: example
     },
     {
-        title: "Te mostraremos unas flores !!",
-        body: `Las flores pueden aparecera la izquierda o a la derecha`,
-        img: flower1
-    },
-    {
-        title: `Si ves la flor:
-        Aprieta el botón del lado OPUESTO de la flor`,
-        body: "si ves la flor en este lado: aprieta este boton",
+        title: "Te mostraremos una flor, presiona el botón del mismo lado en que se muestre la flor",
+        body: `Si ves la flor de lado derecho, presiona la tecla de lado izquierdo.`,
         img: flower2
     },
     {
-        title: `Si ves la flor:
-        Aprieta el botón del lado OPUESTO de la flor`,
-        body: "si ves la flor en este lado: aprieta este boton",
-        img: flower3
-    },
-    {
-        title: "¿Estas listo para jugar?",
-        body: `Recuerda:
-        aprieta el boton del lado OPUESTO de donde veas la flor.
-        Intenta ser lo mas rapido posible al presionar el boton correcto, presiona en iniciar para hacer una prueba`,
+        title: "¿Estás listo para iniciar?",
+        body: `Recuerda, presiona el botón del lado OPUESTO que se muestre la flor, intenta ser lo más rápido posible al responder. Presiona continuar para iniciar una prueba del ejercicio.`,
         img: flower
     }
 ];
@@ -75,7 +49,7 @@ const instructionsFlowers = [
 const instructionsMixto = [
     {
         title: "Vamos a juntar todo!",
-        body: "Pon tus dedos sobre los botones 'A' y 'L' de tu teclado",
+        body: "Coloca tus dedos índices sobre las teclas izquierda y derecha de tu teclado",
         img: example
     },
     {
@@ -116,6 +90,7 @@ const instructionsMixto = [
         img: mixto
     }
 ];
+
 
 const instructionStart = [
     {

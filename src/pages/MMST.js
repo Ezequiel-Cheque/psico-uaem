@@ -165,6 +165,7 @@ export default function MMST() {
             const newDataStep = mmstSteps[newStep];
             setStep(newDataStep);
         } else {
+            whiteS.pause();
             swal({
                 title: "Felicidades, has completado la prueba",
                 text: `Realisaste la prueba Stop, en su totalidad,
@@ -328,7 +329,7 @@ export default function MMST() {
     useEffect(() => {
         if (step.step === 2) {
             if (count % 20 === 0) {
-                console.log(whiteVolume);
+                // console.log(whiteVolume);
                 whiteVolume += 0.01;
             }
             setTimeout(() => {

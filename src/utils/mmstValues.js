@@ -29,51 +29,50 @@ import neutras10 from "../assets/images/neutras/6560.jpg";
 import neutras11 from "../assets/images/neutras/8230.jpg";
 import neutras12 from "../assets/images/neutras/3550.jpg";
 
-import negativas1 from "../assets/images/negativas/1301.jpg";
-import negativas0 from "../assets/images/negativas/1300.jpg";
-import negativas2 from "../assets/images/negativas/2120.jpg";
-import negativas3 from "../assets/images/negativas/2130.jpg";
-import negativas4 from "../assets/images/negativas/2720.jpg";
-import negativas5 from "../assets/images/negativas/2800.jpg";
-import negativas6 from "../assets/images/negativas/2810.jpg";
-import negativas7 from "../assets/images/negativas/2900.jpg";
-import negativas8 from "../assets/images/negativas/3015.jpg";
-import negativas9 from "../assets/images/negativas/3022.jpg";
-import negativas10 from "../assets/images/negativas/3063.jpg";
-import negativas11 from "../assets/images/negativas/3180.jpg";
-import negativas12 from "../assets/images/negativas/3181.jpg";
-import negativas13 from "../assets/images/negativas/3220.jpg";
-import negativas14 from "../assets/images/negativas/3230.jpg";
-import negativas15 from "../assets/images/negativas/3300.jpg";
-import negativas16 from "../assets/images/negativas/3301.jpg";
-import negativas17 from "../assets/images/negativas/3500.jpg";
-import negativas18 from "../assets/images/negativas/3530.jpg";
-import negativas19 from "../assets/images/negativas/3550.jpg";
-import negativas20 from "../assets/images/negativas/6211.jpg";
-import negativas21 from "../assets/images/negativas/6212.jpg";
-import negativas22 from "../assets/images/negativas/6312.jpg";
-import negativas23 from "../assets/images/negativas/6313.jpg";
-import negativas24 from "../assets/images/negativas/6550.jpg";
-import negativas25 from "../assets/images/negativas/6560.jpg";
-import negativas26 from "../assets/images/negativas/6570.jpg";
-import negativas27 from "../assets/images/negativas/6840.jpg";
-import negativas28 from "../assets/images/negativas/8230.jpg";
-import negativas29 from "../assets/images/negativas/9040.jpg";
-import negativas30 from "../assets/images/negativas/9041.jpg";
-import negativas31 from "../assets/images/negativas/9042.jpg";
-import negativas32 from "../assets/images/negativas/9190.jpg";
-import negativas33 from "../assets/images/negativas/9230.jpg";
-import negativas34 from "../assets/images/negativas/9253.jpg";
-import negativas35 from "../assets/images/negativas/9265.jpg";
-import negativas36 from "../assets/images/negativas/9402.jpg";
-import negativas37 from "../assets/images/negativas/9405.jpg";
-import negativas38 from "../assets/images/negativas/9410.jpg";
-import negativas39 from "../assets/images/negativas/9421.jpg";
-import negativas40 from "../assets/images/negativas/9430.jpg";
-import negativas41 from "../assets/images/negativas/9433.jpg";
-import negativas42 from "../assets/images/negativas/9561.jpg";
-import negativas43 from "../assets/images/negativas/9582.jpg";
-
+import negativas1 from "../assets/images/negativas/1.jpg";
+import negativas2 from "../assets/images/negativas/2.jpg";
+import negativas3 from "../assets/images/negativas/3.jpg";
+import negativas4 from "../assets/images/negativas/4.jpg";
+import negativas5 from "../assets/images/negativas/5.jpg";
+import negativas6 from "../assets/images/negativas/6.jpg";
+import negativas7 from "../assets/images/negativas/7.jpg";
+import negativas8 from "../assets/images/negativas/8.jpg";
+import negativas9 from "../assets/images/negativas/9.jpg";
+import negativas10 from "../assets/images/negativas/10.jpg";
+import negativas11 from "../assets/images/negativas/11.jpg";
+import negativas12 from "../assets/images/negativas/12.jpg";
+import negativas13 from "../assets/images/negativas/13.jpg";
+import negativas14 from "../assets/images/negativas/14.jpg";
+import negativas15 from "../assets/images/negativas/15.jpg";
+import negativas16 from "../assets/images/negativas/16.jpg";
+import negativas17 from "../assets/images/negativas/17.jpg";
+import negativas18 from "../assets/images/negativas/18.jpg";
+import negativas19 from "../assets/images/negativas/19.jpg";
+import negativas20 from "../assets/images/negativas/20.jpg";
+import negativas21 from "../assets/images/negativas/21.jpg";
+import negativas22 from "../assets/images/negativas/22.jpg";
+import negativas23 from "../assets/images/negativas/23.jpg";
+import negativas24 from "../assets/images/negativas/24.jpg";
+import negativas25 from "../assets/images/negativas/25.jpg";
+import negativas26 from "../assets/images/negativas/1.jpg";
+import negativas27 from "../assets/images/negativas/2.jpg";
+import negativas28 from "../assets/images/negativas/3.jpg";
+import negativas29 from "../assets/images/negativas/6.jpg";
+import negativas30 from "../assets/images/negativas/7.jpg";
+import negativas31 from "../assets/images/negativas/8.jpg";
+import negativas32 from "../assets/images/negativas/9.jpg";
+import negativas33 from "../assets/images/negativas/11.jpg";
+import negativas34 from "../assets/images/negativas/12.jpg";
+import negativas35 from "../assets/images/negativas/15.jpg";
+import negativas36 from "../assets/images/negativas/16.jpg";
+import negativas37 from "../assets/images/negativas/17.jpg";
+import negativas38 from "../assets/images/negativas/18.jpg";
+import negativas39 from "../assets/images/negativas/19.jpg";
+import negativas40 from "../assets/images/negativas/20.jpg";
+import negativas41 from "../assets/images/negativas/21.jpg";
+import negativas42 from "../assets/images/negativas/22.jpg";
+import negativas43 from "../assets/images/negativas/23.jpg";
+import negativas44 from "../assets/images/negativas/24.jpg";
 
 
 const positivas = [
@@ -94,7 +93,6 @@ const positivas = [
 
 const negativas = [
     negativas1,
-    negativas0,
     negativas2,
     negativas3,
     negativas4,
@@ -136,7 +134,8 @@ const negativas = [
     negativas40,
     negativas41,
     negativas42,
-    negativas43
+    negativas43,
+    negativas44
 ];
 
 const neutras = [

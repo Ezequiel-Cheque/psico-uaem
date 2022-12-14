@@ -21,7 +21,9 @@ export default function User () {
                 navigate(`/stop/${id}`);
             } else if (test === "MMST") {
                 navigate(`/mmst/${id}`);
-            }
+            } else if (test === "Prueba sin estres") {
+              navigate(`/mmst2/${id}`);
+          }
         }
     };
 
@@ -89,7 +91,13 @@ export default function User () {
             duration: "5 minutos aprox.",
             finished: searchTest("MMST"),
             finished2: searchTest2("MMST")
+        },
+        {
+          test: "Prueba sin estres",
+          duration: "5 minutos aprox.",
+          finished: false
         }
+        
     ];
 
     const setButton = (row, available) => {return (

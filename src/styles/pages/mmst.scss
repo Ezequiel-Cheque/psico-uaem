@@ -16,6 +16,7 @@
     width: 45%;
     max-width: 550px;
     min-width: 550px;
+    min-height: 400px;
     padding: 10px;
     position: relative;
     margin: 0 15px 0 auto;
@@ -39,6 +40,25 @@
         right: 56%;
         margin-right: -100px;
         bottom: 38%;
+    }
+
+    &--btn-return {
+        button {
+            width: 110px;
+            height: 40px;
+            text-align: center;
+            padding: 5px;
+            border-radius: 10px;
+            background-color: #0044d0;
+            color: #fff;
+            font-weight: 500;
+            font-size: 15px;
+            &:hover {
+                cursor: pointer;
+                filter: brightness(1.1);
+                text-decoration: underline;
+            }
+        }
     }
 
     &--score {

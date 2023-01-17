@@ -169,8 +169,7 @@ export default function MMST() {
             whiteS.pause();
             swal({
                 title: "Felicidades, has completado la prueba",
-                text: `Realisaste la prueba Stop, en su totalidad,
-                da clic en el boton para regresar al menu`,
+                text: ``,
                 icon: "success",
                 button: "Regresar",
             }).then((value) => {

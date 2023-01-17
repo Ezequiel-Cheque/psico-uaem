@@ -15,19 +15,20 @@ import positivas10 from "../assets/images/positivas/2260.jpg";
 import positivas11 from "../assets/images/positivas/2655.jpg";
 import positivas12 from "../assets/images/positivas/2660.jpg";
 
-import neutras0 from "../assets/images/neutras/2057.jpg";
-import neutras1 from "../assets/images/neutras/3181.jpg";
-import neutras2 from "../assets/images/neutras/6550.jpg";
-import neutras3 from "../assets/images/neutras/3530.jpg";
-import neutras4 from "../assets/images/neutras/2057.jpg";
-import neutras5 from "../assets/images/neutras/3550.jpg";
-import neutras6 from "../assets/images/neutras/9040.jpg";
-import neutras7 from "../assets/images/neutras/6560.jpg";
-import neutras8 from "../assets/images/neutras/3301.jpg";
-import neutras9 from "../assets/images/neutras/1440.jpg";
-import neutras10 from "../assets/images/neutras/6560.jpg";
-import neutras11 from "../assets/images/neutras/8230.jpg";
-import neutras12 from "../assets/images/neutras/3550.jpg";
+import neutras0 from "../assets/images/previasMMST/1.jpg";
+import neutras1 from "../assets/images/previasMMST/2.jpg";
+import neutras2 from "../assets/images/previasMMST/3.jpg";
+import neutras3 from "../assets/images/previasMMST/4.jpg";
+import neutras4 from "../assets/images/previasMMST/5.jpg";
+import neutras5 from "../assets/images/previasMMST/6.jpg";
+import neutras6 from "../assets/images/previasMMST/7.jpg";
+import neutras7 from "../assets/images/previasMMST/8.jpg";
+import neutras8 from "../assets/images/previasMMST/9.jpg";
+import neutras9 from "../assets/images/previasMMST/10.jpg";
+import neutras10 from "../assets/images/previasMMST/11.jpg";
+import neutras11 from "../assets/images/previasMMST/12.jpg";
+import neutras12 from "../assets/images/previasMMST/13.jpg";
+
 
 import negativas1 from "../assets/images/negativas/1.jpg";
 import negativas2 from "../assets/images/negativas/2.jpg";
@@ -371,17 +372,21 @@ const images2 = [
 const instructions = [
     {
         title: "Tarea de suma en serie",
-        body:`Veras una serie de numeros de un digito, que se presentaran cada 3 segundos.
-        Los numero seran presentados juntos como este circulo de numeros.`,
+        body:`Verás una serie de números de un dígito en un recuadro negro,
+        que se presentarán cada 3 segundos (sumar mentalmente).
+         Los números para responder se mostrarán en forma de círculo,
+          al rededor de dicho recuadro (seleccionar la respuesta con el ratón).`,
         img: mmst1,
         size: "200px"
     },
     {
         title: "Tarea de suma en serie",
-        body:`Espera por los primeros dos numeros, sumalos en tu mente, e indica tu respuesta en el numero de circulos, tan rapido como sea posible.
-        Cuando veas el siguiente numero, sumalo con el ultimo numero presentado justo antes de ese, continua con la suma de los numero siguientes.
-        Perderas puntos por cada error que obtengas.
-        Presiona en iniciar, para comenzar con una prueba`,
+        body:`Espera por los primeros dos números,
+         sumalos en tu mente e indica tu respuesta presionando el número que consideres correcto en el círculo de resúesta de color azul,
+          hazlo tan rápido como sea posible, cuando veas el siguiente número en el recuadro negro,
+           debes sumarlo con el que se mostró ahí anteriormente,
+            continua con la suma cada que aparezca un nuevo número en el recuadro.
+             Por cada error que tengas perderás puntos. Presiona en iniciar para comenzar con una prueba.`,
         img: mmst2,
         size: "100%"
     }
@@ -389,9 +394,9 @@ const instructions = [
 
 const instructionStart = [
     {
-        title: "Juguemos un poco mas !!",
+        title: "¡Juguemos un poco más!",
         body: `Pero esta vez no te diremos si es correcto.
-        presiona el boton de continuar para empezar`,
+        presiona el botón de continuar para empezar`,
         img: mmst1
     }
 ];

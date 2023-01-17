@@ -21,7 +21,7 @@ export default function User () {
                 navigate(`/stop/${id}`);
             } else if (test === "MMST") {
                 navigate(`/mmst/${id}`);
-            } else if (test === "Prueba sin estres") {
+            } else if (test === "Imagenes") {
               navigate(`/mmst2/${id}`);
           }
         }
@@ -93,7 +93,7 @@ export default function User () {
             finished2: searchTest2("MMST")
         },
         {
-          test: "Prueba sin estres",
+          test: "Imagenes",
           duration: "5 minutos aprox.",
           finished: false
         }

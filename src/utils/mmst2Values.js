@@ -1,16 +1,38 @@
 import mmst1 from "../assets/images/mmst1.png";
 import mmst2 from "../assets/images/mmst2.png";
 
-import neutras1 from "../assets/images/neutras/2057.jpg";
-import neutras2 from "../assets/images/neutras/3181.jpg";
-import neutras3 from "../assets/images/neutras/6550.jpg";
-import neutras4 from "../assets/images/neutras/3530.jpg";
-import neutras5 from "../assets/images/neutras/3550.jpg";
-import neutras6 from "../assets/images/neutras/9040.jpg";
-import neutras7 from "../assets/images/neutras/6560.jpg";
-import neutras8 from "../assets/images/neutras/3301.jpg";
-import neutras9 from "../assets/images/neutras/1440.jpg";
-import neutras10 from "../assets/images/neutras/8230.jpg";
+import neutras1 from "../assets/images/neutras/2190.jpg";
+import neutras2 from "../assets/images/neutras/5001.jpg";
+import neutras3 from "../assets/images/neutras/5300.jpg";
+import neutras4 from "../assets/images/neutras/7004.jpg";
+import neutras5 from "../assets/images/neutras/7006.jpg";
+import neutras6 from "../assets/images/neutras/7009.jpg";
+import neutras7 from "../assets/images/neutras/7010.jpg";
+import neutras8 from "../assets/images/neutras/7020.jpg";
+import neutras9 from "../assets/images/neutras/7030.jpg";
+import neutras10 from "../assets/images/neutras/7034.jpg";
+import neutras11 from "../assets/images/neutras/7035.jpg";
+import neutras12 from "../assets/images/neutras/7040.jpg";
+import neutras13 from "../assets/images/neutras/7050.jpg";
+import neutras14 from "../assets/images/neutras/7080.jpg";
+import neutras15 from "../assets/images/neutras/7090.jpg";
+import neutras16 from "../assets/images/neutras/7095.jpg";
+import neutras17 from "../assets/images/neutras/7100.jpg";
+import neutras18 from "../assets/images/neutras/7130.jpg";
+import neutras19 from "../assets/images/neutras/7140.jpg";
+import neutras20 from "../assets/images/neutras/7150.jpg";
+import neutras21 from "../assets/images/neutras/7170.jpg";
+import neutras22 from "../assets/images/neutras/7175.jpg";
+import neutras23 from "../assets/images/neutras/7190.jpg";
+import neutras24 from "../assets/images/neutras/7211.jpg";
+import neutras25 from "../assets/images/neutras/7217.jpg";
+import neutras26 from "../assets/images/neutras/7224.jpg";
+import neutras27 from "../assets/images/neutras/7233.jpg";
+import neutras28 from "../assets/images/neutras/7235.jpg";
+import neutras29 from "../assets/images/neutras/7510.jpg";
+import neutras30 from "../assets/images/neutras/7545.jpg";
+import neutras31 from "../assets/images/neutras/7580.jpg";
+
 
 const neutras = [
     neutras1,
@@ -22,7 +44,28 @@ const neutras = [
     neutras7,
     neutras8,
     neutras9,
-    neutras10
+    neutras10,
+    neutras11,
+    neutras12,
+    neutras13,
+    neutras14,
+    neutras15,
+    neutras16,
+    neutras17,
+    neutras18,
+    neutras19,
+    neutras20,
+    neutras21,
+    neutras22,
+    neutras23,
+    neutras24,
+    neutras25,
+    neutras26,
+    neutras27,
+    neutras28,
+    neutras29,
+    neutras30,
+    neutras31
 ];
 
 const getAleatoryImages = (num, type) => {

@@ -247,7 +247,8 @@ export default function MMST() {
         if (step.step === 0) {
             setImagesData(step.images[0]);
         } else if (step.step === 1 || step.step === 2) {
-            setModalBody({activated: true ,step: 0, data: step.instructions[0]});
+            // setModalBody({activated: true ,step: 0, data: step.instructions[0]});
+            handleStart();
         }
     }, [step])
     

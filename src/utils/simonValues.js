@@ -19,6 +19,11 @@ const instructionsHearts = [
     {
         title: "Te mostraremos un corazón, presiona el botón del mismo lado en que se muestre el corazón.",
         body: "Si ves el corazón de lado derecho, presiona la tecla de lado derecho.",
+        img: heart3
+    },
+    {
+        title: "Te mostraremos un corazón, presiona el botón del mismo lado en que se muestre el corazón.",
+        body: "Si ves el corazón de lado izquierdo, presiona la tecla de lado izquierdo.",
         img: heart2
     },
     {
@@ -35,9 +40,14 @@ const instructionsFlowers = [
         img: example
     },
     {
-        title: "Te mostraremos una flor, presiona el botón del mismo lado en que se muestre la flor",
+        title: "Te mostraremos una flor, presiona el botón del lado contrario en que se muestre la flor",
         body: `Si ves la flor de lado derecho, presiona la tecla de lado izquierdo.`,
         img: flower2
+    },
+    {
+        title: "Te mostraremos una flor, presiona el botón del lado contrario en que se muestre la flor",
+        body: `Si ves la flor de lado izquierdo, presiona la tecla de lado derecho.`,
+        img: flower3
     },
     {
         title: "¿Estás listo para iniciar?",
@@ -48,12 +58,12 @@ const instructionsFlowers = [
 
 const instructionsMixto = [
     {
-        title: "Vamos a juntar todo!",
+        title: "¡Vamos a juntar todo!",
         body: "Coloca tus dedos índices sobre las teclas izquierda y derecha de tu teclado",
         img: example
     },
     {
-        title: "Ahora te mostraremos corazones y flores !!",
+        title: "¡Ahora te mostraremos corazones y flores!",
         body: `Las flores y los corazones pueden aparecer a la izquierda o a la derecha`,
         img: flower1
     },
